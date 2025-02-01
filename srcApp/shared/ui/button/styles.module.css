@@ -1,0 +1,86 @@
+.button {
+  --text-color: var(--main-page-font-color);
+  --bg-color: transparent;
+  --border: 1px solid var(--secondary-logo-color);
+  --focus-bg-color: var(--secondary-logo-color);
+  --focus-text-color: var(--secondary-font-color);
+  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border-radius: 0.5rem;
+  border: var(--border);
+  box-shadow: var(--box-shadow);
+  font-size: inherit;
+  font-weight: inherit;
+  backdrop-filter: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover,
+.button:focus-visible {
+  color: var(--focus-text-color);
+  background-color: var(--focus-bg-color);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon {
+  width: 10%;
+  height: 60%;
+}
+
+.svgIcon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(25%, -50%);
+}
+
+.spinner {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.spinner svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.spinner svg circle {
+  fill: none;
+  stroke-width: 2px;
+  stroke: #ffffff;
+  stroke-linecap: round;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+  }
+  50% {
+    stroke-dasharray: 150;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 150;
+    stroke-dashoffset: -150;
+  }
+}

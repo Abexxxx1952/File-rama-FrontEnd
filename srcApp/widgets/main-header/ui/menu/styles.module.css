@@ -1,0 +1,112 @@
+.burgerMenu {
+  display: none;
+}
+
+.menuDropdown {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .burgerMenu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    cursor: pointer;
+    height: 60%;
+    aspect-ratio: 1.5 / 1;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    border: none;
+    outline: none;
+    background: none;
+    user-select: none;
+  }
+
+  .burgerMenu__line {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: clamp(0.1rem, 2vh, 0.25rem);
+    border: none;
+    outline: none;
+    border-radius: 1rem;
+    background: var(--header-font-color);
+    transition: 0.25s ease-in-out;
+  }
+
+  .burgerMenu .active:nth-child(1) {
+    transform: rotate(45deg);
+    top: 45%;
+  }
+  .burgerMenu .active:nth-child(1)::after {
+    background-color: var(--header-font-color);
+    filter: drop-shadow(5px 5px 10px var(--header-font-color));
+  }
+
+  .burgerMenu .active:nth-child(2) {
+    width: 0%;
+    left: 50%;
+  }
+  .burgerMenu .active:nth-child(3) {
+    transform: rotate(-45deg);
+    bottom: 45%;
+  }
+  .burgerMenu .active:nth-child(3)::after {
+    background-color: var(--header-font-color);
+    filter: drop-shadow(5px 5px 10px var(--header-font-color));
+  }
+
+  .menuDropdown {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    top: calc(var(--main-header-height) + 2px);
+    width: clamp(7rem, 60vw, 15rem);
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+  .navigationContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5rem;
+    background: var(--main-header-background-color);
+    list-style: none;
+    user-select: none;
+    padding: 1rem;
+  }
+
+  .navigationContent__item {
+    width: 100%;
+  }
+
+  .navigationContent__item:hover,
+  .navigationContent__item:focus-visible {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+
+  .navigationContent li a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--header-font-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .active a {
+    filter: drop-shadow(5px 5px 10px var(--header-font-color));
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .burgerMenu {
+    height: 45%;
+  }
+}

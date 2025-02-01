@@ -1,0 +1,28 @@
+.signIn,
+.signUp {
+  font-weight: bold;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
+}
+
+.signIn {
+  width: 32%;
+}
+
+.signUp {
+  width: 63%;
+}
+
+@media (max-width: 768px) {
+  .signIn,
+  .signUp {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .signIn,
+  .signUp {
+    font-size: 0.6rem;
+  }
+}

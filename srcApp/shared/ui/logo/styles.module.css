@@ -1,0 +1,35 @@
+.logo {
+  display: flex;
+  width: clamp(5.5rem, 20vw, 14.5rem);
+  height: 100%;
+  position: relative;
+}
+
+.logo__icon {
+  display: block;
+  height: 80%;
+  width: 30%;
+  margin: auto auto auto 0;
+}
+
+.logo__text {
+  font-size: 1.5rem;
+  font-weight: 1000;
+  position: absolute;
+  top: 50%;
+  left: 17%;
+  transform: translateY(-50%);
+  color: var(--primary-logo-color);
+}
+
+@media (max-width: 768px) {
+  .logo__text {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo__text {
+    font-size: 1rem;
+  }
+}
