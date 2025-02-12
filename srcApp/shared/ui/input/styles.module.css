@@ -1,5 +1,8 @@
 .input {
   --text-color: var(--main-page-font-color);
+  --text-size: 1rem;
+  --label-text-color: var(--main-page-font-color);
+  --label-text-size: 0.8rem;
   --bg-color: transparent;
   --border: 1px solid var(--secondary-logo-color);
   --outline: none;
@@ -8,6 +11,8 @@
   --focus-text-color: var(--secondary-font-color);
   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   --placeholder-color: rgba(0, 0, 0, 0.5);
+  --placeholder-padding-left: calc(0.8 * var(--variableUnitsSize));
+  --placeholder-font-size: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -19,8 +24,9 @@
   border-radius: 0.5rem;
   border: var(--border);
   outline: var(--outline);
-  font-size: 1em;
+  font-size: var(--text-size);
   padding: 0 calc(0.8 * var(--variableUnitsSize));
+  padding-left: var(--placeholder-padding-left);
   box-shadow: var(--box-shadow);
 }
 .input:hover,
@@ -32,27 +38,40 @@
 
 .input::placeholder {
   color: var(--placeholder-color);
-  font-size: 0.8em;
+  font-size: var(--placeholder-font-size);
   opacity: 0.5;
 }
 
 .input::-webkit-input-placeholder {
   color: var(--placeholder-color);
-  font-size: 0.8em;
+  font-size: var(--placeholder-font-size);
+  opacity: 0.5;
 }
 
 .input:-moz-placeholder {
   color: var(--placeholder-color);
-  font-size: 0.8em;
-  opacity: 1;
+  font-size: var(--placeholder-font-size);
+  opacity: 0.5;
 }
 
 .text {
-  font-size: 0.8em;
+  font-size: var(--label-text-size);
+  color: var(--label-text-color);
   opacity: 0.8;
   position: relative;
   left: 2%;
   top: -12%;
+}
+
+.svgIcon {
+  --icon-svg-width: 24px;
+  --icon-svg-height: 24px;
+  width: var(--icon-svg-width);
+  height: var(--icon-svg-height);
+  position: relative;
+  top: -50%;
+  left: 0;
+  transform: translate(25%, -50%);
 }
 
 .error {

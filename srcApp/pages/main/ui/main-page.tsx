@@ -13,7 +13,7 @@ export function MainPage() {
           <div className={styles.description__container}>
             <h1 className={styles.description__title}>
               Storage and share your files on
-              <strong className={styles.accented}>File-rama</strong>
+              <strong className={styles.accented}> File-rama</strong>
             </h1>
             <span className={styles.description__text}>
               Forgot where something is? Collect files on File-rama. Assemble

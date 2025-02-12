@@ -1,0 +1,79 @@
+.driverInfo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: var(--secondary-font-color);
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: inherit;
+}
+
+.driverInfo__email {
+  margin-top: 1rem;
+}
+
+.driverInfo__usageSizeValue {
+  width: calc(100% - 2rem);
+  height: 1rem;
+  margin-top: 0.75rem;
+  position: relative;
+}
+
+.driverInfo__usageValue {
+  --usage-value-size: 50%;
+  display: block;
+  position: absolute;
+  width: var(--usage-value-size);
+  border-radius: 2rem;
+  height: 100%;
+  background-color: var(--primary-logo-color);
+}
+
+.driverInfo__totalValue {
+  display: block;
+  position: absolute;
+  width: 100%;
+  border-radius: 2rem;
+  height: 100%;
+  background-color: var(--secondary-logo-color);
+}
+
+.driverInfo__text {
+  margin-top: 1rem;
+  font-size: inherit;
+}
+
+@media (max-width: 768px) {
+  .driverInfo__email {
+    margin-top: 0.8rem;
+  }
+
+  .driverInfo__usageSizeValue {
+    width: calc(100% - 1.75rem);
+    height: 0.9rem;
+    margin-top: 0.625rem;
+  }
+
+  .driverInfo__text {
+    margin-top: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .driverInfo__email {
+    margin-top: 0.6rem;
+  }
+
+  .driverInfo__usageSizeValue {
+    width: calc(100% - 1.5rem);
+    height: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .driverInfo__text {
+    margin-top: 0.6rem;
+  }
+}

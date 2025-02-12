@@ -5,6 +5,7 @@
   --focus-bg-color: var(--secondary-logo-color);
   --focus-text-color: var(--secondary-font-color);
   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  --padding: 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,6 +17,7 @@
   border-radius: 0.5rem;
   border: var(--border);
   box-shadow: var(--box-shadow);
+  padding: var(--padding);
   font-size: inherit;
   font-weight: inherit;
   line-height: inherit;
@@ -37,12 +39,20 @@
   height: 60%;
 }
 .svgIcon {
-  width: 24px;
-  height: 24px;
+  --icon-svg-width: 24px;
+  --icon-svg-height: 24px;
+  --icon-svg-focus-fill: white;
+  --icon-svg-top: 50%;
+  --icon-svg-left: 0;
+  --icon-svg-right: none;
+  --icon-svg-transform: translate(25%, -50%);
+  width: var(--icon-svg-width);
+  height: var(--icon-svg-height);
   position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate(25%, -50%);
+  top: var(--icon-svg-top);
+  left: var(--icon-svg-left);
+  right: var(--icon-svg-right);
+  transform: var(--icon-svg-transform);
 }
 
 .spinner {

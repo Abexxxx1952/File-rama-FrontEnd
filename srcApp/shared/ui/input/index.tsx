@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { Icon } from "../icon";
 import styles from "./styles.module.css";
 
 type InputProps = {
@@ -6,13 +7,20 @@ type InputProps = {
   placeholder?: string;
   backgroundColor?: string;
   textColor?: string;
+  textSize?: string;
+  labelTextColor?: string;
+  labelTextSize?: string;
   border?: string;
   outline?: string;
   focusBackgroundColor?: string;
   focusOutline?: string;
   focusTextColor?: string;
+  iconSvg?: string;
+  iconSvgWidth?: string;
+  iconSvgHeight?: string;
   boxShadow?: string;
   placeholderColor?: string;
+  placeholderPaddingLeft?: string;
   type?: string;
   required?: boolean;
   disabled?: boolean;
@@ -29,13 +37,20 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       placeholder,
       backgroundColor,
       textColor,
+      textSize,
+      labelTextColor,
+      labelTextSize,
       border,
       outline,
       focusBackgroundColor,
       focusOutline,
       focusTextColor,
+      iconSvg,
+      iconSvgWidth,
+      iconSvgHeight,
       boxShadow,
       placeholderColor,
+      placeholderPaddingLeft,
       type,
       required,
       disabled,
@@ -49,6 +64,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputStyle = {
       "--bg-color": backgroundColor,
       "--text-color": textColor,
+      "--text-size": textSize,
+      "--label-text-color": labelTextColor,
+      "--label-text-size": labelTextSize,
       "--border": border,
       "--outline": outline,
       "--focus-bg-color": focusBackgroundColor,
@@ -56,6 +74,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       "--focus-text-color": focusTextColor,
       "--box-shadow": boxShadow,
       "--placeholder-color": placeholderColor,
+      "--placeholder-padding-left": placeholderPaddingLeft,
+      "--icon-svg-width": iconSvgWidth,
+      "--icon-svg-height": iconSvgHeight,
+    } as React.CSSProperties;
+    const iconSvgStyle = {
+      "--icon-svg-width": iconSvgWidth,
+      "--icon-svg-height": iconSvgHeight,
     } as React.CSSProperties;
     return (
       <>
@@ -77,6 +102,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           aria-invalid={error ? "true" : "false"}
           aria-describedby={error ? `error-${text}` : undefined}
         />
+        {iconSvg && (
+          <Icon
+            link={iconSvg}
+            className={styles.svgIcon}
+            style={iconSvgStyle}
+          />
+        )}
         {error && (
           <span id={`error-${text}`} className={styles.error} role="alert">
             {error}

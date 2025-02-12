@@ -10,6 +10,19 @@
   --main-footer-height: clamp(3rem, 20vh, 5rem);
   --main-footer-background-color: rgb(118, 87, 230);
   --link-color: rgb(14, 118, 183);
+  --dashboard-color: rgb(94, 190, 196);
+  --dashboard-nav-width: 10rem;
+  --dashboardMini-nav-width: 5rem;
+  --dashboard-background-color: rgb(243, 246, 249);
+  --dashboard-table-background-color: rgb(250, 250, 244);
+  --dashboard-table-column-name-width: 63%;
+  --dashboard-table-column-name-width-maxwidth768: 60%;
+  --dashboard-table-column-name-width-maxwidth576: 55%;
+  --dashboard-table-column-size-width: 10%;
+  --dashboard-table-column-uploadDate-width: 20%;
+  --dashboard-table-column-public-width: 7%;
+  --dashboard-table-column-public-width-maxwidth768: 10%;
+  --dashboard-table-column-public-width-maxwidth576: 15%;
 }
 
 *,

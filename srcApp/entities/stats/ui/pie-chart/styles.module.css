@@ -1,0 +1,15 @@
+.pieChart__text {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .pieChart__text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .pieChart__text {
+    font-size: 0.9rem;
+  }
+}

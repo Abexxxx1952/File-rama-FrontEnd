@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import styles from "./styles.module.css";
 
@@ -80,6 +81,9 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
             />
           </nav>
           {children}
+          <div className={styles.form__toMain}>
+            <Link href="/">To main</Link>
+          </div>
         </div>
       </section>
     </main>
