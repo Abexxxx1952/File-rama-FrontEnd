@@ -6,56 +6,41 @@ import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
 import styles from "./styles.module.css";
 
-export function Registration() {
+export function ResetPassword() {
   const [isMounted, _] = useState(true);
+
   return (
     <form
-      className={`${styles.registerForm} ${isMounted ? styles.visible : ""} `}
+      className={`${styles.resetPasswordForm} ${isMounted ? styles.visible : ""} `}
     >
-      <div className={styles.registerForm__title}>Registration</div>
-      <div className={styles.registerForm__inputs}>
-        <div className={styles.registerForm__input}>
+      <div className={styles.resetPasswordForm__title}>
+        <span>Reset password</span>
+      </div>
+      <div className={styles.resetPasswordForm__inputs}>
+        <div className={styles.resetPasswordForm__input}>
           <Input
-            placeholder="Email"
-            type="email"
-            backgroundColor="rgba(255, 255, 255, 0.2)"
-            focusTextColor="var(--main-page-font-color)"
-            focusBackgroundColor="transparent"
-            border="none"
-            placeholderColor="var(--main-page-font-color)"
-            required={true}
-          />
-          <Icon
-            link="svg/auth-sprite.svg#login"
-            className={styles.logo__icon}
-          />
-        </div>
-        <div className={styles.registerForm__input}>
-          <Input
-            placeholder="Password"
+            placeholder="New password"
             type="password"
             backgroundColor="rgba(255, 255, 255, 0.2)"
             focusTextColor="var(--main-page-font-color)"
             focusBackgroundColor="transparent"
             border="none"
             placeholderColor="var(--main-page-font-color)"
-            required={true}
           />
           <Icon
             link="svg/auth-sprite.svg#password"
             className={styles.logo__icon}
           />
         </div>
-        <div className={styles.registerForm__input}>
+        <div className={styles.resetPasswordForm__input}>
           <Input
-            placeholder="Repeat password"
+            placeholder="Repeat new password"
             type="password"
             backgroundColor="rgba(255, 255, 255, 0.2)"
             focusTextColor="var(--main-page-font-color)"
             focusBackgroundColor="transparent"
             border="none"
             placeholderColor="var(--main-page-font-color)"
-            required={true}
           />
           <Icon
             link="svg/auth-sprite.svg#password"
@@ -63,10 +48,10 @@ export function Registration() {
           />
         </div>
       </div>
-      <div className={styles.registerForm__submit}>
-        <Button text="Registration" backgroundColor="rgba(118, 87, 230, 0.5)" />
+      <div className={styles.resetPasswordForm__submit}>
+        <Button text="Reset" backgroundColor="rgba(118, 87, 230, 0.5)" />
         <Icon
-          link="svg/auth-sprite.svg#register"
+          link="svg/auth-sprite.svg#arrow"
           className={styles.logo__submitIcon}
         />
       </div>

@@ -13,9 +13,7 @@ export function Login() {
 
   return (
     <form className={`${styles.loginForm} ${isMounted ? styles.visible : ""} `}>
-      <div className={styles.loginForm__title}>
-        <span>Sign In</span>
-      </div>
+      <div className={styles.loginForm__title}>Sign In</div>
       <div className={styles.loginForm__inputs}>
         <div className={styles.loginForm__input}>
           <Input
@@ -25,6 +23,8 @@ export function Login() {
             focusBackgroundColor="transparent"
             border="none"
             placeholderColor="var(--main-page-font-color)"
+            type="email"
+            required={true}
           />
           <Icon
             link="svg/auth-sprite.svg#login"
@@ -34,11 +34,13 @@ export function Login() {
         <div className={styles.loginForm__input}>
           <Input
             placeholder="Password"
+            type="password"
             backgroundColor="rgba(255, 255, 255, 0.2)"
             focusTextColor="var(--main-page-font-color)"
             focusBackgroundColor="transparent"
             border="none"
             placeholderColor="var(--main-page-font-color)"
+            required={true}
           />
           <Icon
             link="svg/auth-sprite.svg#password"
@@ -47,7 +49,7 @@ export function Login() {
         </div>
       </div>
       <div className={styles.loginForm__forgottenPassword}>
-        <Link href="#">Forgot password?</Link>
+        <Link href="/resetPassword">Forgot password?</Link>
       </div>
       <div className={styles.loginForm__submit}>
         <Button text="Login" backgroundColor="rgba(118, 87, 230, 0.5)" />

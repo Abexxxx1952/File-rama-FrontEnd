@@ -29,7 +29,7 @@ export function StatisticPage() {
 
   return (
     <>
-      <h2 className={styles.stats__title}>General Statistic</h2>
+      <h1 className={styles.stats__title}>General Statistic</h1>
       <div className={styles.stats__general}>
         <div className={styles.pieChart}>
           <PieChartGeneral

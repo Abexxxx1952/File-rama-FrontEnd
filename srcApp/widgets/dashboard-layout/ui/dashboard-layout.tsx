@@ -8,15 +8,14 @@ import styles from "./styles.module.css";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className={styles.dashboard}>
+    <main className={styles.dashboard} id="portal">
       <div className={styles.dashboard__container}>
         <section className={styles.dashboard__bar}>
           <span className={styles.dashboard__profile}>
             <Icon
-              link="svg/dashboard-page-sprite.svg#profile"
+              link="/svg/dashboard-page-sprite.svg#profile"
               className={styles.dashboard__profileIcon}
             />
-            {/*    <Image src={imageSrc.imageSrc} alt="avatar" fill={true} /> */}
             <span className={styles.dashboard__name}>User</span>
           </span>
 
@@ -25,7 +24,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               return (
                 <div className={styles.dashboard__navItem} key={item.value}>
                   <Icon
-                    link={`svg/dashboard-page-sprite.svg#${item.icon}`}
+                    link={`/svg/dashboard-page-sprite.svg#${item.icon}`}
                     className={styles.dashboard__navItemIcon}
                   />
                   <ButtonLink
@@ -55,7 +54,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             <div className={styles.dashboard__usageSize}>
               <div className={styles.dashboard__usageSizeHeader}>
                 <Icon
-                  link="svg/dashboard-page-sprite.svg#cloud"
+                  link="/svg/dashboard-page-sprite.svg#cloud"
                   className={styles.dashboard__cloudIcon}
                 />
                 <span className={styles.dashboard__usageSizeTitle}>

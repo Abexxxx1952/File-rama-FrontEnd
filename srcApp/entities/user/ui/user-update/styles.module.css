@@ -1,0 +1,60 @@
+.userUpdate {
+  width: calc(100% - 2rem);
+  max-width: 75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 0.75rem;
+  color: var(--secondary-font-color);
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.userUpdate__title {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.userUpdate__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.userUpdate__input,
+.userUpdate__button {
+  width: 100%;
+  height: 2.5rem;
+  max-width: 25rem;
+  margin-bottom: 2rem;
+}
+
+.userUpdate__button {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .userUpdate__title {
+    font-size: 1rem;
+  }
+  .userUpdate__button {
+    font-size: 0.9rem;
+    height: 2.25rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .userUpdate__title {
+    font-size: 0.75rem;
+  }
+  .userUpdate__button {
+    font-size: 0.8rem;
+    height: 2rem;
+  }
+}

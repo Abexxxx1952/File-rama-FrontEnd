@@ -34,7 +34,7 @@
   width: calc(100% - var(--dashboard-nav-width));
   max-width: 103rem;
   background-color: var(--dashboard-background-color);
-  overflow-y: scroll;
+  overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--secondary-logo-color) var(--dashboard-background-color);
 }

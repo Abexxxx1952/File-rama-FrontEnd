@@ -17,7 +17,7 @@
 
 .driverInfo__usageSizeValue {
   width: calc(100% - 2rem);
-  height: 1rem;
+  height: 1.25rem;
   margin-top: 0.75rem;
   position: relative;
 }
@@ -30,6 +30,7 @@
   border-radius: 2rem;
   height: 100%;
   background-color: var(--primary-logo-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .driverInfo__totalValue {
@@ -39,6 +40,7 @@
   border-radius: 2rem;
   height: 100%;
   background-color: var(--secondary-logo-color);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .driverInfo__text {
