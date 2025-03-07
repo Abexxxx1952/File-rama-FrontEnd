@@ -1,15 +1,84 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { isUserFromServer } from "@/srcApp/entities/user/model/isUserFromServer";
+import { User } from "@/srcApp/entities/user/model/types/user";
+import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+import { ErrorData } from "@/srcApp/shared/model/types";
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
+import { toast } from "react-toastify";
+import { validationSchema } from "../lib/schema";
+import { loginUser } from "../model/login-user";
+import { transformZodErrors } from "../model/transformZodErrors";
+import { UserLoginFormData } from "../model/types";
 import styles from "./styles.module.css";
 
 export function Login() {
   const [isMounted, _] = useState(true);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Partial<UserLoginFormData>>({});
+
+  const router = useRouter();
+
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  const googleLoginUrl: string = process.env.NEXT_PUBLIC_LOGIN_GOOGLE || "";
+  const githubLoginUrl: string = process.env.NEXT_PUBLIC_LOGIN_GITHUB || "";
+
+  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.currentTarget.type === "email") {
+      setEmail(e.currentTarget.value);
+      setErrors((prevErrors) => ({ ...prevErrors, email: undefined }));
+    }
+    if (e.currentTarget.type === "password") {
+      setPassword(e.currentTarget.value);
+      setErrors((prevErrors) => ({ ...prevErrors, password: undefined }));
+    }
+  }
+
+  async function handleLoginUser(email: string, password: string) {
+    const validationResult = validationSchema.safeParse({ email, password });
+
+    if (!validationResult.success) {
+      setErrors(
+        transformZodErrors(validationResult.error.formErrors.fieldErrors),
+      );
+
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const userOrError: User | ErrorData | undefined = await loginUser(
+        email,
+        password,
+        abortControllerRef,
+      );
+
+      notifyResponse<User>(
+        userOrError,
+        `Successfully logged ${userOrError?.email}`,
+      );
+      if (isUserFromServer(userOrError)) {
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred.", {
+        position: "top-right",
+      });
+    }
+
+    setLoading(false);
+  }
 
   return (
     <form className={`${styles.loginForm} ${isMounted ? styles.visible : ""} `}>
@@ -25,6 +94,8 @@ export function Login() {
             placeholderColor="var(--main-page-font-color)"
             type="email"
             required={true}
+            onChange={handleInput}
+            error={errors.email}
           />
           <Icon
             link="svg/auth-sprite.svg#login"
@@ -41,6 +112,8 @@ export function Login() {
             border="none"
             placeholderColor="var(--main-page-font-color)"
             required={true}
+            onChange={handleInput}
+            error={errors.password}
           />
           <Icon
             link="svg/auth-sprite.svg#password"
@@ -52,7 +125,13 @@ export function Login() {
         <Link href="/resetPassword">Forgot password?</Link>
       </div>
       <div className={styles.loginForm__submit}>
-        <Button text="Login" backgroundColor="rgba(118, 87, 230, 0.5)" />
+        <Button
+          onClick={() => handleLoginUser(email, password)}
+          text="Login"
+          type="button"
+          loading={loading}
+          backgroundColor="rgba(118, 87, 230, 0.5)"
+        />
         <Icon
           link="svg/auth-sprite.svg#arrow"
           className={styles.logo__submitIcon}
@@ -63,13 +142,13 @@ export function Login() {
       </div>
       <div className={styles.loginForm__oAuth}>
         <ButtonLink
-          href="#"
+          href={googleLoginUrl}
           text="Sign in with Google"
           backgroundColor="rgba(255, 255, 255, 0.2)"
           iconSvg="svg/auth-sprite.svg#google"
         />
         <ButtonLink
-          href="#"
+          href={githubLoginUrl}
           text="Sign in with Git Hub"
           backgroundColor="rgba(255, 255, 255, 0.2)"
           iconSvg="svg/auth-sprite.svg#git_hub"

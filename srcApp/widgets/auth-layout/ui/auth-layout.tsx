@@ -1,11 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./styles.module.css";
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className={styles.auth}>
+      <ToastContainer autoClose={8000} />
       <section className={styles.auth__container}>
         <div className={styles.auth__col1}>
           <div className={styles.auth__images}>

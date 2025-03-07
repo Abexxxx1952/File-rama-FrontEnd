@@ -9,17 +9,17 @@ type HttpMethod =
   | "HEAD"
   | "OPTIONS";
 
-interface apiClientArgs {
+export interface apiClientArgs {
   baseUrl: string;
   method: HttpMethod;
-  abortControllerRef: React.RefObject<AbortController>;
+  abortControllerRef: React.RefObject<AbortController | null>;
   condition?: Record<string, unknown>;
   additionalHeaders?: Record<string, string>;
   bodyData?: Record<string, unknown>;
   cacheTags?: string[];
 }
 
-export function apiClient<T>({
+export async function apiClient({
   baseUrl,
   method,
   abortControllerRef,
@@ -27,7 +27,7 @@ export function apiClient<T>({
   additionalHeaders,
   bodyData,
   cacheTags,
-}: apiClientArgs): Promise<T> {
+}: apiClientArgs): Promise<Response> {
   if (abortControllerRef.current) {
     abortControllerRef.current.abort();
   }
@@ -43,7 +43,7 @@ export function apiClient<T>({
     url.searchParams.append("condition", queryParam);
   }
 
-  const response: Promise<T> = fetch(url.toString(), {
+  const response = await fetch(url.toString(), {
     method: method,
     headers: {
       "Content-Type": "application/json",
@@ -56,11 +56,7 @@ export function apiClient<T>({
       },
     }),
     signal,
-  })
-    .then((response) => response.json())
-    .catch((err) => {
-      throw err;
-    });
+  });
 
   return response;
 }
