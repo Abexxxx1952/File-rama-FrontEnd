@@ -84,11 +84,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     } as React.CSSProperties;
     return (
       <>
-        <label htmlFor={`input-${text}`} className={styles.text}>
-          {text}
-        </label>
+        {text && (
+          <label htmlFor={`input-${text}`} className={styles.text}>
+            {text}
+          </label>
+        )}
         <input
-          id={`input-${text}`}
+          id={`input-${placeholder}`}
           className={styles.input}
           style={inputStyle}
           onChange={onChange}

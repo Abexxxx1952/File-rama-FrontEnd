@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import { COOKIES_NAME } from "../constant/cookies-name";
 import { JwtTokenData, JwtTokenType } from "./types";
 
 export async function setCookies(
@@ -16,7 +17,7 @@ export async function setCookies(
     try {
       const decoded = jwt.decode(token) as jwt.JwtPayload;
 
-      if (decoded && decoded[data] == "exp") {
+      if (decoded && decoded[data] && data === "exp") {
         return decoded[data] * 1000; // Convert seconds to milliseconds
       }
       return flag === "access_token"
@@ -45,19 +46,21 @@ export async function setCookies(
     const cookieStore = await cookies();
 
     cookieStore.set({
-      name: "Authentication_accessToken",
+      name: COOKIES_NAME.AUTHENTICATION_ACCESS_TOKEN,
       value: access_token,
       httpOnly: true,
       sameSite: "strict",
+      secure: process.env.MODE === "production",
       path: "/",
       expires: accessTokenExpiry,
     });
 
     cookieStore.set({
-      name: "Authentication_refreshToken",
+      name: COOKIES_NAME.AUTHENTICATION_REFRESH_TOKEN,
       value: refresh_token,
       httpOnly: true,
       sameSite: "strict",
+      secure: process.env.MODE === "production",
       path: process.env.JWT_REFRESH_TOKEN_DOMAIN_PATH,
       expires: refreshTokenExpiry,
     });

@@ -1,11 +1,10 @@
-import { DescriptionPage } from "@/srcApp/pages/description";
-
 import type { Metadata } from "next";
+import { DescriptionPage } from "@/srcApp/pages/description";
 
 export const metadata: Metadata = {
   title: "Description",
   description: "How it works",
-  icons: "/icons/logo.svg",
+  icons: "/meta-icon.svg",
 };
 
 export default DescriptionPage;

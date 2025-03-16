@@ -3,14 +3,14 @@ import { ErrorData } from "@/srcApp/shared/model/types";
 import { toast } from "react-toastify";
 
 export function notifyResponse<T>(
-  responseResult: T | undefined | ErrorData,
+  responseResult: T | ErrorData,
   successMessage: string,
 ): void {
   if (isErrorData(responseResult)) {
     toast.error(
       `Error: ${responseResult.status} ${
         responseResult.statusText
-      }. Massage: ${JSON.stringify(responseResult)}`,
+      }. Massage: ${JSON.stringify(responseResult.message)}`,
       {
         position: "top-right",
       },
@@ -18,9 +18,7 @@ export function notifyResponse<T>(
     return;
   }
 
-  if (responseResult !== undefined) {
-    toast.success(successMessage, {
-      position: "top-right",
-    });
-  }
+  toast.success(successMessage, {
+    position: "top-right",
+  });
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { UserDelete } from "@/srcApp/entities/user/ui/user-delete/ui";
 import { UserDriveUpdate } from "@/srcApp/entities/user/ui/user-drive-update";
 import { UserInfo } from "@/srcApp/entities/user/ui/user-info";
@@ -6,7 +8,7 @@ import { TwoFactorAuth } from "@/srcApp/features/auth/two-factor/ui";
 import { UserUpdate } from "./../../../entities/user/ui/user-update/index";
 import styles from "./styles.module.css";
 
-export function SettingsPage() {
+export function SettingsPage(props: any) {
   const user = {
     id: "813e0c7d-cd82-4ebc-8447-8d2a59d66f95",
     name: "John Doe",
@@ -29,6 +31,9 @@ export function SettingsPage() {
     isVerified: true,
     isTwoFactorEnabled: false,
   };
+
+  console.log(props);
+
   return (
     <>
       <h1 className={styles.title}>Settings</h1>

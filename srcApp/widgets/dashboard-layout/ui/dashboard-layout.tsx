@@ -1,12 +1,66 @@
 "use client";
 
+import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { fetchUserData } from "@/srcApp/entities/user/api/fetchUserData";
+import { isUserFromServer } from "@/srcApp/entities/user/model/isUserFromServer";
+import { User } from "@/srcApp/entities/user/model/types/user";
+import { clearCookies } from "@/srcApp/features/cookies/model/clearCookies";
 import { DASHBOARD_ITEMS } from "@/srcApp/shared/constants/dashboard-nav-list";
+import { ErrorData } from "@/srcApp/shared/model/types";
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
+import { toast } from "react-toastify";
 import styles from "./styles.module.css";
 
-export function DashboardLayout({ children }: { children: React.ReactNode }) {
+interface DashboardLayoutClientProps {
+  children: React.ReactNode;
+}
+
+export function DashboardLayout({ children }: DashboardLayoutClientProps) {
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  const [user, setUser] = useState<User>();
+  const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const userOrError: User | ErrorData | null =
+          await fetchUserData(abortControllerRef);
+
+        if (!isUserFromServer(userOrError)) {
+          router.replace("/");
+        }
+        if (isUserFromServer(userOrError)) {
+          setUser(userOrError);
+        }
+      } catch (error) {
+        toast.error("An unexpected error occurred.", {
+          position: "top-right",
+        });
+      }
+    })();
+  }, []);
+
+  async function logout(e: React.SyntheticEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+
+    try {
+      await clearCookies();
+      router.replace("/");
+    } catch (error) {
+      toast.error("An unexpected error occurred.", {
+        position: "top-right",
+      });
+    }
+  }
+
+  if (!user) {
+    return <p>Загрузка...</p>;
+  }
+
   return (
     <main className={styles.dashboard} id="portal">
       <div className={styles.dashboard__container}>
@@ -21,14 +75,21 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
           <nav className={styles.dashboard__nav}>
             {DASHBOARD_ITEMS.map((item) => {
+              let onClickHandler;
+              if (item.path === "/logout") {
+                onClickHandler = logout;
+              }
+
               return (
                 <div className={styles.dashboard__navItem} key={item.value}>
                   <Icon
                     link={`/svg/dashboard-page-sprite.svg#${item.icon}`}
                     className={styles.dashboard__navItemIcon}
                   />
+
                   <ButtonLink
                     href={item.path}
+                    onClick={onClickHandler}
                     text={item.value}
                     boxShadow="none"
                     border="none"
@@ -71,7 +132,6 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </section>
-
         <section className={styles.dashboard__content}>{children}</section>
       </div>
     </main>

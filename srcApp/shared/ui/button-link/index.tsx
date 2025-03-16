@@ -26,6 +26,9 @@ type ButtonProps = {
   padding?: string;
   loading?: boolean;
   href: string;
+  onClick?: (
+    e: React.SyntheticEvent<HTMLAnchorElement>,
+  ) => void | Promise<void>;
 };
 
 export function ButtonLink({
@@ -47,6 +50,7 @@ export function ButtonLink({
   padding,
   loading = false,
   href,
+  onClick,
 }: ButtonProps) {
   const linkStyle = {
     "--bg-color": backgroundColor,
@@ -68,6 +72,7 @@ export function ButtonLink({
   return (
     <Link
       href={href}
+      onClick={onClick}
       style={linkStyle}
       className={styles.link}
       aria-label={`Go to ${href}`}

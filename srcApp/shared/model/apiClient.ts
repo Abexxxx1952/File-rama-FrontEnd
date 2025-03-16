@@ -17,6 +17,7 @@ export interface apiClientArgs {
   additionalHeaders?: Record<string, string>;
   bodyData?: Record<string, unknown>;
   cacheTags?: string[];
+  revalidateTime?: number;
 }
 
 export async function apiClient({
@@ -27,6 +28,7 @@ export async function apiClient({
   additionalHeaders,
   bodyData,
   cacheTags,
+  revalidateTime,
 }: apiClientArgs): Promise<Response> {
   if (abortControllerRef.current) {
     abortControllerRef.current.abort();
@@ -53,6 +55,7 @@ export async function apiClient({
     ...(cacheTags && {
       next: {
         tags: cacheTags,
+        ...(revalidateTime && { revalidate: revalidateTime }),
       },
     }),
     signal,

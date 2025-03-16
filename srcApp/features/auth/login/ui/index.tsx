@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { isUserFromServer } from "@/srcApp/entities/user/model/isUserFromServer";
 import { User } from "@/srcApp/entities/user/model/types/user";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types";
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
@@ -58,17 +57,11 @@ export function Login() {
     setLoading(true);
 
     try {
-      const userOrError: User | ErrorData | undefined = await loginUser(
-        email,
-        password,
-        abortControllerRef,
-      );
+      const response = await loginUser(email, password, abortControllerRef);
 
-      notifyResponse<User>(
-        userOrError,
-        `Successfully logged ${userOrError?.email}`,
-      );
-      if (isUserFromServer(userOrError)) {
+      notifyResponse<User>(response, `Successfully logged ${response.email}`);
+
+      if (isUserFromServer(response)) {
         router.push("/dashboard");
       }
     } catch (error) {

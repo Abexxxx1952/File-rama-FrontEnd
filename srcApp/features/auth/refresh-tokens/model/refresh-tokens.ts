@@ -1,28 +1,25 @@
 "use server";
 
-import { User } from "@/srcApp/entities/user/model/types/user";
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
+import { JwtAuthTokenType } from "@/srcApp/features/cookies/model/types";
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { ErrorData } from "@/srcApp/shared/model/types";
 
-export async function loginUser(
-  email: string,
-  password: string,
+export async function refreshTokens<T extends (...args: any) => any>(
+  refresh_token: string,
+  func: T,
   abortControllerRef: React.RefObject<AbortController | null>,
-): Promise<User | ErrorData> {
-  const url: string = process.env.LOGIN_URL || "";
-
-  const requestBody = {
-    email: email,
-    password: password,
-  };
+): Promise<ReturnType<T> | ErrorData> {
+  const url: string = process.env.GET_TOKENS_URL || "";
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
     method: "POST",
     abortControllerRef,
-    bodyData: requestBody,
+    additionalHeaders: {
+      Authorization: `Bearer ${refresh_token}`,
+    },
   };
 
   try {
@@ -32,18 +29,13 @@ export async function loginUser(
       const errorData: ErrorData = await response.json();
       throw errorData;
     }
+    const data: JwtAuthTokenType = await response.json();
+    if (data.access_token && data.refresh_token) {
+      await setCookies(data.access_token, data.refresh_token);
+    }
 
-    let [access_token, refresh_token] = response.headers.getSetCookie() || [];
-
-    access_token = access_token.split(";")[0].split("=")[1];
-    refresh_token = refresh_token.split(";")[0].split("=")[1];
-
-    await setCookies(access_token, refresh_token);
-
-    const data: User = await response.json();
-
-    return data;
-  } catch (error) {
+    return await func();
+  } catch (error: unknown) {
     if (isErrorData(error)) {
       return error;
     }
