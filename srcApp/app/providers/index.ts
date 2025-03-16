@@ -1,4 +1,4 @@
 /* import compose from "compose-function";
+import { WithDashboardLayoutContextProvider } from "./withContext";
 
-export const withProviders = compose();
- */
+export const withProviders = compose(WithDashboardLayoutContextProvider); */

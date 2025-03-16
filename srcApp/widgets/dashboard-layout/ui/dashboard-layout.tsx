@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useGetSetUser } from "@/srcApp/app/providers/withContext";
 import { fetchUserData } from "@/srcApp/entities/user/api/fetchUserData";
 import { isUserFromServer } from "@/srcApp/entities/user/model/isUserFromServer";
 import { User } from "@/srcApp/entities/user/model/types/user";
@@ -14,14 +15,13 @@ import { Icon } from "@/srcApp/shared/ui/icon";
 import { toast } from "react-toastify";
 import styles from "./styles.module.css";
 
-interface DashboardLayoutClientProps {
+interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-export function DashboardLayout({ children }: DashboardLayoutClientProps) {
+export function DashboardLayout({ children }: DashboardLayoutProps) {
   const abortControllerRef = useRef<AbortController | null>(null);
-
-  const [user, setUser] = useState<User>();
+  const setUser = useGetSetUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function DashboardLayout({ children }: DashboardLayoutClientProps) {
         if (!isUserFromServer(userOrError)) {
           router.replace("/");
         }
-        if (isUserFromServer(userOrError)) {
+        if (isUserFromServer(userOrError) && setUser) {
           setUser(userOrError);
         }
       } catch (error) {
@@ -55,10 +55,6 @@ export function DashboardLayout({ children }: DashboardLayoutClientProps) {
         position: "top-right",
       });
     }
-  }
-
-  if (!user) {
-    return <p>Загрузка...</p>;
   }
 
   return (
