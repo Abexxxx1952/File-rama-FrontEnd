@@ -25,9 +25,7 @@ type ContextStorageType = {
 
 export const AppContext = createContext<ContextStorageType | null>(null);
 
-export const DashboardLayoutContextProvider = ({
-  children,
-}: PropsWithChildren) => {
+export const ContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
 
   const value = useMemo(() => {
@@ -83,12 +81,12 @@ const useContextSelector = <T,>(
 
 export const useGetUser = () => {
   return useContextSelector((context) => {
-    return context?.user ? context.user : null;
+    return context.user;
   });
 };
 
 export const useGetSetUser = () => {
   return useContextSelector((context) => {
-    return context?.setUser ? context.setUser : null;
+    return context.setUser;
   });
 };

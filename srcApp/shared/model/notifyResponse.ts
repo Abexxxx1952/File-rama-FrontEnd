@@ -1,16 +1,17 @@
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { ErrorData } from "@/srcApp/shared/model/types";
 import { toast } from "react-toastify";
 
 export function notifyResponse<T>(
   responseResult: T | ErrorData,
-  successMessage: string,
+  isError: boolean,
+  successMessage?: string,
 ): void {
-  if (isErrorData(responseResult)) {
+  if (isError) {
+    const errorData = responseResult as ErrorData;
     toast.error(
-      `Error: ${responseResult.status} ${
-        responseResult.statusText
-      }. Massage: ${JSON.stringify(responseResult.message)}`,
+      `Error: ${errorData.status} ${
+        errorData.statusText
+      }. Massage: ${JSON.stringify(errorData.message)}`,
       {
         position: "top-right",
       },

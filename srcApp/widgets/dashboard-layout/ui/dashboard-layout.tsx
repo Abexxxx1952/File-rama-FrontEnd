@@ -3,12 +3,9 @@
 import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useGetSetUser } from "@/srcApp/app/providers/withContext";
-import { fetchUserData } from "@/srcApp/entities/user/api/fetchUserData";
-import { isUserFromServer } from "@/srcApp/entities/user/model/isUserFromServer";
-import { User } from "@/srcApp/entities/user/model/types/user";
+import { userInitialization } from "@/srcApp/entities/user/model/userInitialization";
 import { clearCookies } from "@/srcApp/features/cookies/model/clearCookies";
 import { DASHBOARD_ITEMS } from "@/srcApp/shared/constants/dashboard-nav-list";
-import { ErrorData } from "@/srcApp/shared/model/types";
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
@@ -26,21 +23,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   useEffect(() => {
     (async () => {
-      try {
-        const userOrError: User | ErrorData | null =
-          await fetchUserData(abortControllerRef);
-
-        if (!isUserFromServer(userOrError)) {
-          router.replace("/");
-        }
-        if (isUserFromServer(userOrError) && setUser) {
-          setUser(userOrError);
-        }
-      } catch (error) {
-        toast.error("An unexpected error occurred.", {
-          position: "top-right",
-        });
-      }
+      const user = await userInitialization(setUser, abortControllerRef);
     })();
   }, []);
 
@@ -49,6 +32,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
     try {
       await clearCookies();
+      setUser(null);
       router.replace("/");
     } catch (error) {
       toast.error("An unexpected error occurred.", {

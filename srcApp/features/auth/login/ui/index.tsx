@@ -3,8 +3,8 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { isUserFromServer } from "@/srcApp/entities/user/model/isUserFromServer";
 import { User } from "@/srcApp/entities/user/model/types/user";
+import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
@@ -59,12 +59,25 @@ export function Login() {
     try {
       const response = await loginUser(email, password, abortControllerRef);
 
-      notifyResponse<User>(response, `Successfully logged ${response.email}`);
+      notifyResponse<User>(
+        response,
+        false,
+        `Successfully logged ${response.email}`,
+      );
 
-      if (isUserFromServer(response)) {
-        router.push("/dashboard");
-      }
+      router.push("/dashboard");
     } catch (error) {
+      if (isErrorData(error)) {
+        toast.error(
+          `Error: ${error.status} ${
+            error.statusText
+          }. Massage: ${JSON.stringify(error.message)}`,
+          {
+            position: "top-right",
+          },
+        );
+        return;
+      }
       toast.error("An unexpected error occurred.", {
         position: "top-right",
       });

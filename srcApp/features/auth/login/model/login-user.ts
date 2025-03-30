@@ -3,7 +3,6 @@
 import { User } from "@/srcApp/entities/user/model/types/user";
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { ErrorData } from "@/srcApp/shared/model/types";
 
 export async function loginUser(
@@ -44,9 +43,6 @@ export async function loginUser(
 
     return data;
   } catch (error) {
-    if (isErrorData(error)) {
-      return error;
-    }
     throw error;
   }
 }

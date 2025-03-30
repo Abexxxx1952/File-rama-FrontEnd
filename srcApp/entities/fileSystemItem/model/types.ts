@@ -1,4 +1,4 @@
-type FolderItem = {
+export type Folder = {
   id: string;
   folderName: string;
   userId: string;
@@ -7,7 +7,7 @@ type FolderItem = {
   isPublic: boolean;
 };
 
-export type FileItem = {
+export type File = {
   id: string;
   userId: string;
   fileUrl: string;
@@ -24,4 +24,4 @@ export type FileItem = {
   fileDescription?: string | null;
 };
 
-export type FileSystemItemType = FolderItem | FileItem;
+export type FileSystemItemType = Folder | File;
