@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "compose-function": "^3.0.3",
     "jsonwebtoken": "^9.0.2",
     "next": "^15.2.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.55.0",
     "react-toastify": "^11.0.5",
     "recharts": "^2.15.1",
     "server-only": "^0.0.1",

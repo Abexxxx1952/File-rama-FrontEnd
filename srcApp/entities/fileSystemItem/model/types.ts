@@ -24,4 +24,4 @@ export type File = {
   fileDescription?: string | null;
 };
 
-export type FileSystemItemType = Folder | File;
+export type FileSystemItem = Folder | File;

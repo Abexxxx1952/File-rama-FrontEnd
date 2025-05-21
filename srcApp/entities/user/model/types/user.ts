@@ -10,7 +10,7 @@ export type User = {
   createdAt: Date;
   updatedAt?: Date;
   payloads: Payloads[];
-  googleServiceAccounts: GoogleServiceAccounts[];
+  googleServiceAccounts: GoogleServiceAccountsResponse[];
   permissions: UsersPermissionsKeys[];
   registrationSources: RegistrationSources[];
   isVerified: boolean;
@@ -23,15 +23,24 @@ export type UserWithRelations = User & {
   stats: Stat[];
 };
 
-type Payloads = {
+export type Payloads = {
   key: string;
   value: string;
 };
 
-type GoogleServiceAccounts = {
+export type GoogleServiceAccountsResponse = {
   clientEmail: string;
-  rootFolderId: string;
+  rootFolderId?: string;
 };
+
+export type GoogleServiceAccountsRequest = GoogleServiceAccountsResponse & {
+  privateKey: string;
+};
+
+export type GoogleServiceAccountsOptionalRequest =
+  GoogleServiceAccountsResponse & {
+    privateKey?: string;
+  };
 
 type UsersPermissionsKeys = "CreateFile" | "DeleteFile";
 
@@ -39,4 +48,10 @@ enum RegistrationSources {
   Google = "Google",
   GitHub = "GitHub",
   Local = "Local",
+}
+
+export enum UpdateMode {
+  CREATE = "Create",
+  UPDATE = "Update",
+  DELETE = "Delete",
 }

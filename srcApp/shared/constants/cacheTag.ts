@@ -1,4 +1,8 @@
 export const CACHE_TAG = {
   // User
-  USER_BY_COOKIES: "USER_BY_COOKIES",
+  USER: "user",
+  //FileSystemItem
+  FILE_SYSTEM_ITEM: "user",
+  //Stats
+  STAT: "stat",
 };

@@ -1,19 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User } from "@/srcApp/entities/user/model/types/user";
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
-import { toast } from "react-toastify";
-import { validationSchema } from "../lib/schema";
-import { loginUser } from "../model/login-user";
-import { transformZodErrors } from "../model/transformZodErrors";
+import { loginUser } from "../model/loginUser";
 import { UserLoginFormData } from "../model/types";
 import styles from "./styles.module.css";
 
@@ -27,8 +21,6 @@ export function Login() {
 
   const router = useRouter();
 
-  const abortControllerRef = useRef<AbortController | null>(null);
-
   const googleLoginUrl: string = process.env.NEXT_PUBLIC_LOGIN_GOOGLE || "";
   const githubLoginUrl: string = process.env.NEXT_PUBLIC_LOGIN_GITHUB || "";
 
@@ -41,49 +33,6 @@ export function Login() {
       setPassword(e.currentTarget.value);
       setErrors((prevErrors) => ({ ...prevErrors, password: undefined }));
     }
-  }
-
-  async function handleLoginUser(email: string, password: string) {
-    const validationResult = validationSchema.safeParse({ email, password });
-
-    if (!validationResult.success) {
-      setErrors(
-        transformZodErrors(validationResult.error.formErrors.fieldErrors),
-      );
-
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await loginUser(email, password, abortControllerRef);
-
-      notifyResponse<User>(
-        response,
-        false,
-        `Successfully logged ${response.email}`,
-      );
-
-      router.push("/dashboard");
-    } catch (error) {
-      if (isErrorData(error)) {
-        toast.error(
-          `Error: ${error.status} ${
-            error.statusText
-          }. Massage: ${JSON.stringify(error.message)}`,
-          {
-            position: "top-right",
-          },
-        );
-        return;
-      }
-      toast.error("An unexpected error occurred.", {
-        position: "top-right",
-      });
-    }
-
-    setLoading(false);
   }
 
   return (
@@ -132,7 +81,9 @@ export function Login() {
       </div>
       <div className={styles.loginForm__submit}>
         <Button
-          onClick={() => handleLoginUser(email, password)}
+          onClick={() =>
+            loginUser(email, password, setErrors, setLoading, router)
+          }
           text="Login"
           type="button"
           loading={loading}

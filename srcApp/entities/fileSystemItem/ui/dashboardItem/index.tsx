@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
-import { FileSystemItemType } from "@/srcApp/entities/fileSystemItem/model/types";
+import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types";
 import { isFile } from "../../model/isFile";
 import styles from "./styles.module.css";
 
-export function FileSystemItem({ item }: { item: FileSystemItemType }) {
+export function FileSystemItem({ item }: { item: FileSystemItem }) {
   const isFileItem = isFile(item);
 
   return (

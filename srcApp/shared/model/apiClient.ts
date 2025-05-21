@@ -12,32 +12,35 @@ type HttpMethod =
 export interface apiClientArgs {
   baseUrl: string;
   method: HttpMethod;
-  abortControllerRef: React.RefObject<AbortController | null>;
   condition?: Record<string, unknown>;
   additionalHeaders?: Record<string, string>;
   bodyData?: Record<string, unknown>;
   cacheTags?: string[];
   revalidateTime?: number;
+  abortControllerRef?: React.RefObject<AbortController | null>;
 }
 
 export async function apiClient({
   baseUrl,
   method,
-  abortControllerRef,
   condition,
   additionalHeaders,
   bodyData,
   cacheTags,
   revalidateTime,
+  abortControllerRef,
 }: apiClientArgs): Promise<Response> {
-  if (abortControllerRef.current) {
-    abortControllerRef.current.abort();
+  let signal: AbortSignal | undefined;
+  if (abortControllerRef) {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+    signal = abortControllerRef.current.signal;
   }
 
-  abortControllerRef.current = new AbortController();
-  const { signal } = abortControllerRef.current;
-
   let queryParam: string;
+
   const url = new URL(baseUrl);
 
   if (condition) {
@@ -48,7 +51,7 @@ export async function apiClient({
   const response = await fetch(url.toString(), {
     method: method,
     headers: {
-      "Content-Type": "application/json",
+      ...(bodyData && { ["Content-Type"]: "application/json" }),
       ...additionalHeaders,
     },
     ...(bodyData && { body: JSON.stringify(bodyData) }),
@@ -58,7 +61,7 @@ export async function apiClient({
         ...(revalidateTime && { revalidate: revalidateTime }),
       },
     }),
-    signal,
+    ...(signal && { signal }),
   });
 
   return response;

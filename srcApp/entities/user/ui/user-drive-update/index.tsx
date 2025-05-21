@@ -1,48 +1,129 @@
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createPortal } from "react-dom";
+import { Controller, useForm } from "react-hook-form";
+import { addGoogleServiceAccount } from "../../model/addGoogleServiceAccounts";
+import { deleteGoogleServiceAccount } from "../../model/deleteGoogleServiceAccounts copy";
+import { googleServiceAccountsAddSchema } from "../../model/lib/googleServiceAccountsAddSchema";
+import {
+  GoogleServiceAccountsRequest,
+  GoogleServiceAccountsResponse,
+  User,
+} from "../../model/types/user";
+import { GoogleServiceAccountUpdateModal } from "../googleServiceAccount-update-modal";
 import styles from "./styles.module.css";
 
-export function UserDriveUpdate({ googleServiceAccounts }: any) {
+type UserDriveUpdateProps = {
+  googleServiceAccounts: GoogleServiceAccountsResponse[];
+  setUser: Dispatch<SetStateAction<User | null | undefined>>;
+};
+
+export function UserDriveUpdate({
+  googleServiceAccounts,
+  setUser,
+}: UserDriveUpdateProps) {
+  const [loading, setLoading] = useState(false);
+  const [updateGoogleServiceAccountItem, setUpdateGoogleServiceAccountItem] =
+    useState<GoogleServiceAccountsResponse>();
+  const [updateModalOpen, setUpdateModalOpen] = useState<boolean>(false);
+  const portalRef = useRef<HTMLElement | null>(null);
+  const defaultValues = { clientEmail: "", privateKey: "", rootFolderId: "" };
+
+  useEffect(() => {
+    portalRef.current = document.getElementById("portal");
+  }, []);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<GoogleServiceAccountsRequest>({
+    resolver: zodResolver(googleServiceAccountsAddSchema),
+    defaultValues,
+  });
+
+  function handleUpdateGoogleServiceAccount(
+    googleServiceAccount: GoogleServiceAccountsResponse,
+  ) {
+    setUpdateGoogleServiceAccountItem(googleServiceAccount);
+    setUpdateModalOpen(true);
+  }
+
   return (
     <div className={styles.userDriveUpdate}>
-      <h2 className={styles.userDriveUpdate__title}>Users drive update</h2>
-      <form className={styles.userDriveUpdate__form}>
+      <h2 className={styles.userDriveUpdate__title}>Drive update</h2>
+      <form
+        className={styles.userDriveUpdate__form}
+        onSubmit={handleSubmit((data) =>
+          addGoogleServiceAccount(data, setLoading, setUser),
+        )}
+      >
         <div className={styles.userDriveUpdate__input}>
-          <Input
-            text="Drive Email"
-            placeholder="Enter your Drive Email"
-            focusBackgroundColor="transparent"
-            border="none"
+          <Controller
+            name="clientEmail"
+            control={control}
+            render={({ field }) => (
+              <Input
+                text="Drive Email"
+                placeholder="Enter your Drive Email"
+                focusBackgroundColor="transparent"
+                border="none"
+                textColor="var(--secondary-font-color)"
+                error={errors.clientEmail?.message}
+                {...field}
+              />
+            )}
           />
         </div>
         <div className={styles.userDriveUpdate__input}>
-          <Input
-            text="Private Key"
-            placeholder="Enter your Private Key"
-            focusBackgroundColor="transparent"
-            border="none"
-            type="password"
+          <Controller
+            name="privateKey"
+            control={control}
+            render={({ field }) => (
+              <Input
+                text="Private Key"
+                placeholder="Enter your Private Key"
+                focusBackgroundColor="transparent"
+                border="none"
+                textColor="var(--secondary-font-color)"
+                type="password"
+                error={errors.privateKey?.message}
+                {...field}
+              />
+            )}
           />
         </div>
         <div className={styles.userDriveUpdate__input}>
-          <Input
-            text="Root Folder Id"
-            placeholder="Enter your Root Folder Id (optional)"
-            focusBackgroundColor="transparent"
-            border="none"
+          <Controller
+            name="rootFolderId"
+            control={control}
+            render={({ field }) => (
+              <Input
+                text="Root Folder Id"
+                placeholder="Enter your Root Folder Id (optional)"
+                focusBackgroundColor="transparent"
+                border="none"
+                textColor="var(--secondary-font-color)"
+                error={errors.rootFolderId?.message}
+                {...field}
+              />
+            )}
           />
         </div>
         <div className={styles.userDriveUpdate__button}>
           <Button
             text="Add drive"
             backgroundColor="var(--primary-logo-color)"
+            loading={loading}
           />
         </div>
       </form>
       <h2 className={styles.userDriveUpdate__title}>Yours drives</h2>
       <div className={styles.userDriveUpdate__drives}>
-        {googleServiceAccounts.map((item: any) => {
+        {googleServiceAccounts.map((item: GoogleServiceAccountsResponse) => {
           return (
             <div
               key={item.clientEmail}
@@ -52,13 +133,35 @@ export function UserDriveUpdate({ googleServiceAccounts }: any) {
                 {item.clientEmail}
               </span>
               <Icon
+                link="/svg/settings-sprite.svg#update"
+                onClick={() => handleUpdateGoogleServiceAccount(item)}
+                className={styles.userDriveUpdate__driveUpdate}
+              />
+              <Icon
                 link="/svg/settings-sprite.svg#delete"
+                onClick={() =>
+                  deleteGoogleServiceAccount(
+                    item.clientEmail,
+                    setLoading,
+                    setUser,
+                  )
+                }
                 className={styles.userDriveUpdate__driveDelete}
               />
             </div>
           );
         })}
       </div>
+      {portalRef.current &&
+        updateModalOpen &&
+        createPortal(
+          <GoogleServiceAccountUpdateModal
+            setUpdateModalOpen={setUpdateModalOpen}
+            updateGoogleServiceAccountItem={updateGoogleServiceAccountItem}
+            setUser={setUser}
+          />,
+          portalRef.current,
+        )}
     </div>
   );
 }

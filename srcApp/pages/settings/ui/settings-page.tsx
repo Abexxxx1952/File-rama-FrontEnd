@@ -1,30 +1,44 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useGetUser } from "@/srcApp/app/providers/withContext";
-import { UserDelete } from "@/srcApp/entities/user/ui/user-delete/ui";
-import { UserDriveUpdate } from "@/srcApp/entities/user/ui/user-drive-update";
-import { UserInfo } from "@/srcApp/entities/user/ui/user-info";
+import { useEffect, useState } from "react";
+import type { User } from "@/srcApp/entities/user";
+import {
+  UserDelete,
+  UserDriveUpdate,
+  UserInfo,
+  UserUpdate,
+} from "@/srcApp/entities/user";
+import { getUser } from "@/srcApp/entities/user/model/getUser";
 import { EmailConfirmation } from "@/srcApp/features/auth/email-confirmation/ui";
 import { TwoFactorAuth } from "@/srcApp/features/auth/two-factor/ui";
-import { UserUpdate } from "./../../../entities/user/ui/user-update/index";
 import styles from "./styles.module.css";
 
 export function SettingsPage() {
-  const router = useRouter();
-  const user = useGetUser();
-  if (!user) {
-    router.replace("/");
-  }
+  const [user, setUser] = useState<User | null>();
+
+  useEffect(() => {
+    (async () => {
+      const user: User | null = await getUser();
+
+      setUser(user);
+    })();
+  }, []);
+
   if (user)
     return (
       <>
         <h1 className={styles.title}>Settings</h1>
         <UserInfo user={user} />
-        <UserUpdate />
+        <UserUpdate user={user} setUser={setUser} />
         <EmailConfirmation />
-        <TwoFactorAuth isTwoFactorEnabled={user.isTwoFactorEnabled} />
-        <UserDriveUpdate googleServiceAccounts={user.googleServiceAccounts} />
+        <TwoFactorAuth
+          isTwoFactorEnabled={user.isTwoFactorEnabled}
+          setUser={setUser}
+        />
+        <UserDriveUpdate
+          googleServiceAccounts={user.googleServiceAccounts}
+          setUser={setUser}
+        />
         <UserDelete />
       </>
     );

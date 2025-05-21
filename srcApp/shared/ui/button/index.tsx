@@ -43,10 +43,12 @@ export function Button({
     "--focus-text-color": focusTextColor,
     "--box-shadow": boxShadow,
   } as React.CSSProperties;
+
+  const isDisabled = disabled || loading;
   return (
     <button
       className={styles.button}
-      disabled={disabled}
+      disabled={isDisabled}
       style={buttonStyle}
       onClick={onClick}
       type={type ? type : undefined}

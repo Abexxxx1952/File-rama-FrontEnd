@@ -61,7 +61,7 @@ export async function setCookies(
       httpOnly: true,
       sameSite: "strict",
       secure: process.env.MODE === "production",
-      path: process.env.JWT_REFRESH_TOKEN_DOMAIN_PATH,
+      path: "/",
       expires: refreshTokenExpiry,
     });
   } catch (error) {

@@ -32,7 +32,6 @@
   justify-content: flex-start;
   height: 100%;
   width: calc(100% - var(--dashboard-nav-width));
-  max-width: 103rem;
   background-color: var(--dashboard-background-color);
   overflow-y: auto;
   scrollbar-width: thin;
@@ -70,12 +69,16 @@
 
 .dashboard__name {
   position: absolute;
-  bottom: 0;
+  bottom: -15%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 1.25rem;
   font-weight: 400;
   color: var(--main-page-font-color);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
 }
 
 .dashboard__nav {

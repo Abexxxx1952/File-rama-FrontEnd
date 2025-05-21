@@ -1,5 +1,4 @@
-import { DriverInfo } from "@/srcApp/entities/stats/ui/driver-info/driver-info";
-import { PieChartGeneral } from "@/srcApp/entities/stats/ui/pie-chart/pie-char";
+import { DriverInfo, PieChartGeneral } from "@/srcApp/entities/stats/";
 import styles from "./styles.module.css";
 
 export function StatisticPage() {

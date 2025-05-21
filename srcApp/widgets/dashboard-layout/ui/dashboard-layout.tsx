@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useGetSetUser } from "@/srcApp/app/providers/withContext";
-import { userInitialization } from "@/srcApp/entities/user/model/userInitialization";
+import { getUser } from "@/srcApp/entities/user/model/getUser";
+import { User } from "@/srcApp/entities/user/model/types/user";
 import { clearCookies } from "@/srcApp/features/cookies/model/clearCookies";
 import { DASHBOARD_ITEMS } from "@/srcApp/shared/constants/dashboard-nav-list";
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import styles from "./styles.module.css";
 
 interface DashboardLayoutProps {
@@ -17,13 +18,18 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const setUser = useGetSetUser();
+  const [user, setUser] = useState<User | null>();
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      const user = await userInitialization(setUser, abortControllerRef);
+      const user: User | null = await getUser();
+
+      if (user === null) {
+        router.replace("/");
+      }
+
+      setUser(user);
     })();
   }, []);
 
@@ -32,7 +38,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
     try {
       await clearCookies();
-      setUser(null);
       router.replace("/");
     } catch (error) {
       toast.error("An unexpected error occurred.", {
@@ -43,6 +48,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <main className={styles.dashboard} id="portal">
+      <ToastContainer autoClose={8000} />
       <div className={styles.dashboard__container}>
         <section className={styles.dashboard__bar}>
           <span className={styles.dashboard__profile}>
@@ -50,7 +56,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               link="/svg/dashboard-page-sprite.svg#profile"
               className={styles.dashboard__profileIcon}
             />
-            <span className={styles.dashboard__name}>User</span>
+            <span className={styles.dashboard__name}>
+              {user?.name || user?.email}
+            </span>
           </span>
 
           <nav className={styles.dashboard__nav}>

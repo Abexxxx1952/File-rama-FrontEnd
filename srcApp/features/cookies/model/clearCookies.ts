@@ -19,7 +19,7 @@ export async function clearCookies(): Promise<void> {
       value: "",
       httpOnly: true,
       sameSite: "strict",
-      path: process.env.JWT_REFRESH_TOKEN_DOMAIN_PATH,
+      path: "/",
       expires: new Date(0),
     });
   } catch (error) {

@@ -1,11 +1,10 @@
-import { FileSystemItemType } from "@/srcApp/entities/fileSystemItem/model/types";
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/ui/dashboardItem";
+import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Logo } from "@/srcApp/shared/ui/logo";
 import styles from "./styles.module.css";
 
 export function DashboardPage() {
-  const data: FileSystemItemType[] = [
+  const data: any[] = [
     {
       id: "ba3e64a0-4e2d-4a4e-8924-195e06020a1b",
       folderName: "Frst Folder",

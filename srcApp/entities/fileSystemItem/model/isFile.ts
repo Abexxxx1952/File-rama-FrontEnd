@@ -1,5 +1,5 @@
-import { FileItem, FileSystemItemType } from "./types";
+import { File, FileSystemItem } from "./types";
 
-export function isFile(item: FileSystemItemType): item is FileItem {
+export function isFile(item: FileSystemItem): item is File {
   return "fileExtension" in item;
 }

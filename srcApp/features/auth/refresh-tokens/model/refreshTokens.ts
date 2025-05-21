@@ -4,14 +4,10 @@ import { ErrorData } from "@/srcApp/shared/model/types";
 import { setCookies } from "../../../cookies/model/setCookies";
 import { JwtAuthTokenType } from "../../../cookies/model/types";
 
-export async function refreshTokens<T extends (...args: any) => any>(
-  refresh_token: string,
-  func: T,
-): Promise<ReturnType<T>> {
+export async function refreshTokens(refresh_token: string): Promise<void> {
   const response = await fetch(`${process.env.REFRESH_TOKENS_URL}`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${refresh_token}`,
     },
   });
@@ -24,6 +20,4 @@ export async function refreshTokens<T extends (...args: any) => any>(
   if (data.access_token && data.refresh_token) {
     await setCookies(data.access_token, data.refresh_token);
   }
-
-  return await func();
 }

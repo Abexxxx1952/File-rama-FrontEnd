@@ -58,12 +58,12 @@
   width: 50%;
 }
 
-.userDriveUpdate__driveDelete {
-  --icon-svg-width: 1.25rem;
-  --icon-svg-height: 1.25rem;
-  width: var(--icon-svg-width);
-  height: var(--icon-svg-height);
+.userDriveUpdate__driveDelete,
+.userDriveUpdate__driveUpdate {
+  width: 1.25rem;
+  height: 1.25rem;
   cursor: pointer;
+  margin-left: 0.25rem;
 }
 
 @media screen and (max-width: 768px) {
