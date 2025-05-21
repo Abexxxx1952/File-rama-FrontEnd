@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import {
   PropsWithChildren,
@@ -74,8 +74,10 @@ const useContextSelector = <T,>(
     );
   }
 
-  return useSyncExternalStore(store.subscribe ?? (() => () => {}), () =>
-    selector(store.value),
+  return useSyncExternalStore(
+    store.subscribe ?? (() => () => {}),
+    () => selector(store.value),
+    () => selector(store.value),
   );
 };
 
@@ -90,3 +92,4 @@ export const useGetSetUser = () => {
     return context.setUser;
   });
 };
+ */
