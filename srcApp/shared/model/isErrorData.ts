@@ -1,4 +1,4 @@
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 
 export function isErrorData(error: unknown): error is ErrorData {
   return (

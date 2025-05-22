@@ -2,7 +2,7 @@
 
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 import { User } from "../../../../entities/user/model/types/user";
 
 export async function fetchEmailConfirmation(

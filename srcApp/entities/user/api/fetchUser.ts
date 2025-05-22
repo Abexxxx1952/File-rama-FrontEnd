@@ -2,7 +2,7 @@
 
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { fetchEntity } from "@/srcApp/shared/model/fetchEntity";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { User } from "../model/types/user";
 
 export async function fetchUser(

@@ -2,7 +2,7 @@
 
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { fetchEntity } from "@/srcApp/shared/model/fetchEntity";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 import { FileSystemItem } from "../model/types";
 
 export async function fetchFileSystemItem(

@@ -6,18 +6,21 @@ import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { User } from "../model/types/user";
+import { userUpdateRequest } from "../model/types/userUpdateRequest";
 
-export async function fetchDeleteUser(
+export async function fetchUpdateGoogleServiceAccounts(
   access_token: string,
+  updateData: userUpdateRequest,
 ): Promise<User | ErrorData> {
-  const url: string = `${process.env.DELETE_USER_URL}`;
+  const url: string = `${process.env.UPDATE_USER_URL}`;
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
-    method: "DELETE",
+    method: "PATCH",
     additionalHeaders: {
       Authorization: `Bearer ${access_token}`,
     },
+    bodyData: updateData,
   };
 
   try {
@@ -28,7 +31,6 @@ export async function fetchDeleteUser(
 
       throw errorData;
     }
-    revalidateTag(CACHE_TAG.USER);
     revalidateTag(CACHE_TAG.STAT);
     const data: User = await response.json();
 

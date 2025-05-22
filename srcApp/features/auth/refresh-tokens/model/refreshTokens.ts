@@ -1,8 +1,8 @@
 "use server";
 
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 import { setCookies } from "../../../cookies/model/setCookies";
-import { JwtAuthTokenType } from "../../../cookies/model/types";
+import { JwtAuthTokenType } from "../../../cookies/model/types/jwtToken";
 
 export async function refreshTokens(refresh_token: string): Promise<void> {
   const response = await fetch(`${process.env.REFRESH_TOKENS_URL}`, {

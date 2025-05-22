@@ -34,13 +34,13 @@ export function PieChartGeneral({ data }: PieChartGeneralProps) {
           dataKey="value"
           startAngle={88}
         >
-          {data.map((entry, index) => (
+          {data.map((_entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
         <text
           x="50%"
-          y="47%"
+          y="44%"
           dominantBaseline="middle"
           textAnchor="middle"
           className={styles.pieChart__text}
@@ -49,12 +49,21 @@ export function PieChartGeneral({ data }: PieChartGeneralProps) {
         </text>
         <text
           x="50%"
-          y="53%"
+          y="50%"
           dominantBaseline="middle"
           textAnchor="middle"
           className={styles.pieChart__text}
         >
           {`${data[1].name}: ${formatBytes(data[1].value)}`}
+        </text>
+        <text
+          x="50%"
+          y="56%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          className={styles.pieChart__text}
+        >
+          {`Total Space: ${formatBytes(data[0].value + data[1].value)}`}
         </text>
       </PieChart>
     </ResponsiveContainer>

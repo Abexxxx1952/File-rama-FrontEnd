@@ -8,7 +8,7 @@ import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
 import { loginUser } from "../model/loginUser";
-import { UserLoginFormData } from "../model/types";
+import { UserLoginFormData } from "../model/types/userWithTokens";
 import styles from "./styles.module.css";
 
 export function Login() {

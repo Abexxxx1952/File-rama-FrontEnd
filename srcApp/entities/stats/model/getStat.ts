@@ -1,13 +1,12 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { fetchStat } from "../api/fetchStat";
-import { Stat } from "./types";
+import { Stat } from "./types/stat";
 
-export async function getStat(router: AppRouterInstance): Promise<Stat | null> {
+export async function getStat(): Promise<Stat | null> {
   try {
     const { access_token, refresh_token } = await getCookies();
 
@@ -16,14 +15,15 @@ export async function getStat(router: AppRouterInstance): Promise<Stat | null> {
 
       if (isErrorData(data)) {
         notifyResponse(data, true);
-        router.replace("/");
+
         return null;
       }
 
       return data;
     }
     if (!access_token && refresh_token) {
-      return await refreshTokens(refresh_token, () => getStat(router));
+      await refreshTokens(refresh_token);
+      return getStat();
     }
     return null;
   } catch (error: unknown) {

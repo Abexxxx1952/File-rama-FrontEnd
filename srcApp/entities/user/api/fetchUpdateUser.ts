@@ -4,13 +4,12 @@ import { revalidateTag } from "next/cache";
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { User } from "../model/types/user";
 import { userUpdateRequest } from "../model/types/userUpdateRequest";
 
 export async function fetchUpdateUser(
   access_token: string,
-
   updateData: userUpdateRequest,
 ): Promise<User | ErrorData> {
   const url: string = `${process.env.UPDATE_USER_URL}`;

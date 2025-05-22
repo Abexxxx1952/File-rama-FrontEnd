@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { COOKIES_NAME } from "../constant/cookies-name";
-import { JwtAuthTokenType } from "./types";
+import { JwtAuthTokenType } from "./types/jwtToken";
 
 export async function getCookies(): Promise<JwtAuthTokenType> {
   const cookieStore = await cookies();

@@ -2,7 +2,7 @@
 
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 
 export async function fetchEntity<T>(
   url: string,
@@ -23,7 +23,6 @@ export async function fetchEntity<T>(
     ...(cacheTags && {
       cacheTags,
     }),
-    revalidateTime: Number(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME), // 15 minutes
   };
 
   try {

@@ -3,7 +3,7 @@
 import { User } from "@/srcApp/entities/user/model/types/user";
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 
 export async function loginUser(
   email: string,

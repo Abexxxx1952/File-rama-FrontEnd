@@ -3,7 +3,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { User } from "@/srcApp/entities/user/model/types/user";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { fetchRegisterUser } from "../api/fetchRegisterUser";
 import { CreateUser } from "./types/createUser";
 

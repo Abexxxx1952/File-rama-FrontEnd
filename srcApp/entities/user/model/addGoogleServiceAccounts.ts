@@ -3,8 +3,8 @@ import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refre
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types";
-import { fetchUpdateUser } from "../api/fetchUpdateUser";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { fetchUpdateGoogleServiceAccounts } from "../api/fetchUpdateGoogleServiceAccounts";
 import { GoogleServiceAccountsRequest, UpdateMode, User } from "./types/user";
 
 export async function addGoogleServiceAccount(
@@ -23,7 +23,7 @@ export async function addGoogleServiceAccount(
   try {
     const { access_token, refresh_token } = await getCookies();
     if (access_token) {
-      const data: User | ErrorData = await fetchUpdateUser(
+      const data: User | ErrorData = await fetchUpdateGoogleServiceAccounts(
         access_token,
         updateData,
       );

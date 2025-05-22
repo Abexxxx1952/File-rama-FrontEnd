@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { COOKIES_NAME } from "../constant/cookies-name";
-import { JwtTokenData, JwtTokenType } from "./types";
+import { JwtTokenData, JwtTokenType } from "./types/jwtToken";
 
 export async function setCookies(
   access_token: string,

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { fetchLoginUser } from "../api/fetchLoginUser";
 import { validationSchema } from "../lib/schema";
 import { transformZodErrors } from "./transformZodErrors";
-import { UserLoginFormData } from "./types";
+import { UserLoginFormData } from "./types/userWithTokens";
 
 export async function loginUser(
   email: string,

@@ -1,4 +1,4 @@
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 import { User } from "./types/user";
 
 export function isUserFromServer(user: User | null | ErrorData): user is User {

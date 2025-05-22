@@ -6,7 +6,7 @@ import { Button } from "@/srcApp/shared/ui/button";
 import { Input } from "@/srcApp/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { userUpdateSchema } from "../../model/lib/userUpdateSchema";
+import { userUpdateSchema } from "../../model/lib/schemas/userUpdateSchema";
 import { User } from "../../model/types/user";
 import { updateUserSubmitHandler } from "../../model/updateUserSubmitHandler";
 import styles from "./styles.module.css";

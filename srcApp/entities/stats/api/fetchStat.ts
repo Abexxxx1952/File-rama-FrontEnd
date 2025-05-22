@@ -2,8 +2,8 @@
 
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { fetchEntity } from "@/srcApp/shared/model/fetchEntity";
-import { ErrorData } from "@/srcApp/shared/model/types";
-import { Stat } from "../model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { Stat } from "../model/types/stat";
 
 export async function fetchStat(
   access_token: string,

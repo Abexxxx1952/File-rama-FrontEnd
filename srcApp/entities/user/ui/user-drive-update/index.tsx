@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { Controller, useForm } from "react-hook-form";
 import { addGoogleServiceAccount } from "../../model/addGoogleServiceAccounts";
 import { deleteGoogleServiceAccount } from "../../model/deleteGoogleServiceAccounts copy";
-import { googleServiceAccountsAddSchema } from "../../model/lib/googleServiceAccountsAddSchema";
+import { googleServiceAccountsAddSchema } from "../../model/lib/schemas/googleServiceAccountsAddSchema";
 import {
   GoogleServiceAccountsRequest,
   GoogleServiceAccountsResponse,

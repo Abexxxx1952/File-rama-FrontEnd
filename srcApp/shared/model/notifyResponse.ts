@@ -1,4 +1,4 @@
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/types";
 import { toast } from "react-toastify";
 
 export function notifyResponse<T>(

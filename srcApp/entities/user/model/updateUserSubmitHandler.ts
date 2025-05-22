@@ -3,7 +3,7 @@ import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refre
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { fetchUpdateUser } from "../api/fetchUpdateUser";
 import { User } from "./types/user";
 import { UserUpdateFormData } from "./types/userUpdateFormData";
@@ -11,7 +11,6 @@ import { UserUpdateFormData } from "./types/userUpdateFormData";
 export async function updateUserSubmitHandler(
   data: UserUpdateFormData,
   setLoading: Dispatch<SetStateAction<boolean>>,
-
   setUser: Dispatch<SetStateAction<User | null | undefined>>,
 ): Promise<User | null> {
   setLoading(true);

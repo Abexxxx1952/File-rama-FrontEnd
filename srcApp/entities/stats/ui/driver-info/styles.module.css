@@ -12,7 +12,8 @@
 }
 
 .driverInfo__email {
-  margin-top: 1rem;
+  margin: 1rem 1rem 0 1rem;
+  text-align: center;
 }
 
 .driverInfo__usageSizeValue {
@@ -20,6 +21,7 @@
   height: 1.25rem;
   margin-top: 0.75rem;
   position: relative;
+  text-align: center;
 }
 
 .driverInfo__usageValue {

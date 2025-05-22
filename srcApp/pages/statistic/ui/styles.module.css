@@ -82,3 +82,9 @@
     font-size: 0.75rem;
   }
 }
+
+@media screen and (max-width: 420px) {
+  .stats__driveInfoItem {
+    height: 6rem;
+  }
+}

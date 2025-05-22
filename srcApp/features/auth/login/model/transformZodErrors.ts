@@ -1,4 +1,4 @@
-import { UserLoginFormData } from "./types";
+import { UserLoginFormData } from "./types/userWithTokens";
 
 export function transformZodErrors(zodErrors: {
   email?: string[];

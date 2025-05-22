@@ -8,7 +8,7 @@ import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { googleServiceAccountsAddSchema } from "../../model/lib/googleServiceAccountsAddSchema";
+import { googleServiceAccountsAddSchema } from "../../model/lib/schemas/googleServiceAccountsAddSchema";
 import {
   GoogleServiceAccountsRequest,
   GoogleServiceAccountsResponse,
@@ -61,9 +61,14 @@ export function GoogleServiceAccountUpdateModal({
         </h2>
         <form
           className={styles.userDriveUpdate__form}
-          onSubmit={handleSubmit((data) =>
-            updateGoogleServiceAccount(data, setLoading, setUser),
-          )}
+          onSubmit={handleSubmit((data) => {
+            updateGoogleServiceAccount(
+              data,
+              setLoading,
+              setUser,
+              setUpdateModalOpen,
+            );
+          })}
         >
           <div className={styles.userDriveUpdate__input}>
             <Controller

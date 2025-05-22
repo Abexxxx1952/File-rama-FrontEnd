@@ -1,7 +1,8 @@
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types";
+import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { fetchUser } from "../api/fetchUser";
 import { User } from "./types/user";
 
@@ -13,6 +14,7 @@ export async function getUser(): Promise<User | null> {
       const data: User | ErrorData = await fetchUser(access_token);
 
       if (isErrorData(data)) {
+        notifyResponse(data, true);
         return null;
       }
 
