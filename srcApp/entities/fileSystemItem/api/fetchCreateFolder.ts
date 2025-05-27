@@ -5,22 +5,24 @@ import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { User } from "../model/types/user";
-import { userUpdateRequest } from "../model/types/userUpdateRequest";
+import { FetchAddFolder } from "../model/types/fetchAddFolder";
+import { Folder } from "../model/types/folder";
 
-export async function fetchUpdateGoogleServiceAccounts(
+export async function fetchCreateFolder(
   access_token: string,
-  updateData: userUpdateRequest,
-): Promise<User | ErrorData | null> {
-  const url: string = `${process.env.UPDATE_USER_URL}`;
+  addFolderData: FetchAddFolder,
+  abortControllerRef?: React.RefObject<AbortController | null>,
+): Promise<Folder | ErrorData | null> {
+  const url: string = `${process.env.CREATE_FOLDER_URL}`;
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
-    method: "PATCH",
+    method: "POST",
+    ...(abortControllerRef && { abortControllerRef }),
     additionalHeaders: {
       Authorization: `Bearer ${access_token}`,
     },
-    bodyData: updateData,
+    bodyData: addFolderData,
   };
 
   try {
@@ -31,8 +33,9 @@ export async function fetchUpdateGoogleServiceAccounts(
 
       throw errorData;
     }
+    revalidateTag(CACHE_TAG.FILE_SYSTEM_ITEM);
     revalidateTag(CACHE_TAG.STAT);
-    const data: User = await response.json();
+    const data: Folder = await response.json();
 
     return data;
   } catch (error: unknown) {

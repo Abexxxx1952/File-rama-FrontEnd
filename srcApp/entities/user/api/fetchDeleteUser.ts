@@ -9,7 +9,7 @@ import { User } from "../model/types/user";
 
 export async function fetchDeleteUser(
   access_token: string,
-): Promise<User | ErrorData> {
+): Promise<User | ErrorData | null> {
   const url: string = `${process.env.DELETE_USER_URL}`;
 
   const apiClientParams: apiClientArgs = {
@@ -37,6 +37,7 @@ export async function fetchDeleteUser(
     if (isErrorData(error)) {
       return error;
     }
-    throw error;
+    console.error(error);
+    return null;
   }
 }

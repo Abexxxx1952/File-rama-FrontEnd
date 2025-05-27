@@ -11,11 +11,22 @@ export async function getStat(): Promise<Stat | null> {
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: Stat | ErrorData = await fetchStat(access_token);
+      const data: Stat | ErrorData | null = await fetchStat(access_token);
 
       if (isErrorData(data)) {
-        notifyResponse(data, true);
+        notifyResponse({
+          isError: true,
+          responseResult: data,
+        });
 
+        return null;
+      }
+
+      if (data === null) {
+        notifyResponse({
+          isError: true,
+          responseResult: null,
+        });
         return null;
       }
 

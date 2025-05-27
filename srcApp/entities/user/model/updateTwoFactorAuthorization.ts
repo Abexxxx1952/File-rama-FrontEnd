@@ -10,7 +10,7 @@ import { User } from "./types/user";
 export async function updateTwoFactorAuthorization(
   isTwoFactorEnabled: boolean,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setUser: Dispatch<SetStateAction<User | null | undefined>>,
+  setUser: Dispatch<SetStateAction<User | null>>,
 ): Promise<User | null> {
   setLoading(true);
   const updateData = {
@@ -20,21 +20,32 @@ export async function updateTwoFactorAuthorization(
   try {
     const { access_token, refresh_token } = await getCookies();
     if (access_token) {
-      const data: User | ErrorData = await fetchUpdateUser(
+      const data: User | ErrorData | null = await fetchUpdateUser(
         access_token,
         updateData,
       );
 
       if (isErrorData(data)) {
-        notifyResponse(data, true);
+        notifyResponse({
+          isError: true,
+          responseResult: data,
+        });
 
         return null;
       }
-      notifyResponse(
-        data,
-        false,
-        `Two Factor Authorization is ${isTwoFactorEnabled ? "Enable" : "Disable"}`,
-      );
+
+      if (data === null) {
+        notifyResponse({
+          isError: true,
+          responseResult: null,
+        });
+        return null;
+      }
+
+      notifyResponse({
+        isError: false,
+        successMessage: `Two Factor Authorization is ${isTwoFactorEnabled ? "Enable" : "Disable"}`,
+      });
       setUser(data);
       return data;
     }

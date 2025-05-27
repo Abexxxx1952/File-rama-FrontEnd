@@ -17,12 +17,19 @@ export async function deleteUser(
   try {
     const { access_token, refresh_token } = await getCookies();
     if (access_token) {
-      const data: User | ErrorData = await fetchDeleteUser(access_token);
+      const data: User | ErrorData | null = await fetchDeleteUser(access_token);
 
       if (isErrorData(data)) {
-        notifyResponse(data, true);
+        notifyResponse({
+          isError: true,
+          responseResult: data,
+        });
       }
-      notifyResponse(data, false, `User deleted successfully`);
+
+      notifyResponse({
+        isError: false,
+        successMessage: `User deleted successfully`,
+      });
 
       router.replace("/");
     }
@@ -31,6 +38,7 @@ export async function deleteUser(
       return deleteUser(setLoading, router);
     }
   } catch (error) {
+    console.log("error", error);
   } finally {
     setLoading(false);
   }

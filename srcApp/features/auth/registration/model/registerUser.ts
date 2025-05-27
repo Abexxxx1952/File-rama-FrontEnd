@@ -15,17 +15,25 @@ export async function registerUser(
   setLoading(true);
 
   try {
-    const data: User | ErrorData = await fetchRegisterUser(registerData);
+    const data: User | ErrorData | null = await fetchRegisterUser(registerData);
 
     if (isErrorData(data)) {
-      notifyResponse(data, true);
-      return;
+      notifyResponse({
+        isError: true,
+        responseResult: data,
+      });
     }
-    notifyResponse(
-      data,
-      false,
-      `User ${registerData.email} register successfully`,
-    );
+
+    if (data === null) {
+      notifyResponse({
+        isError: true,
+        responseResult: null,
+      });
+    }
+    notifyResponse({
+      isError: false,
+      successMessage: `User ${registerData.email} register successfully`,
+    });
     router.replace("/login");
   } catch (error) {
     console.log("error", error);

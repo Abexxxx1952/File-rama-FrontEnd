@@ -11,7 +11,7 @@ import { UserUpdateFormData } from "./types/userUpdateFormData";
 export async function updateUserSubmitHandler(
   data: UserUpdateFormData,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setUser: Dispatch<SetStateAction<User | null | undefined>>,
+  setUser: Dispatch<SetStateAction<User | null>>,
 ): Promise<User | null> {
   setLoading(true);
   const updateData = {
@@ -26,17 +26,32 @@ export async function updateUserSubmitHandler(
   try {
     const { access_token, refresh_token } = await getCookies();
     if (access_token) {
-      const data: User | ErrorData = await fetchUpdateUser(
+      const data: User | ErrorData | null = await fetchUpdateUser(
         access_token,
         updateData,
       );
 
       if (isErrorData(data)) {
-        notifyResponse(data, true);
+        notifyResponse({
+          isError: true,
+          responseResult: data,
+        });
 
         return null;
       }
-      notifyResponse(data, false, "User updated successfully");
+
+      if (data === null) {
+        notifyResponse({
+          isError: true,
+          responseResult: null,
+        });
+        return null;
+      }
+
+      notifyResponse({
+        isError: false,
+        successMessage: "User updated successfully",
+      });
       setUser(data);
       return data;
     }

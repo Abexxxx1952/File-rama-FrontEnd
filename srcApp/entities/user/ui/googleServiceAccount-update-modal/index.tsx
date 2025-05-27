@@ -19,9 +19,10 @@ import styles from "./styles.module.css";
 
 type GoogleServiceAccountUpdateModalProps = {
   setUpdateModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  updateGoogleServiceAccountItem: GoogleServiceAccountsResponse | undefined;
-  setUser: React.Dispatch<React.SetStateAction<User | null | undefined>>;
+  updateGoogleServiceAccountItem?: GoogleServiceAccountsResponse;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
+
 export function GoogleServiceAccountUpdateModal({
   setUpdateModalOpen,
   updateGoogleServiceAccountItem,
@@ -54,7 +55,7 @@ export function GoogleServiceAccountUpdateModal({
         <Icon
           link="/svg/settings-sprite.svg#delete"
           onClick={() => setUpdateModalOpen(false)}
-          className={styles.userDriveUpdate__driveDelete}
+          className={styles.userDriveUpdate__close}
         />
         <h2 className={styles.userDriveUpdate__title}>
           Update your google service account

@@ -1,12 +1,3 @@
-export type Folder = {
-  id: string;
-  folderName: string;
-  userId: string;
-  parentFolderId: string | null;
-  createdDate: string;
-  isPublic: boolean;
-};
-
 export type File = {
   id: string;
   userId: string;
@@ -23,5 +14,3 @@ export type File = {
   isPublic: boolean;
   fileDescription?: string | null;
 };
-
-export type FileSystemItem = Folder | File;

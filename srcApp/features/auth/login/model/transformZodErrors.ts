@@ -1,10 +1,10 @@
-import { UserLoginFormData } from "./types/userWithTokens";
+import { loginFormError } from "./types/loginFormError";
 
 export function transformZodErrors(zodErrors: {
   email?: string[];
   password?: string[];
-}): Partial<UserLoginFormData> {
-  const errors: Partial<UserLoginFormData> = {};
+}): Partial<loginFormError> {
+  const errors: Partial<loginFormError> = {};
   if (zodErrors.email) {
     errors.email = zodErrors.email[0];
   }

@@ -7,7 +7,7 @@ import { Stat } from "../model/types/stat";
 
 export async function fetchStat(
   access_token: string,
-): Promise<Stat | ErrorData> {
+): Promise<Stat | ErrorData | null> {
   const url: string = `${process.env.GET_STAT_URL}`;
 
   return fetchEntity<Stat>(url, access_token, [CACHE_TAG.STAT]);

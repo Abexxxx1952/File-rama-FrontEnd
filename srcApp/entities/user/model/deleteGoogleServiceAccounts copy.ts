@@ -10,7 +10,7 @@ import { UpdateMode, User } from "./types/user";
 export async function deleteGoogleServiceAccount(
   clientEmail: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setUser: Dispatch<SetStateAction<User | null | undefined>>,
+  setUser: Dispatch<SetStateAction<User | null>>,
 ): Promise<User | null> {
   setLoading(true);
 
@@ -21,21 +21,30 @@ export async function deleteGoogleServiceAccount(
   try {
     const { access_token, refresh_token } = await getCookies();
     if (access_token) {
-      const data: User | ErrorData = await fetchUpdateGoogleServiceAccounts(
-        access_token,
-        updateData,
-      );
+      const data: User | ErrorData | null =
+        await fetchUpdateGoogleServiceAccounts(access_token, updateData);
 
       if (isErrorData(data)) {
-        notifyResponse(data, true);
+        notifyResponse({
+          isError: true,
+          responseResult: data,
+        });
 
         return null;
       }
-      notifyResponse(
-        data,
-        false,
-        `Google service account ${clientEmail} deleted successfully`,
-      );
+
+      if (data === null) {
+        notifyResponse({
+          isError: true,
+          responseResult: null,
+        });
+        return null;
+      }
+
+      notifyResponse({
+        isError: false,
+        successMessage: `Google service account ${clientEmail} deleted successfully`,
+      });
       setUser(data);
       return data;
     }

@@ -18,7 +18,7 @@ import styles from "./styles.module.css";
 
 type UserDriveUpdateProps = {
   googleServiceAccounts: GoogleServiceAccountsResponse[];
-  setUser: Dispatch<SetStateAction<User | null | undefined>>;
+  setUser: Dispatch<SetStateAction<User | null>>;
 };
 
 export function UserDriveUpdate({
@@ -39,6 +39,7 @@ export function UserDriveUpdate({
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<GoogleServiceAccountsRequest>({
     resolver: zodResolver(googleServiceAccountsAddSchema),
@@ -57,9 +58,10 @@ export function UserDriveUpdate({
       <h2 className={styles.userDriveUpdate__title}>Drive update</h2>
       <form
         className={styles.userDriveUpdate__form}
-        onSubmit={handleSubmit((data) =>
-          addGoogleServiceAccount(data, setLoading, setUser),
-        )}
+        onSubmit={handleSubmit(async (data) => {
+          await addGoogleServiceAccount(data, setLoading, setUser);
+          reset();
+        })}
       >
         <div className={styles.userDriveUpdate__input}>
           <Controller
@@ -134,11 +136,12 @@ export function UserDriveUpdate({
               </span>
               <Icon
                 link="/svg/settings-sprite.svg#update"
-                onClick={() => handleUpdateGoogleServiceAccount(item)}
                 className={styles.userDriveUpdate__driveUpdate}
+                onClick={() => handleUpdateGoogleServiceAccount(item)}
               />
               <Icon
                 link="/svg/settings-sprite.svg#delete"
+                className={styles.userDriveUpdate__driveDelete}
                 onClick={() =>
                   deleteGoogleServiceAccount(
                     item.clientEmail,
@@ -146,7 +149,6 @@ export function UserDriveUpdate({
                     setUser,
                   )
                 }
-                className={styles.userDriveUpdate__driveDelete}
               />
             </div>
           );

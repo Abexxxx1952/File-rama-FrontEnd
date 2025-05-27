@@ -4,13 +4,15 @@ import { updateTwoFactorAuthorization } from "@/srcApp/entities/user/model/updat
 import { Button } from "@/srcApp/shared/ui/button";
 import styles from "./styles.module.css";
 
+type TwoFactorAuthProps = {
+  isTwoFactorEnabled: boolean;
+  setUser: Dispatch<SetStateAction<User | null>>;
+};
+
 export function TwoFactorAuth({
   isTwoFactorEnabled,
   setUser,
-}: {
-  isTwoFactorEnabled: boolean;
-  setUser: Dispatch<SetStateAction<User | null | undefined>>;
-}) {
+}: TwoFactorAuthProps) {
   const [loading, setLoading] = useState(false);
 
   return (

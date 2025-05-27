@@ -1,44 +1,36 @@
+"use client";
+
 import { Dispatch, SetStateAction } from "react";
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { fetchUpdateGoogleServiceAccounts } from "../api/fetchUpdateGoogleServiceAccounts";
-import { formatKeyToEnvString } from "./lib/formatKeyToEnvString";
-import { GoogleServiceAccountsRequest, UpdateMode, User } from "./types/user";
+import { fetchCreateFolder } from "../api/fetchCreateFolder";
+import { FetchAddFolder } from "./types/fetchAddFolder";
+import { FileSystemItem } from "./types/fileSystemItem";
+import { Folder } from "./types/folder";
 
-export async function updateGoogleServiceAccount(
-  data: GoogleServiceAccountsRequest,
+export async function addFolder(
+  params: FetchAddFolder,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setUser: Dispatch<SetStateAction<User | null>>,
-  setUpdateModalOpen: Dispatch<SetStateAction<boolean>>,
-): Promise<User | null> {
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+): Promise<Folder | null> {
   setLoading(true);
-
-  const googleServiceAccountsData = {
-    ...data,
-    privateKey: formatKeyToEnvString(data.privateKey),
-  };
-
-  const updateData = {
-    googleServiceAccounts: [
-      { ...googleServiceAccountsData, updateMode: UpdateMode.UPDATE },
-    ],
-  };
-
   try {
     const { access_token, refresh_token } = await getCookies();
+
     if (access_token) {
-      const data: User | ErrorData | null =
-        await fetchUpdateGoogleServiceAccounts(access_token, updateData);
+      const data: FileSystemItem | ErrorData | null = await fetchCreateFolder(
+        access_token,
+        params,
+      );
 
       if (isErrorData(data)) {
         notifyResponse({
           isError: true,
           responseResult: data,
         });
-
         return null;
       }
 
@@ -52,27 +44,21 @@ export async function updateGoogleServiceAccount(
 
       notifyResponse({
         isError: false,
-        successMessage: `Google service account ${googleServiceAccountsData.clientEmail} updated successfully`,
+        successMessage: `Folder ${data.folderName} added successfully`,
       });
-      setUser(data);
-      setUpdateModalOpen(false);
+      setLoading(false);
       return data;
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-
-      return updateGoogleServiceAccount(
-        googleServiceAccountsData,
-        setLoading,
-        setUser,
-        setUpdateModalOpen,
-      );
+      return addFolder(params, setLoading, setModalOpen);
     }
     return null;
-  } catch (error) {
+  } catch (error: unknown) {
     console.log("error", error);
     return null;
   } finally {
     setLoading(false);
+    setModalOpen(false);
   }
 }

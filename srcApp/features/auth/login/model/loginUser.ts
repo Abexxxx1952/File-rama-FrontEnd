@@ -3,19 +3,19 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { User } from "@/srcApp/entities/user/model/types/user";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { toast } from "react-toastify";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { fetchLoginUser } from "../api/fetchLoginUser";
 import { validationSchema } from "../lib/schema";
 import { transformZodErrors } from "./transformZodErrors";
-import { UserLoginFormData } from "./types/userWithTokens";
+import { loginFormError } from "./types/loginFormError";
 
 export async function loginUser(
   email: string,
   password: string,
-  setErrors: Dispatch<SetStateAction<Partial<UserLoginFormData>>>,
+  setErrors: Dispatch<SetStateAction<Partial<loginFormError>>>,
   setLoading: Dispatch<SetStateAction<boolean>>,
   router: AppRouterInstance,
-) {
+): Promise<void | null> {
   const validationResult = validationSchema.safeParse({ email, password });
 
   if (!validationResult.success) {
@@ -29,34 +29,34 @@ export async function loginUser(
   setLoading(true);
 
   try {
-    const response = await fetchLoginUser(email, password);
+    const data: User | ErrorData | null = await fetchLoginUser(email, password);
 
-    if (isErrorData(response)) {
-      throw response;
+    if (isErrorData(data)) {
+      notifyResponse({
+        isError: true,
+        responseResult: data,
+      });
+
+      return null;
     }
 
-    notifyResponse<User>(
-      response,
-      false,
-      `Successfully logged ${response.email}`,
-    );
+    if (data === null) {
+      notifyResponse({
+        isError: true,
+        responseResult: null,
+      });
+      return null;
+    }
+
+    notifyResponse({
+      isError: false,
+      successMessage: `Successfully logged ${data.email}`,
+    });
 
     router.push("/dashboard");
   } catch (error) {
-    if (isErrorData(error)) {
-      toast.error(
-        `Error: ${error.status || error.statusCode} ${
-          error.statusText || error.error
-        }. Massage: ${JSON.stringify(error.message)}`,
-        {
-          position: "top-right",
-        },
-      );
-      return;
-    }
-    toast.error("An unexpected error occurred.", {
-      position: "top-right",
-    });
+    console.log("error", error);
+    return null;
   } finally {
     setLoading(false);
   }

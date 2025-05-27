@@ -64,6 +64,21 @@
   height: 1.25rem;
   cursor: pointer;
   margin-left: 0.25rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.userDriveUpdate__driveDelete:hover,
+.userDriveUpdate__driveDelete:focus-visible {
+  --delete-icon-bg-color: rgb(228, 14, 14);
+  --delete-icon-color: transparent;
+  transform: scale(1.2);
+}
+
+.userDriveUpdate__driveUpdate:hover,
+.userDriveUpdate__driveUpdate:focus-visible {
+  --update-icon-bg-color: rgba(124, 91, 243, 0.4);
+  --update-icon-color: var(--secondary-logo-color);
+  transform: scale(1.2);
 }
 
 @media screen and (max-width: 768px) {

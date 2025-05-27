@@ -11,13 +11,12 @@ import { User } from "../../model/types/user";
 import { updateUserSubmitHandler } from "../../model/updateUserSubmitHandler";
 import styles from "./styles.module.css";
 
-export function UserUpdate({
-  user,
-  setUser,
-}: {
+type UserUpdateProps = {
   user: User;
-  setUser: Dispatch<SetStateAction<User | null | undefined>>;
-}) {
+  setUser: Dispatch<SetStateAction<User | null>>;
+};
+
+export function UserUpdate({ user, setUser }: UserUpdateProps) {
   const [loading, setLoading] = useState(false);
 
   const defaultValues = { name: user.name, password: "", repeatPassword: "" };
@@ -25,6 +24,7 @@ export function UserUpdate({
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<UserUpdateFormData>({
     resolver: zodResolver(userUpdateSchema),
@@ -36,9 +36,10 @@ export function UserUpdate({
       <h2 className={styles.userUpdate__title}>User update</h2>
       <form
         className={styles.userUpdate__form}
-        onSubmit={handleSubmit((data) =>
-          updateUserSubmitHandler(data, setLoading, setUser),
-        )}
+        onSubmit={handleSubmit((data) => {
+          updateUserSubmitHandler(data, setLoading, setUser);
+          reset();
+        })}
       >
         <div className={styles.userUpdate__input}>
           <Controller

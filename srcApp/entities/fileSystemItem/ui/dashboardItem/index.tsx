@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
-import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types";
+import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { Icon } from "@/srcApp/shared/ui/icon";
 import { isFile } from "../../model/isFile";
 import styles from "./styles.module.css";
 
-export function FileSystemItem({ item }: { item: FileSystemItem }) {
+export function DashboardItem({ item }: { item: FileSystemItem }) {
   const isFileItem = isFile(item);
 
   return (
@@ -44,6 +45,16 @@ export function FileSystemItem({ item }: { item: FileSystemItem }) {
       </span>
       <span className={`${styles.tableItem__public} ${styles.tableItem__row}`}>
         {item.isPublic}
+      </span>
+      <span className={`${styles.tableItem__buttons} ${styles.tableItem__row}`}>
+        <Icon
+          link="/svg/settings-sprite.svg#update"
+          className={styles.tableButton__update}
+        />
+        <Icon
+          link="/svg/settings-sprite.svg#delete"
+          className={styles.tableButton__delete}
+        />
       </span>
     </div>
   );

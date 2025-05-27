@@ -1,11 +1,11 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { emailConfirmation } from "@/srcApp/features/auth/email-confirmation/model/emailConfirmation";
 import { Button } from "@/srcApp/shared/ui/button";
 import styles from "./styles.module.css";
 
 export function EmailConfirmation() {
   const [loading, setLoading] = useState(false);
-  const abortControllerRef = useRef<AbortController | null>(null);
+
   return (
     <div className={styles.userEmailConfirmation}>
       <h2 className={styles.userEmailConfirmation__title}>
@@ -19,7 +19,7 @@ export function EmailConfirmation() {
           text="Send email"
           backgroundColor="var(--primary-logo-color)"
           onClick={() => {
-            emailConfirmation(abortControllerRef, setLoading);
+            emailConfirmation(setLoading);
           }}
           loading={loading}
         />

@@ -11,10 +11,21 @@ export async function getUser(): Promise<User | null> {
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: User | ErrorData = await fetchUser(access_token);
+      const data: User | ErrorData | null = await fetchUser(access_token);
 
       if (isErrorData(data)) {
-        notifyResponse(data, true);
+        notifyResponse({
+          isError: true,
+          responseResult: data,
+        });
+        return null;
+      }
+
+      if (data === null) {
+        notifyResponse({
+          isError: true,
+          responseResult: null,
+        });
         return null;
       }
 

@@ -7,13 +7,13 @@ import { Stat } from "@/srcApp/entities/stats/model/types/stat";
 import styles from "./styles.module.css";
 
 export function StatisticPage() {
-  const [stat, setUStat] = useState<Stat | null>();
+  const [stat, setStat] = useState<Stat | null>();
 
   useEffect(() => {
     (async () => {
       const stat = await getStat();
 
-      setUStat(stat);
+      setStat(stat);
     })();
   }, []);
   if (!stat) {

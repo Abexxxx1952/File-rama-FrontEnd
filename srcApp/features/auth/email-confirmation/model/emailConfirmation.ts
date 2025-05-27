@@ -8,28 +8,42 @@ import { User } from "../../../../entities/user/model/types/user";
 import { fetchEmailConfirmation } from "../api/fetchEmailConfirmation";
 
 export async function emailConfirmation(
-  abortControllerRef: React.RefObject<AbortController | null>,
   setLoading: Dispatch<SetStateAction<boolean>>,
+  abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<User | null> {
   setLoading(true);
   try {
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: { message: string } | ErrorData =
+      const data: { message: string } | ErrorData | null =
         await fetchEmailConfirmation(access_token, abortControllerRef);
 
       if (isErrorData(data)) {
-        notifyResponse(data, true);
+        notifyResponse({
+          isError: true,
+          responseResult: data,
+        });
 
         return null;
       }
-      notifyResponse(data, false, (data as { message: string }).message);
-      return data;
+
+      if (data === null) {
+        notifyResponse({
+          isError: true,
+          responseResult: null,
+        });
+        return null;
+      }
+
+      notifyResponse({
+        isError: false,
+        successMessage: (data as { message: string }).message,
+      });
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return emailConfirmation(abortControllerRef, setLoading);
+      return emailConfirmation(setLoading);
     }
     return null;
   } catch (error: unknown) {

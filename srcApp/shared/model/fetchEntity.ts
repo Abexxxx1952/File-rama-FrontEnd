@@ -2,20 +2,20 @@
 
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types/types";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 
 export async function fetchEntity<T>(
   url: string,
   access_token: string,
   cacheTags?: string[],
   abortControllerRef?: React.RefObject<AbortController | null>,
-): Promise<T | ErrorData> {
+): Promise<T | ErrorData | null> {
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
     method: "GET",
     abortControllerRef,
     additionalHeaders: {
-      Authorization: `Bearer ${access_token}`,
+      authorization: `Bearer ${access_token}`,
     },
     ...(abortControllerRef && {
       abortControllerRef,
@@ -41,6 +41,7 @@ export async function fetchEntity<T>(
     if (isErrorData(error)) {
       return error;
     }
-    throw error;
+    console.error(error);
+    return null;
   }
 }

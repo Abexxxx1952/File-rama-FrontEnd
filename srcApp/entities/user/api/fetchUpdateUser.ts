@@ -11,7 +11,7 @@ import { userUpdateRequest } from "../model/types/userUpdateRequest";
 export async function fetchUpdateUser(
   access_token: string,
   updateData: userUpdateRequest,
-): Promise<User | ErrorData> {
+): Promise<User | ErrorData | null> {
   const url: string = `${process.env.UPDATE_USER_URL}`;
 
   const apiClientParams: apiClientArgs = {
@@ -39,6 +39,7 @@ export async function fetchUpdateUser(
     if (isErrorData(error)) {
       return error;
     }
-    throw error;
+    console.error(error);
+    return null;
   }
 }

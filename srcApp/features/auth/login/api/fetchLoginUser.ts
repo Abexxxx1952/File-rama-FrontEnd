@@ -3,13 +3,14 @@
 import { User } from "@/srcApp/entities/user/model/types/user";
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
-import { ErrorData } from "@/srcApp/shared/model/types/types";
+import { isErrorData } from "@/srcApp/shared/model/isErrorData";
+import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 
 export async function fetchLoginUser(
   email: string,
   password: string,
   abortControllerRef?: React.RefObject<AbortController | null>,
-): Promise<User | ErrorData> {
+): Promise<User | ErrorData | null> {
   const url: string = process.env.LOGIN_URL || "";
 
   const requestBody = {
@@ -30,7 +31,7 @@ export async function fetchLoginUser(
     if (!response.ok) {
       const errorData: ErrorData = await response.json();
 
-      return errorData;
+      throw errorData;
     }
 
     let [access_token, refresh_token] = response.headers.getSetCookie() || [];
@@ -44,6 +45,10 @@ export async function fetchLoginUser(
 
     return data;
   } catch (error) {
-    throw error;
+    if (isErrorData(error)) {
+      return error;
+    }
+    console.error(error);
+    return null;
   }
 }

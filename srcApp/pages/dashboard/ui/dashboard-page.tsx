@@ -1,79 +1,43 @@
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { getFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/getFileSystemItem";
+import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import {
+  DashboardItem,
+  FolderCreateModal,
+} from "@/srcApp/entities/fileSystemItem/ui";
+import { Button } from "@/srcApp/shared/ui/button";
+import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Logo } from "@/srcApp/shared/ui/logo";
+import { createPortal } from "react-dom";
 import styles from "./styles.module.css";
 
 export function DashboardPage() {
-  const data: any[] = [
-    {
-      id: "ba3e64a0-4e2d-4a4e-8924-195e06020a1b",
-      folderName: "Frst Folder",
-      userId: "813e0c7d-cd82-4ebc-8447-8d2a59d66f95",
-      parentFolderId: null,
-      createdDate: "2025-02-07T12:57:40.701Z",
-      isPublic: false,
-    },
-    {
-      id: "7978ab52-d214-4f7d-b894-66e7eb8ed269",
-      userId: "813e0c7d-cd82-4ebc-8447-8d2a59d66f95",
-      fileUrl:
-        "https://drive.google.com/file/d/1gfxg4JdtiuihHop1yCnEbmwM_COVLZo-/view?usp=drivesdk",
-      fileDownloadUrl:
-        "https://drive.google.com/uc?id=1gfxg4JdtiuihHop1yCnEbmwM_COVLZo-&export=download",
-      fileName:
-        "rimkhamart1_Mechanical_PhoenixCreate_a_futuristic_robotic_versi_d8bb0f01-fce3-4f11-8c77-cb1083cda2ef(1) (1).png",
-      fileExtension: "png",
-      fileSize: "1677427",
-      parentFolderId: null,
-      fileGoogleDriveId: "1gfxg4JdtiuihHop1yCnEbmwM_COVLZo-",
-      fileGoogleDriveParentFolderId: "1kM_yeDo1Ib3cWGWNRvugWsXeHGxuUS_F",
-      fileGoogleDriveClientEmail:
-        "google-drive@fiery-booth-447215-n7.iam.gserviceaccount.com",
-      uploadDate: "2025-01-20T12:50:28.010Z",
-      fileDescription: null,
-      isPublic: false,
-    },
-    {
-      id: "fb3bc694-1bd7-443b-9d0f-92b23cc690d3",
-      userId: "813e0c7d-cd82-4ebc-8447-8d2a59d66f95",
-      fileUrl:
-        "https://drive.google.com/file/d/1y59NXgEclDDwjkk8OE7iPbA6oJJfuqcx/view?usp=drivesdk",
-      fileDownloadUrl:
-        "https://drive.google.com/uc?id=1y59NXgEclDDwjkk8OE7iPbA6oJJfuqcx&export=download",
-      fileName:
-        "rimkhamart1_Mechanical_PhoenixCreate_a_futuristic_robotic_versi_d8bb0f01-fce3-4f11-8c77-cb1083cda2ef(1).png",
-      fileExtension: "png",
-      fileSize: "1677427",
-      parentFolderId: null,
-      fileGoogleDriveId: "1y59NXgEclDDwjkk8OE7iPbA6oJJfuqcx",
-      fileGoogleDriveParentFolderId: "1kM_yeDo1Ib3cWGWNRvugWsXeHGxuUS_F",
-      fileGoogleDriveClientEmail:
-        "google-drive@fiery-booth-447215-n7.iam.gserviceaccount.com",
-      uploadDate: "2025-01-20T12:43:10.817Z",
-      fileDescription: null,
-      isPublic: false,
-    },
-    {
-      id: "baef47d3-87cb-4d38-94d7-6c29354c7cf6",
-      userId: "813e0c7d-cd82-4ebc-8447-8d2a59d66f95",
-      fileUrl:
-        "https://drive.google.com/file/d/17wsnjdLEgq4RP4UudmzFCrH4JNeMSgML/view?usp=drivesdk",
-      fileDownloadUrl:
-        "https://drive.google.com/uc?id=17wsnjdLEgq4RP4UudmzFCrH4JNeMSgML&export=download",
-      fileName:
-        "rimkhamart1_Mechanical_PhoenixCreate_a_futuristic_robotic_versi_d8bb0f01-fce3-4f11-8c77-cb1083cda2ef(1) (2).png",
-      fileExtension: "png",
-      fileSize: "1677427",
-      parentFolderId: null,
-      fileGoogleDriveId: "17wsnjdLEgq4RP4UudmzFCrH4JNeMSgML",
-      fileGoogleDriveParentFolderId: "1kM_yeDo1Ib3cWGWNRvugWsXeHGxuUS_F",
-      fileGoogleDriveClientEmail:
-        "google-drive@fiery-booth-447215-n7.iam.gserviceaccount.com",
-      uploadDate: "2025-01-23T12:45:56.047Z",
-      fileDescription: null,
-      isPublic: false,
-    },
-  ];
+  const [fileSystemItems, setFileSystemItems] = useState<
+    FileSystemItem[] | null
+  >();
+  const [addFolderModalOpen, setAddFolderModalOpen] = useState<boolean>(false);
+  const [version, setVersion] = useState(0);
+  const portalRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    portalRef.current = document.getElementById("portal");
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const fileSystemItems = await getFileSystemItems();
+
+      setFileSystemItems(fileSystemItems);
+    })();
+  }, [version]);
+
+  if (!fileSystemItems) {
+    return null;
+  }
+  const forceUpdate = () => setVersion((v) => v + 1);
   return (
     <>
       <div className={styles.storage__search}>
@@ -118,11 +82,53 @@ export function DashboardPage() {
               Public
             </span>
           </div>
-          {data.map((elem) => {
-            return <FileSystemItem key={elem.id} item={elem} />;
+          {fileSystemItems.map((elem) => {
+            return <DashboardItem key={elem.id} item={elem} />;
           })}
         </div>
+        <div className={styles.dashboard__extraItem}>
+          <div className={styles.dashboard__addButton}>
+            <Button
+              text="+ Add File"
+              backgroundColor="rgba(116, 181, 227,0.5)"
+            />
+          </div>
+          <div className={styles.dashboard__addButton}>
+            <Button
+              text="+ Create Folder"
+              backgroundColor="rgba(116, 181, 227,0.5)"
+              onClick={() => setAddFolderModalOpen(true)}
+            />
+          </div>
+          <div className={styles.dashboard__usageSize}>
+            <div className={styles.dashboard__usageSizeHeader}>
+              <Icon
+                link="/svg/dashboard-page-sprite.svg#cloud"
+                className={styles.dashboard__cloudIcon}
+              />
+              <span className={styles.dashboard__usageSizeTitle}>
+                My Storage
+              </span>
+            </div>
+            <div className={styles.dashboard__usageSizeValue}>
+              <span className={styles.dashboard__totalValue}></span>
+              <span className={styles.dashboard__usageValue}></span>
+            </div>
+            <span className={styles.dashboard__usageSizeText}>
+              Used 5 GB out of 15 GB.
+            </span>
+          </div>
+        </div>
       </div>
+      {portalRef.current &&
+        addFolderModalOpen &&
+        createPortal(
+          <FolderCreateModal
+            setAddFolderModalOpen={setAddFolderModalOpen}
+            forceUpdate={forceUpdate}
+          />,
+          portalRef.current,
+        )}
     </>
   );
 }

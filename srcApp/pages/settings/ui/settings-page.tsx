@@ -14,7 +14,7 @@ import { TwoFactorAuth } from "@/srcApp/features/auth/two-factor/ui";
 import styles from "./styles.module.css";
 
 export function SettingsPage() {
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     (async () => {
