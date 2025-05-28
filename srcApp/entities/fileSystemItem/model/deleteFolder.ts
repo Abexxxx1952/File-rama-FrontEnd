@@ -6,24 +6,22 @@ import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { fetchCreateFolder } from "../api/fetchCreateFolder";
-import { FetchAddFolder } from "./types/fetchAddFolder";
+import { fetchDeleteFolder } from "../api/fetchDeleteFolder";
 import { FileSystemItem } from "./types/fileSystemItem";
 import { Folder } from "./types/folder";
 
-export async function createFolder(
-  params: FetchAddFolder,
+export async function deleteFolder(
+  id: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
 ): Promise<Folder | null> {
   setLoading(true);
   try {
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: FileSystemItem | ErrorData | null = await fetchCreateFolder(
+      const data: FileSystemItem | ErrorData | null = await fetchDeleteFolder(
         access_token,
-        params,
+        id,
       );
 
       if (isErrorData(data)) {
@@ -44,14 +42,14 @@ export async function createFolder(
 
       notifyResponse({
         isError: false,
-        successMessage: `Folder ${data.folderName} added successfully`,
+        successMessage: `Folder ${data.folderName} deleted successfully`,
       });
       setLoading(false);
       return data;
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return createFolder(params, setLoading, setModalOpen);
+      return deleteFolder(id, setLoading);
     }
     return null;
   } catch (error: unknown) {
@@ -59,6 +57,5 @@ export async function createFolder(
     return null;
   } finally {
     setLoading(false);
-    setModalOpen(false);
   }
 }

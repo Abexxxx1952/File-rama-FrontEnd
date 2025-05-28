@@ -83,7 +83,13 @@ export function DashboardPage() {
             </span>
           </div>
           {fileSystemItems.map((elem) => {
-            return <DashboardItem key={elem.id} item={elem} />;
+            return (
+              <DashboardItem
+                key={elem.id}
+                item={elem}
+                forceUpdate={forceUpdate}
+              />
+            );
           })}
         </div>
         <div className={styles.dashboard__extraItem}>

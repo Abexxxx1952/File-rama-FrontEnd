@@ -1,12 +1,27 @@
+import { useState } from "react";
 import Image from "next/image";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import { Icon } from "@/srcApp/shared/ui/icon";
+import { deleteFolder } from "../../model/deleteFolder";
 import { isFile } from "../../model/isFile";
 import styles from "./styles.module.css";
 
-export function DashboardItem({ item }: { item: FileSystemItem }) {
+type DashboardItemProps = {
+  item: FileSystemItem;
+  forceUpdate: () => void;
+};
+
+export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
+  const [loading, setLoading] = useState(false);
   const isFileItem = isFile(item);
+
+  function handleDeleteFolder() {
+    (async () => {
+      await deleteFolder(item.id, setLoading);
+      forceUpdate();
+    })();
+  }
 
   return (
     <div className={styles.tableItem}>
@@ -52,8 +67,13 @@ export function DashboardItem({ item }: { item: FileSystemItem }) {
           className={styles.tableButton__update}
         />
         <Icon
-          link="/svg/settings-sprite.svg#delete"
-          className={styles.tableButton__delete}
+          link={
+            loading
+              ? "/svg/settings-sprite.svg#loading"
+              : "/svg/settings-sprite.svg#delete"
+          }
+          className={`${styles.tableButton__delete} ${loading ? styles.tableButton__loading : ""}`}
+          onClick={handleDeleteFolder}
         />
       </span>
     </div>

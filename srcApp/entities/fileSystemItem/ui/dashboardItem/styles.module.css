@@ -47,7 +47,8 @@
 }
 
 .tableButton__update,
-.tableButton__delete {
+.tableButton__delete,
+.tableButton__loading {
   width: 0;
   height: 0;
   opacity: 0;
@@ -59,7 +60,9 @@
 .tableItem:hover .tableButton__update,
 .tableItem:focus-visible .tableButton__update,
 .tableItem:hover .tableButton__delete,
-.tableItem:focus-visible .tableButton__delete {
+.tableItem:focus-visible .tableButton__delete,
+.tableItem:hover .tableButton__loading,
+.tableItem:focus-visible .tableButton__loading {
   width: 1.25rem;
   height: 1.25rem;
   opacity: 1;
@@ -77,6 +80,21 @@
   --update-icon-bg-color: rgba(124, 91, 243, 0.4);
   --update-icon-color: var(--secondary-logo-color);
   transform: scale(1.2);
+}
+
+.tableButton__loading:hover,
+.tableButton__loading:focus-visible {
+  transform: scale(1.2);
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .tableItem__icon {

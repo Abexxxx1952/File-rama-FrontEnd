@@ -32,6 +32,7 @@
   --update-icon-color: rgb(0, 0, 0);
   --delete-icon-bg-color: transparent;
   --delete-icon-color: rgb(207, 24, 24);
+  --loading-icon-color: rgb(0, 0, 0);
 }
 
 *,

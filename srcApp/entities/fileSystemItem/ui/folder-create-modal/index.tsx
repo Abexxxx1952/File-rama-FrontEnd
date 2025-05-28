@@ -6,7 +6,7 @@ import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { addFolder } from "../../model/addFolder";
+import { createFolder } from "../../model/addFolder";
 import { folderAddSchema } from "../../model/lib/schemas/folderAddSchema";
 import { FetchAddFolderForm } from "../../model/types/fetchAddFolder";
 import styles from "./styles.module.css";
@@ -33,18 +33,27 @@ export function FolderCreateModal({
     defaultValues,
   });
 
+  function handleCreateFolder(
+    data: FetchAddFolderForm,
+    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  ) {
+    (async () => {
+      await createFolder(
+        { ...data, parentFolderId: null },
+        setLoading,
+        setModalOpen,
+      );
+      forceUpdate();
+    })();
+  }
+
   return (
     <Modal title="Add folder" setModalOpen={setAddFolderModalOpen}>
       {({ setModalOpen }) => (
         <form
           className={styles.addFolder__form}
-          onSubmit={handleSubmit(async (data) => {
-            await addFolder(
-              { ...data, parentFolderId: null },
-              setLoading,
-              setModalOpen,
-            );
-            forceUpdate();
+          onSubmit={handleSubmit((data) => {
+            handleCreateFolder(data, setModalOpen);
           })}
         >
           <div className={styles.addFolder__input}>
