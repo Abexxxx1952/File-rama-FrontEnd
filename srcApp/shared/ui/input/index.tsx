@@ -75,22 +75,28 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       "--box-shadow": boxShadow,
       "--placeholder-color": placeholderColor,
       "--placeholder-padding-left": placeholderPaddingLeft,
+    } as React.CSSProperties;
+    const iconSvgStyle = {
       "--icon-svg-width": iconSvgWidth,
       "--icon-svg-height": iconSvgHeight,
     } as React.CSSProperties;
-    const iconSvgStyle = {
+    const textStyle = {
       "--icon-svg-width": iconSvgWidth,
       "--icon-svg-height": iconSvgHeight,
     } as React.CSSProperties;
     return (
       <>
         {text && (
-          <label htmlFor={`input-${text}`} className={styles.text}>
+          <label
+            htmlFor={`input-${text}`}
+            className={styles.text}
+            style={textStyle}
+          >
             {text}
           </label>
         )}
         <input
-          id={`input-${placeholder}`}
+          id={`input-${text}`}
           className={styles.input}
           style={inputStyle}
           onChange={onChange}
@@ -111,6 +117,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             style={iconSvgStyle}
           />
         )}
+
         {error && (
           <span id={`error-${text}`} className={styles.error} role="alert">
             {error}

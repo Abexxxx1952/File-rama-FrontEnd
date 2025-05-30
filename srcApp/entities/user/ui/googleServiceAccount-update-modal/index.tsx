@@ -83,6 +83,7 @@ export function GoogleServiceAccountUpdateModal({
                   focusBackgroundColor="var(--main-header-background-color)"
                   border="none"
                   textColor="var(--secondary-font-color)"
+                  labelTextColor="var(--main-page-font-color)"
                   error={errors.clientEmail?.message}
                   {...field}
                 />
@@ -101,6 +102,7 @@ export function GoogleServiceAccountUpdateModal({
                   focusBackgroundColor="var(--main-header-background-color)"
                   border="none"
                   textColor="var(--secondary-font-color)"
+                  labelTextColor="var(--main-page-font-color)"
                   type="password"
                   error={errors.privateKey?.message}
                   {...field}
@@ -120,6 +122,7 @@ export function GoogleServiceAccountUpdateModal({
                   focusBackgroundColor="var(--main-header-background-color)"
                   border="none"
                   textColor="var(--secondary-font-color)"
+                  labelTextColor="var(--main-page-font-color)"
                   error={errors.rootFolderId?.message}
                   {...field}
                 />

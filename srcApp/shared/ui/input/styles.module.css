@@ -1,8 +1,7 @@
 .input {
   --text-color: var(--main-page-font-color);
   --text-size: 1rem;
-  --label-text-color: var(--main-page-font-color);
-  --label-text-size: 0.8rem;
+
   --bg-color: transparent;
   --border: 1px solid var(--secondary-logo-color);
   --outline: none;
@@ -55,6 +54,8 @@
 }
 
 .text {
+  --label-text-color: var(--main-page-font-color);
+  --label-text-size: 0.8rem;
   font-size: var(--label-text-size);
   color: var(--label-text-color);
   opacity: 0.8;

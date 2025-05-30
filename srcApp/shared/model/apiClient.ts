@@ -27,7 +27,7 @@ export async function apiClient({
   additionalHeaders,
   bodyData,
   cacheTags,
-  revalidateTime,
+  revalidateTime = 600,
   abortControllerRef,
 }: apiClientArgs): Promise<Response> {
   let signal: AbortSignal | undefined;
@@ -58,7 +58,7 @@ export async function apiClient({
     ...(cacheTags && {
       next: {
         tags: cacheTags,
-        ...(revalidateTime && { revalidate: revalidateTime }),
+        revalidate: revalidateTime || 0,
       },
     }),
     ...(signal && { signal }),
