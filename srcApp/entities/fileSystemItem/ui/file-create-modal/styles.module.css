@@ -1,0 +1,245 @@
+.uploader {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+.uploader__header {
+  display: flex;
+  padding: 1.2rem;
+  background: var(--modal-header-color);
+  align-items: center;
+  border-radius: 5px 5px 0 0;
+  justify-content: space-between;
+}
+
+.uploader__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.uploader__fileCompletedStatus {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--header-font-color);
+  margin-right: 2rem;
+}
+
+.fileList {
+  list-style: none;
+  width: 100%;
+  padding-bottom: 10px;
+  max-height: 380px;
+  overflow-y: auto;
+  scrollbar-color: #999 transparent;
+  scrollbar-width: thin;
+}
+
+.fileList:has(li) {
+  padding: 1.25rem;
+}
+
+.file {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.file:last-child {
+  margin-bottom: 0;
+}
+.file__extension {
+  height: 3.125rem;
+  width: 3.125rem;
+  color: #fff;
+  display: flex;
+  text-transform: uppercase;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background: var(--primary-logo-color);
+}
+
+.file__container {
+  flex: 1;
+}
+
+.file__wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.file__name {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.file__info {
+  display: flex;
+  gap: 5px;
+}
+
+.file__info small {
+  color: var(--header-font-color);
+  margin-top: 5px;
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.file__info > .file__status {
+  color: var(--primary-logo-color);
+}
+
+.file__cancelButton {
+  display: flex;
+  align-self: center;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.file__cancelButton:hover {
+  color: var(--delete-icon-color);
+}
+
+.file__crossIcon {
+  --cross-icon-size: 24px;
+  width: var(--cross-icon-size);
+  height: var(--cross-icon-size);
+}
+
+.file__progressBarContainer {
+  width: 100%;
+  height: 3px;
+  margin-top: 10px;
+  border-radius: 30px;
+  background: #d9d9d9;
+}
+
+.file__progressBar {
+  width: 5%;
+  height: inherit;
+  border-radius: inherit;
+  background: var(--primary-logo-color);
+}
+
+.fileUploadBox {
+  margin: 0.75rem 1.25rem 1.25rem 1.25rem;
+  border-radius: 5px;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #b1add4;
+  transition: all 0.2s ease;
+}
+
+.fileUploadBox.active {
+  border: 2px solid var(--primary-logo-color);
+  background: #f3f6ff;
+}
+
+.fileUploadBox__title {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--header-font-color);
+}
+
+.fileUploadBox.active .fileUploadBox__title {
+  pointer-events: none;
+}
+
+.fileUploadBox__button {
+  color: var(--primary-logo-color);
+  cursor: pointer;
+}
+
+.fileUploadBox__button:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+  .uploader__header {
+    padding: 1rem;
+  }
+  .uploader__fileCompletedStatus {
+    font-size: 0.9rem;
+    margin-right: 1.75rem;
+  }
+  .uploader__title {
+    font-size: 1.125rem;
+  }
+  .file {
+    gap: 0.9rem;
+    margin-bottom: 1.3rem;
+  }
+  .file__extension {
+    height: 2.875rem;
+    width: 2.875rem;
+  }
+  .file__name {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+  .file__info small {
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+  .file__cancelButton {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .file__crossIcon {
+    --cross-icon-size: 20px;
+  }
+  .file__progressBarContainer {
+    margin-top: 8px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .uploader__header {
+    padding: 0.8rem;
+  }
+  .uploader__fileCompletedStatus {
+    font-size: 0.8rem;
+    margin-right: 1.5rem;
+  }
+  .uploader__title {
+    font-size: 1rem;
+  }
+  .file {
+    gap: 0.8rem;
+    margin-bottom: 1.1rem;
+  }
+  .file__extension {
+    height: 2.625rem;
+    width: 2.625rem;
+  }
+  .file__name {
+    font-size: 0.8rem;
+  }
+  .file__info small {
+    font-size: 0.7rem;
+  }
+  .file__cancelButton {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .file__cancelButton {
+    width: 1rem;
+    height: 1rem;
+  }
+  .file__crossIcon {
+    --cross-icon-size: 16px;
+  }
+  .file__progressBarContainer {
+    margin-top: 6px;
+  }
+}

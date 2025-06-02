@@ -8,7 +8,6 @@ import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { fetchCreateFolder } from "../api/fetchCreateFolder";
 import { FetchAddFolder } from "./types/fetchAddFolder";
-import { FileSystemItem } from "./types/fileSystemItem";
 import { Folder } from "./types/folder";
 
 export async function createFolder(
@@ -21,7 +20,7 @@ export async function createFolder(
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: FileSystemItem | ErrorData | null = await fetchCreateFolder(
+      const data: Folder | ErrorData | null = await fetchCreateFolder(
         access_token,
         params,
       );

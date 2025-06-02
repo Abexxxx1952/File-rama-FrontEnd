@@ -1,7 +1,7 @@
 .dashboard {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  padding: 1rem;
+  padding: var(--main-padding-size);
   background-color: var(--main-header-background-color);
 }
 
@@ -53,25 +53,24 @@
 .dashboard__profile {
   width: 100%;
   height: 20%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .dashboard__profileIcon {
   --dashboard-profile-icon-width: 60px;
   --dashboard-profile-icon-height: 60px;
-  width: 60px;
-  height: 60px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: var(--dashboard-profile-icon-width);
+  height: var(--dashboard-profile-icon-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dashboard__name {
-  position: absolute;
-  bottom: -15%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: 0.5rem;
   font-size: 1.25rem;
   font-weight: 400;
   color: var(--main-page-font-color);
@@ -128,9 +127,6 @@
   .dashboard__profileIcon {
     --dashboard-profile-icon-width: 36px;
     --dashboard-profile-icon-height: 36px;
-    width: 36px;
-    height: 36px;
-    transform: translate(-50%, 0%);
   }
 
   .dashboard__navItem {

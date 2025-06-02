@@ -9,10 +9,10 @@ export function useImperativeDisableScroll(
       return;
     }
 
-    element.style.overflowY = disabled ? "hidden" : "scroll";
+    element.style.overflowY = disabled ? "hidden" : "auto";
 
     return () => {
-      element.style.overflowY = "scroll";
+      element.style.overflowY = "auto";
     };
   }, [disabled]);
 }

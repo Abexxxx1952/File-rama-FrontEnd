@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { createFolder } from "@/srcApp/entities/fileSystemItem/model/createFolder";
+import { folderAddSchema } from "@/srcApp/entities/fileSystemItem/model/lib/schemas/folderAddSchema";
+import type { FetchAddFolderForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchAddFolder";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { createFolder } from "../../model/addFolder";
-import { folderAddSchema } from "../../model/lib/schemas/folderAddSchema";
-import { FetchAddFolderForm } from "../../model/types/fetchAddFolder";
 import styles from "./styles.module.css";
 
 type FolderCreateModalProps = {
@@ -48,7 +48,12 @@ export function FolderCreateModal({
   }
 
   return (
-    <Modal title="Add folder" setModalOpen={setAddFolderModalOpen}>
+    <Modal
+      title="Add folder"
+      setModalOpen={setAddFolderModalOpen}
+      width="60%"
+      height="60%"
+    >
       {({ setModalOpen }) => (
         <form
           className={styles.addFolder__form}

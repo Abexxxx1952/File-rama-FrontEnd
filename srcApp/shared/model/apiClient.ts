@@ -11,10 +11,10 @@ type HttpMethod =
 
 export interface apiClientArgs {
   baseUrl: string;
-  method: HttpMethod;
+  method?: HttpMethod;
   condition?: Record<string, unknown>;
   additionalHeaders?: Record<string, string>;
-  bodyData?: Record<string, unknown>;
+  bodyData?: Record<string, unknown> | FormData;
   cacheTags?: string[];
   revalidateTime?: number;
   abortControllerRef?: React.RefObject<AbortController | null>;
@@ -49,12 +49,17 @@ export async function apiClient({
   }
 
   const response = await fetch(url.toString(), {
-    method: method,
+    method: method || "GET",
     headers: {
-      ...(bodyData && { ["Content-Type"]: "application/json" }),
+      ...(bodyData &&
+        !(bodyData instanceof FormData) && {
+          "Content-Type": "application/json",
+        }),
       ...additionalHeaders,
     },
-    ...(bodyData && { body: JSON.stringify(bodyData) }),
+    ...(bodyData && {
+      body: bodyData instanceof FormData ? bodyData : JSON.stringify(bodyData),
+    }),
     ...(cacheTags && {
       next: {
         tags: cacheTags,

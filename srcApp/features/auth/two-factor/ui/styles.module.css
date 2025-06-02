@@ -5,7 +5,7 @@
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   gap: 0.75rem;
   color: var(--secondary-font-color);

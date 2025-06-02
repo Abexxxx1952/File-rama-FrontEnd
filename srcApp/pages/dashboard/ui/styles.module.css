@@ -109,8 +109,8 @@
 .dashboard__cloudIcon {
   --dashboard-cloud-width: 24px;
   --dashboard-cloud-height: 24px;
-  width: 24px;
-  height: 24px;
+  width: var(--dashboard-cloud-width);
+  height: var(--dashboard-cloud-height);
 }
 
 .dashboard__usageSizeTitle {
@@ -212,8 +212,6 @@
   .dashboard__cloudIcon {
     --dashboard-cloud-width: 16px;
     --dashboard-cloud-height: 16px;
-    width: 16px;
-    height: 16px;
   }
 
   .dashboard__usageSizeTitle {

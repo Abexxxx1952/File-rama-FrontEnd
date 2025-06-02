@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { createPortal } from "react-dom";
 import { deleteFolder } from "../../model/deleteFolder";
@@ -40,6 +41,17 @@ export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
     })();
   }
 
+  function formatDate(isoDate: string) {
+    const dateFromIso = new Date(isoDate);
+    const date = dateFromIso.toLocaleDateString("ru-RU");
+    const time = dateFromIso.toLocaleTimeString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    return `${date} ${time}`;
+  }
+
   return (
     <div className={styles.tableItem}>
       <span className={`${styles.tableItem__name} ${styles.tableItem__row}`}>
@@ -68,12 +80,14 @@ export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
       </span>
 
       <span className={`${styles.tableItem__size} ${styles.tableItem__row}`}>
-        {isFileItem ? item.fileSize : null}
+        {isFileItem ? formatBytes(Number(item.fileSize)) : null}
       </span>
       <span
         className={`${styles.tableItem__uploadDate} ${styles.tableItem__row}`}
       >
-        {isFileItem ? item.uploadDate : item.createdDate}
+        {isFileItem
+          ? formatDate(item.uploadDate)
+          : formatDate(item.createdDate)}
       </span>
       <span className={`${styles.tableItem__public} ${styles.tableItem__row}`}>
         {item.isPublic}

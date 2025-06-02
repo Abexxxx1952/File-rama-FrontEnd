@@ -5,5 +5,5 @@
     "source.fixAll.eslint",
     "source.organizeImports"
   ],
-  "cSpell.words": ["Toastify", "trivago", "turbopack"]
+  "cSpell.words": ["Toastify", "trivago", "turbopack", "uuidv"]
 }

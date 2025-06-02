@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useImperativeDisableScroll } from "@/srcApp/shared/hooks/useImperativeDisableScroll";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { Button } from "@/srcApp/shared/ui/button";
-import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
+import { Modal } from "@/srcApp/shared/ui/modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { googleServiceAccountsAddSchema } from "../../model/lib/schemas/googleServiceAccountsAddSchema";
@@ -45,30 +45,15 @@ export function GoogleServiceAccountUpdateModal({
   });
 
   return (
-    <div className={styles.modal}>
-      <div
-        className={styles.overlay}
-        onClick={() => setUpdateModalOpen(false)}
-      ></div>
-
-      <div className={styles.userDriveUpdate}>
-        <Icon
-          link="/svg/settings-sprite.svg#delete"
-          onClick={() => setUpdateModalOpen(false)}
-          className={styles.userDriveUpdate__close}
-        />
-        <h2 className={styles.userDriveUpdate__title}>
-          Update your google service account
-        </h2>
+    <Modal
+      title="Update your google service account"
+      setModalOpen={setUpdateModalOpen}
+    >
+      {({ setModalOpen }) => (
         <form
           className={styles.userDriveUpdate__form}
           onSubmit={handleSubmit((data) => {
-            updateGoogleServiceAccount(
-              data,
-              setLoading,
-              setUser,
-              setUpdateModalOpen,
-            );
+            updateGoogleServiceAccount(data, setLoading, setUser, setModalOpen);
           })}
         >
           <div className={styles.userDriveUpdate__input}>
@@ -139,7 +124,7 @@ export function GoogleServiceAccountUpdateModal({
             />
           </div>
         </form>
-      </div>
-    </div>
+      )}
+    </Modal>
   );
 }

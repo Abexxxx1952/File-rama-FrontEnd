@@ -7,6 +7,7 @@ import {
   DashboardItem,
   FolderCreateModal,
 } from "@/srcApp/entities/fileSystemItem/ui";
+import { FileCreateModal } from "@/srcApp/entities/fileSystemItem/ui/file-create-modal";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
@@ -19,6 +20,7 @@ export function DashboardPage() {
     FileSystemItem[] | null
   >();
   const [addFolderModalOpen, setAddFolderModalOpen] = useState<boolean>(false);
+  const [addFileModalOpen, setAddFileModalOpen] = useState<boolean>(false);
   const [version, setVersion] = useState(0);
   const portalRef = useRef<HTMLElement | null>(null);
 
@@ -97,6 +99,7 @@ export function DashboardPage() {
             <Button
               text="+ Add File"
               backgroundColor="rgba(116, 181, 227,0.5)"
+              onClick={() => setAddFileModalOpen(true)}
             />
           </div>
           <div className={styles.dashboard__addButton}>
@@ -111,6 +114,7 @@ export function DashboardPage() {
               <Icon
                 link="/svg/dashboard-page-sprite.svg#cloud"
                 className={styles.dashboard__cloudIcon}
+                viewBox="0 0 36 36"
               />
               <span className={styles.dashboard__usageSizeTitle}>
                 My Storage
@@ -131,6 +135,15 @@ export function DashboardPage() {
         createPortal(
           <FolderCreateModal
             setAddFolderModalOpen={setAddFolderModalOpen}
+            forceUpdate={forceUpdate}
+          />,
+          portalRef.current,
+        )}
+      {portalRef.current &&
+        addFileModalOpen &&
+        createPortal(
+          <FileCreateModal
+            setAddFileModalOpen={setAddFileModalOpen}
             forceUpdate={forceUpdate}
           />,
           portalRef.current,

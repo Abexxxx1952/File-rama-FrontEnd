@@ -59,7 +59,12 @@ export function FolderUpdateModal({
   }
 
   return (
-    <Modal title="Edit folder" setModalOpen={setUpdateFolderModalOpen}>
+    <Modal
+      title="Edit folder"
+      setModalOpen={setUpdateFolderModalOpen}
+      width="60%"
+      height="60%"
+    >
       {({ setModalOpen }) => (
         <form
           className={styles.updateFolder__form}

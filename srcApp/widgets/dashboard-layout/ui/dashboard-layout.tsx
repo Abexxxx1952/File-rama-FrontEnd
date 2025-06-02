@@ -55,6 +55,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             <Icon
               link="/svg/dashboard-page-sprite.svg#profile"
               className={styles.dashboard__profileIcon}
+              viewBox="0 0 45.532 45.532"
             />
             <span className={styles.dashboard__name}>
               {user?.name || user?.email}

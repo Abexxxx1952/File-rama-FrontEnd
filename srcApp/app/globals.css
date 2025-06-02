@@ -1,5 +1,6 @@
 :root {
   --variableUnitsSize: max(1vh, 1vw);
+  --main-padding-size: 1rem;
   --main-header-background-color: rgb(250, 250, 247);
   --primary-logo-color: rgb(124, 91, 243);
   --secondary-logo-color: rgb(89, 237, 247);
@@ -28,6 +29,7 @@
   --dashboard-table-column-buttons-width: 7%;
   --dashboard-table-column-buttons-width-maxwidth768: 6%;
   --dashboard-table-column-buttons-width-maxwidth576: 5%;
+  --modal-bg-color: rgb(125, 127, 136);
   --update-icon-bg-color: transparent;
   --update-icon-color: rgb(0, 0, 0);
   --delete-icon-bg-color: transparent;
@@ -35,6 +37,7 @@
   --loading-icon-color: rgb(0, 0, 0);
   --switch-false-bg-color: rgb(194, 189, 189);
   --switch-true-bg-color: rgb(89, 237, 247);
+  --modal-header-color: rgba(200, 240, 255, 0.7);
 }
 
 *,
@@ -46,8 +49,8 @@
   list-style: none;
   list-style-type: none;
   text-decoration: none;
-  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 a {
