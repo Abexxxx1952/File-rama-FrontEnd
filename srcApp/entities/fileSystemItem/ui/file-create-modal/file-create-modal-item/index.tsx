@@ -14,18 +14,18 @@ import styles from "./styles.module.css";
 
 type FileCreateModalItemProps = {
   fileWith: FileWithOptions;
-
   setFiles: React.Dispatch<React.SetStateAction<FileWithOptions[]>>;
   setCompletedFiles: React.Dispatch<React.SetStateAction<number>>;
   forceUpdate: () => void;
+  isRevalidateCacheRef: React.MutableRefObject<boolean>;
 };
 
 export function FileCreateModalItem({
   fileWith,
-
   setFiles,
   setCompletedFiles,
   forceUpdate,
+  isRevalidateCacheRef,
 }: FileCreateModalItemProps) {
   const [version, setVersion] = useState(0);
   const [completedSize, setCompletedSize] = useState(0);
@@ -123,7 +123,12 @@ export function FileCreateModalItem({
     formData.append("file", file);
 
     (async () => {
-      const result = await createFile(formData, id, abortControllerRef);
+      const result = await createFile(
+        formData,
+        id,
+        isRevalidateCacheRef,
+        abortControllerRef,
+      );
       if (result === null) {
         return;
       }

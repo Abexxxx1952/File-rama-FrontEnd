@@ -6,19 +6,19 @@ import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { fetchDeleteFolder } from "../api/fetchDeleteFolder";
-import { Folder } from "./types/folder";
+import { fetchDeleteFile } from "../api/fetchDeleteFile";
+import { File } from "./types/file";
 
-export async function deleteFolder(
+export async function deleteFile(
   id: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
-): Promise<Folder | null> {
+): Promise<File | null> {
   setLoading(true);
   try {
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: Folder | ErrorData | null = await fetchDeleteFolder(
+      const data: File | ErrorData | null = await fetchDeleteFile(
         access_token,
         id,
       );
@@ -41,14 +41,14 @@ export async function deleteFolder(
 
       notifyResponse({
         isError: false,
-        successMessage: `Folder ${data.folderName} deleted successfully`,
+        successMessage: `File ${data.fileName} deleted successfully`,
       });
       setLoading(false);
       return data;
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return deleteFolder(id, setLoading);
+      return deleteFile(id, setLoading);
     }
     return null;
   } catch (error: unknown) {

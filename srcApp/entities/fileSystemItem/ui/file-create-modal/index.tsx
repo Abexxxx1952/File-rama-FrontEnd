@@ -21,7 +21,7 @@ export function FileCreateModal({
   const [totalFiles, setTotalFiles] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log("isDragOver", isDragOver);
+  const isRevalidateCacheRef = useRef<boolean>(false);
 
   useEffect(() => {
     const dropArea = document.getElementById("drop-zone");
@@ -91,6 +91,7 @@ export function FileCreateModal({
                   setFiles={setFiles}
                   setCompletedFiles={setCompletedFiles}
                   forceUpdate={forceUpdate}
+                  isRevalidateCacheRef={isRevalidateCacheRef}
                 />
               ))}
           </ul>

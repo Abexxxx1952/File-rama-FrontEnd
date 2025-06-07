@@ -12,6 +12,7 @@ import { FileUploadResult, StatusUpload } from "./types/fileUploadResult";
 export async function createFile(
   params: FormData,
   fileUploadId: string,
+  isRevalidateCacheRef: React.MutableRefObject<boolean>,
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<FileUploadResult | null> {
   let signal: AbortSignal | undefined;
@@ -67,15 +68,24 @@ export async function createFile(
         }
         return item;
       });
-      await revalidateFromClientByTag([
-        CACHE_TAG.FILE_SYSTEM_ITEM,
-        CACHE_TAG.STAT,
-      ]);
+
+      if (!isRevalidateCacheRef.current) {
+        await revalidateFromClientByTag([
+          CACHE_TAG.FILE_SYSTEM_ITEM,
+          CACHE_TAG.STAT,
+        ]);
+        isRevalidateCacheRef.current = true;
+      }
       return data[0];
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return createFile(params, fileUploadId, abortControllerRef);
+      return createFile(
+        params,
+        fileUploadId,
+        isRevalidateCacheRef,
+        abortControllerRef,
+      );
     }
     return null;
   } catch (error: unknown) {

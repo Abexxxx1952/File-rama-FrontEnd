@@ -5,6 +5,7 @@ import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/type
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { createPortal } from "react-dom";
+import { deleteFile } from "../../model/deleteFile";
 import { deleteFolder } from "../../model/deleteFolder";
 import { isFile } from "../../model/isFile";
 import { isFolder } from "../../model/isFolder";
@@ -34,11 +35,17 @@ export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
     else setUpdateFolderModalOpen(true);
   }
 
-  function handleDeleteFolder() {
-    (async () => {
-      await deleteFolder(item.id, setLoading);
-      forceUpdate();
-    })();
+  function handleDelete() {
+    if (isFileItem) {
+      (async () => {
+        await deleteFile(item.id, setLoading);
+      })();
+    } else {
+      (async () => {
+        await deleteFolder(item.id, setLoading);
+      })();
+    }
+    forceUpdate();
   }
 
   function formatDate(isoDate: string) {
@@ -105,7 +112,7 @@ export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
               : "/svg/settings-sprite.svg#delete"
           }
           className={`${styles.tableButton__delete} ${loading ? styles.tableButton__loading : ""}`}
-          onClick={handleDeleteFolder}
+          onClick={handleDelete}
         />
       </span>
       {portalRef.current &&
