@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { folderUpdateSchema } from "@/srcApp/entities/fileSystemItem/model/lib/schemas/folderUpdateSchema";
-import { FetchUpdateFolderForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchUpdateFolder";
-import { updateFolder } from "@/srcApp/entities/fileSystemItem/model/updateFolder";
+import { fileUpdateSchema } from "@/srcApp/entities/fileSystemItem/model/lib/schemas/fileUpdateSchema";
+import { FetchUpdateFileForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchUpdateFile";
+import { updateFile } from "@/srcApp/entities/fileSystemItem/model/updateFile";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
@@ -12,44 +12,41 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./styles.module.css";
 
-type FolderUpdateModalProps = {
-  folderId: string;
-  folderName: string;
+type FileUpdateModalProps = {
+  fileId: string;
+  fileName: string;
   isPublic: boolean;
-  setUpdateFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setUpdateFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
 };
 
-export function FolderUpdateModal({
-  folderId,
-  folderName,
+export function FileUpdateModal({
+  fileId,
+  fileName,
   isPublic,
-  setUpdateFolderModalOpen,
+  setUpdateFileModalOpen,
   forceUpdate,
-}: FolderUpdateModalProps) {
+}: FileUpdateModalProps) {
   const [loading, setLoading] = useState(false);
 
-  const defaultValues = { folderName: folderName, isPublic: isPublic };
+  const defaultValues = { fileName: fileName, isPublic: isPublic };
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FetchUpdateFolderForm>({
-    resolver: zodResolver(folderUpdateSchema),
+  } = useForm<FetchUpdateFileForm>({
+    resolver: zodResolver(fileUpdateSchema),
     defaultValues,
   });
 
-  function handleUpdateFolder(
-    data: FetchUpdateFolderForm,
+  function handleUpdateFile(
+    data: FetchUpdateFileForm,
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
   ) {
-    if (data.folderName !== folderName) {
+    if (data.fileName !== fileName) {
       (async () => {
-        await updateFolder(
-          { folderId, folderName: data.folderName },
-          setLoading,
-        );
+        await updateFile({ fileId, fileName: data.fileName }, setLoading);
       })();
     }
     if (data.isPublic !== isPublic) {
@@ -60,38 +57,38 @@ export function FolderUpdateModal({
 
   return (
     <Modal
-      title="Edit folder"
-      setModalOpen={setUpdateFolderModalOpen}
+      title="Edit file"
+      setModalOpen={setUpdateFileModalOpen}
       width="60%"
       height="60%"
     >
       {({ setModalOpen }) => (
         <form
-          className={styles.updateFolder__form}
+          className={styles.updateFile__form}
           onSubmit={handleSubmit((data) => {
-            handleUpdateFolder(data, setModalOpen);
+            handleUpdateFile(data, setModalOpen);
           })}
         >
-          <div className={styles.updateFolder__input}>
+          <div className={styles.updateFile__input}>
             <Controller
-              name="folderName"
+              name="fileName"
               control={control}
               render={({ field }) => (
                 <Input
-                  text="Folder Name"
-                  placeholder="Enter folder name"
+                  text="File Name"
+                  placeholder="Enter file name"
                   backgroundColor="var(--main-header-background-color)"
                   focusBackgroundColor="var(--main-header-background-color)"
                   border="none"
                   textColor="var(--secondary-font-color)"
                   labelTextColor="var(--main-page-font-color)"
-                  error={errors.folderName?.message}
+                  error={errors.fileName?.message}
                   {...field}
                 />
               )}
             />
           </div>
-          <div className={styles.updateFolder__switch}>
+          <div className={styles.updateFile__switch}>
             <Controller
               name="isPublic"
               control={control}
@@ -105,9 +102,9 @@ export function FolderUpdateModal({
               )}
             />
           </div>
-          <div className={styles.updateFolder__button}>
+          <div className={styles.updateFile__button}>
             <Button
-              text="Update folder"
+              text="Update file"
               backgroundColor="var(--primary-logo-color)"
               type="submit"
               loading={loading}

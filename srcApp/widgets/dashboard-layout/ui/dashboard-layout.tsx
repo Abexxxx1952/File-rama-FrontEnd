@@ -48,7 +48,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <main className={styles.dashboard} id="portal">
-      <ToastContainer autoClose={8000} />
+      <ToastContainer autoClose={5000} />
       <div className={styles.dashboard__container}>
         <section className={styles.dashboard__bar}>
           <span className={styles.dashboard__profile}>

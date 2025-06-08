@@ -31,6 +31,9 @@
 }
 
 @media screen and (max-width: 768px) {
+  .updateFolder__form {
+    width: 70%;
+  }
   .updateFolder__button {
     height: 2.5rem;
     margin-top: 1rem;
@@ -39,6 +42,9 @@
 }
 
 @media screen and (max-width: 576px) {
+  .updateFolder__form {
+    width: 85%;
+  }
   .updateFolder__button {
     height: 2rem;
     margin-top: 0.75rem;

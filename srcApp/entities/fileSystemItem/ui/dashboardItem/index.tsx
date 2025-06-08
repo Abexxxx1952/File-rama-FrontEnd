@@ -9,6 +9,7 @@ import { deleteFile } from "../../model/deleteFile";
 import { deleteFolder } from "../../model/deleteFolder";
 import { isFile } from "../../model/isFile";
 import { isFolder } from "../../model/isFolder";
+import { FileUpdateModal } from "../file-update-modal";
 import { FolderUpdateModal } from "../folder-update-modal";
 import styles from "./styles.module.css";
 
@@ -124,6 +125,19 @@ export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
             folderName={item.folderName}
             isPublic={item.isPublic}
             setUpdateFolderModalOpen={setUpdateFolderModalOpen}
+            forceUpdate={forceUpdate}
+          />,
+          portalRef.current,
+        )}
+      {portalRef.current &&
+        updateFileModalOpen &&
+        isFile(item) &&
+        createPortal(
+          <FileUpdateModal
+            fileId={item.id}
+            fileName={item.fileName}
+            isPublic={item.isPublic}
+            setUpdateFileModalOpen={setUpdateFileModalOpen}
             forceUpdate={forceUpdate}
           />,
           portalRef.current,
