@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: flex-start;
   margin-top: 1.5rem;
-  width: 50%;
+  width: 75%;
 }
 
 .updateFile__input {
@@ -23,7 +23,7 @@
 }
 
 .updateFile__button {
-  width: 100%;
+  width: 75%;
   height: 3rem;
   max-width: 20rem;
   font-size: 1rem;

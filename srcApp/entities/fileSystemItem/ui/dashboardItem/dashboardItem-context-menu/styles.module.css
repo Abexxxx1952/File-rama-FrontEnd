@@ -1,0 +1,62 @@
+.contextMenu {
+  --context-menu-item-height: 40px;
+  position: absolute;
+  bottom: 50%;
+  right: 75%;
+  z-index: 100;
+  width: 220px;
+  background-color: var(--dashboard-background-item-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  padding: 6px 0;
+}
+
+.contextMenu__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list__item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: var(--context-menu-item-height);
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.list__item:hover {
+  background-color: var(--dashboard-background-color);
+}
+
+.contextButton__download,
+.contextButton__update,
+.contextButton__delete,
+.contextButton__loading {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  transition: all 0.1s ease-in-out;
+}
+
+.contextButton__loading,
+.contextButton__loading {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.contextButton__text {
+  margin-left: 0.5rem;
+}

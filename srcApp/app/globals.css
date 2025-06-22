@@ -23,10 +23,12 @@
   --dashboard-table-column-name-width-maxwidth576: 49%;
   --dashboard-table-column-size-width: 10%;
   --dashboard-table-column-uploadDate-width: 20%;
-  --dashboard-table-column-public-width: 7%;
+  --dashboard-table-column-public-width: 5%;
+  --dashboard-table-column-public-width-maxwidth1200: 7%;
   --dashboard-table-column-public-width-maxwidth768: 10%;
   --dashboard-table-column-public-width-maxwidth576: 15%;
-  --dashboard-table-column-buttons-width: 7%;
+  --dashboard-table-column-buttons-width: 9%;
+  --dashboard-table-column-buttons-width-maxwidth1200: 7%;
   --dashboard-table-column-buttons-width-maxwidth768: 6%;
   --dashboard-table-column-buttons-width-maxwidth576: 5%;
   --modal-bg-color: rgb(125, 127, 136);

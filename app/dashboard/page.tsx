@@ -4,7 +4,7 @@ import { DashboardPage } from "@/srcApp/pages/dashboard";
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Your dashboard",
-  icons: "/icons/logo.svg",
+  icons: "/meta-icon.svg",
 };
 
 export default DashboardPage;
