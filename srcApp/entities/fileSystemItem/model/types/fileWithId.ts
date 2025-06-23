@@ -1,5 +1,7 @@
 export type FileWithOptions = {
   file: File;
   id: string;
-  isUploading: boolean;
+  uploadStatus: UploadStatus;
 };
+
+export type UploadStatus = "queued" | "uploading" | "completed" | "error";

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { getFilesWithOptions } from "@/srcApp/entities/fileSystemItem/model/getFilesWithId";
+import { FileWithOptions } from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
 import { Modal } from "@/srcApp/shared/ui/modal";
-import { getFilesWithOptions } from "../../model/getFilesWithId";
-import { FileWithOptions } from "../../model/types/fileWithId";
 import { FileCreateModalItem } from "./file-create-modal-item";
 import styles from "./styles.module.css";
 
@@ -17,43 +17,33 @@ export function FileCreateModal({
   forceUpdate,
 }: FileCreateModalProps) {
   const [files, setFiles] = useState<FileWithOptions[]>([]);
+  const [availableToUpload, setAvailableToUpload] = useState(
+    Number(process.env.NEXT_PUBLIC_AVAILABLE_TO_UPLOAD_FILE_COUNT) || 5,
+  );
   const [completedFiles, setCompletedFiles] = useState(0);
   const [totalFiles, setTotalFiles] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const isRevalidateCacheRef = useRef<boolean>(false);
 
-  useEffect(() => {
-    const dropArea = document.getElementById("drop-zone");
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const files = event.dataTransfer?.files;
+    if (files) {
+      handleSelectedFiles(files);
+    }
+    setIsDragOver(false);
+  };
 
-    const handleDrop = (event: DragEvent) => {
-      event.preventDefault();
-      const files = event.dataTransfer?.files;
-      if (files) {
-        handleSelectedFiles(files);
-      }
-      setIsDragOver(false);
-    };
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  };
 
-    const handleDragOver = (event: DragEvent) => {
-      event.preventDefault();
-      setIsDragOver(true);
-    };
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
 
-    const handleDragLeave = () => {
-      setIsDragOver(false);
-    };
-
-    dropArea?.addEventListener("drop", handleDrop);
-    dropArea?.addEventListener("dragover", handleDragOver);
-    dropArea?.addEventListener("dragleave", handleDragLeave);
-
-    return () => {
-      dropArea?.removeEventListener("drop", handleDrop);
-      dropArea?.removeEventListener("dragover", handleDragOver);
-      dropArea?.removeEventListener("dragleave", handleDragLeave);
-    };
-  }, []);
   function handleBrowseClick() {
     inputRef.current?.click();
   }
@@ -61,11 +51,16 @@ export function FileCreateModal({
   function handleSelectedFiles(filesList: FileList | null) {
     if (filesList === null || filesList.length === 0) return;
     const filesArray: File[] = [...filesList];
-    const filesWithOptions = getFilesWithOptions(filesArray);
+    const filesWithOptions = getFilesWithOptions(
+      filesArray,
+      availableToUpload,
+      setAvailableToUpload,
+    );
 
     setFiles((prev) => [...(prev || []), ...filesWithOptions]);
     setTotalFiles((prev) => prev + filesWithOptions.length);
   }
+  console.log(files);
 
   return (
     <Modal
@@ -73,7 +68,7 @@ export function FileCreateModal({
       backgroundColor="#fff"
       height="90%"
     >
-      {({ setModalOpen }) => (
+      {() => (
         <div className={styles.uploader}>
           <div className={styles.uploader__header}>
             <h2 className={styles.uploader__title}>File Uploader</h2>
@@ -90,6 +85,8 @@ export function FileCreateModal({
                   fileWith={file}
                   setFiles={setFiles}
                   setCompletedFiles={setCompletedFiles}
+                  availableToUpload={availableToUpload}
+                  setAvailableToUpload={setAvailableToUpload}
                   forceUpdate={forceUpdate}
                   isRevalidateCacheRef={isRevalidateCacheRef}
                 />
@@ -97,7 +94,9 @@ export function FileCreateModal({
           </ul>
           <div
             className={`${styles.fileUploadBox} ${isDragOver ? styles.active : ""}`}
-            id="drop-zone"
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
           >
             <h2 className={styles.fileUploadBox__title}>
               <span className={styles.fileUploadBox__instruction}>
