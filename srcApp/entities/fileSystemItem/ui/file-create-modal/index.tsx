@@ -8,11 +8,13 @@ import { FileCreateModalItem } from "./file-create-modal-item";
 import styles from "./styles.module.css";
 
 type FileCreateModalProps = {
+  parentFolderId: string | null;
   setAddFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
 };
 
 export function FileCreateModal({
+  parentFolderId,
   setAddFileModalOpen,
   forceUpdate,
 }: FileCreateModalProps) {
@@ -60,7 +62,6 @@ export function FileCreateModal({
     setFiles((prev) => [...(prev || []), ...filesWithOptions]);
     setTotalFiles((prev) => prev + filesWithOptions.length);
   }
-  console.log(files);
 
   return (
     <Modal
@@ -84,6 +85,7 @@ export function FileCreateModal({
                   key={file.id}
                   fileWith={file}
                   setFiles={setFiles}
+                  parentFolderId={parentFolderId}
                   setCompletedFiles={setCompletedFiles}
                   availableToUpload={availableToUpload}
                   setAvailableToUpload={setAvailableToUpload}

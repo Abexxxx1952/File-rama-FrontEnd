@@ -5,7 +5,7 @@ import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 
 export async function fetchEntity<T>(
-  url: string,
+  url: string | URL,
   access_token: string,
   cacheTags?: string[],
   abortControllerRef?: React.RefObject<AbortController | null>,

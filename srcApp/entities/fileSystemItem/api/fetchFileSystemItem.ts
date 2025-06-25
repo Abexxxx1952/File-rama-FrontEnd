@@ -7,10 +7,17 @@ import { FileSystemItem } from "../model/types/fileSystemItem";
 
 export async function fetchFileSystemItem(
   access_token: string,
+  parentFolderId?: string,
 ): Promise<FileSystemItem[] | ErrorData | null> {
-  const url: string = `${process.env.GET_FILE_SYSTEM_ITEM_URL}`;
+  const urlFromEnv: string = `${process.env.GET_FILE_SYSTEM_ITEM_URL}`;
+  const url = new URL(urlFromEnv);
+  if (parentFolderId) {
+    url.searchParams.set("parentFolderId", parentFolderId);
+  }
 
-  return fetchEntity<FileSystemItem>(url, access_token, [
-    CACHE_TAG.FILE_SYSTEM_ITEM,
-  ]);
+  const cacheTag = parentFolderId
+    ? `${CACHE_TAG.FILE_SYSTEM_ITEM} + "/" + ${parentFolderId}`
+    : CACHE_TAG.FILE_SYSTEM_ITEM;
+
+  return fetchEntity<FileSystemItem>(url, access_token, [cacheTag]);
 }

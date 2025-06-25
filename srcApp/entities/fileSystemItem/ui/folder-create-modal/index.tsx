@@ -14,11 +14,13 @@ import styles from "./styles.module.css";
 type FolderCreateModalProps = {
   setAddFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
+  parentFolderId: string | null;
 };
 
 export function FolderCreateModal({
   setAddFolderModalOpen,
   forceUpdate,
+  parentFolderId,
 }: FolderCreateModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -38,11 +40,8 @@ export function FolderCreateModal({
     setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
   ) {
     (async () => {
-      await createFolder(
-        { ...data, parentFolderId: null },
-        setLoading,
-        setModalOpen,
-      );
+      await createFolder({ ...data, parentFolderId }, setLoading, setModalOpen);
+
       forceUpdate();
     })();
   }

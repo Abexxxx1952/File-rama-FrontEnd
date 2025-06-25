@@ -18,10 +18,17 @@ import styles from "./styles.module.css";
 
 type DashboardItemProps = {
   item: FileSystemItem;
+  setPath: React.Dispatch<React.SetStateAction<string[]>>;
+  setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
   forceUpdate: () => void;
 };
 
-export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
+export function DashboardItem({
+  item,
+  setPath,
+  setParentFolderId,
+  forceUpdate,
+}: DashboardItemProps) {
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const isFileItem = isFile(item);
@@ -80,8 +87,20 @@ export function DashboardItem({ item, forceUpdate }: DashboardItemProps) {
     return `${date} ${time}`;
   }
 
+  function doubleClickFolderHandler() {
+    if (!isFileItem) {
+      setPath((prev) =>
+        prev.length === 1
+          ? prev.concat(item.folderName)
+          : prev.concat(`/${item.folderName}`),
+      );
+      setParentFolderId((prev) => prev.concat(item.id));
+      forceUpdate();
+    }
+  }
+
   return (
-    <div className={styles.tableItem}>
+    <div className={styles.tableItem} onDoubleClick={doubleClickFolderHandler}>
       <span className={`${styles.tableItem__name} ${styles.tableItem__row}`}>
         {isFileItem ? (
           <span className={styles.tableItem__icon}>

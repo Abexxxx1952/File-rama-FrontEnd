@@ -10,7 +10,7 @@ type HttpMethod =
   | "OPTIONS";
 
 export interface apiClientArgs {
-  baseUrl: string;
+  baseUrl: string | URL;
   method?: HttpMethod;
   condition?: Record<string, unknown>;
   additionalHeaders?: Record<string, string>;

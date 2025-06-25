@@ -7,11 +7,12 @@ import {
   DashboardItem,
   FolderCreateModal,
 } from "@/srcApp/entities/fileSystemItem/ui";
+import { EmptyItem } from "@/srcApp/entities/fileSystemItem/ui/emptyItem";
 import { FileCreateModal } from "@/srcApp/entities/fileSystemItem/ui/file-create-modal";
+import { Options } from "@/srcApp/features/options/ui";
+import { Search } from "@/srcApp/features/search/ui";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
-import { Input } from "@/srcApp/shared/ui/input";
-import { Logo } from "@/srcApp/shared/ui/logo";
 import { createPortal } from "react-dom";
 import styles from "./styles.module.css";
 
@@ -22,6 +23,8 @@ export function DashboardPage() {
   const [addFolderModalOpen, setAddFolderModalOpen] = useState<boolean>(false);
   const [addFileModalOpen, setAddFileModalOpen] = useState<boolean>(false);
   const [version, setVersion] = useState(0);
+  const [path, setPath] = useState<string[]>([":/"]);
+  const [parentFolderId, setParentFolderId] = useState<string[]>([]);
   const portalRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -30,11 +33,19 @@ export function DashboardPage() {
 
   useEffect(() => {
     (async () => {
-      const fileSystemItems = await getFileSystemItems();
+      let fileSystemItems: FileSystemItem[] | null = null;
+      if (parentFolderId.length === 0) {
+        fileSystemItems = await getFileSystemItems();
+      }
+      if (parentFolderId.length > 0) {
+        fileSystemItems = await getFileSystemItems(
+          parentFolderId[parentFolderId.length - 1],
+        );
+      }
 
       setFileSystemItems(fileSystemItems);
     })();
-  }, [version]);
+  }, [version, parentFolderId]);
 
   if (!fileSystemItems) {
     return null;
@@ -42,23 +53,12 @@ export function DashboardPage() {
   const forceUpdate = () => setVersion((v) => v + 1);
   return (
     <>
-      <div className={styles.storage__search}>
-        <div className={styles.storage__logo}>
-          <Logo />
-        </div>
-        <div className={styles.storage__searchInput}>
-          <Input
-            placeholder="Search"
-            backgroundColor="rgb(255, 255, 255)"
-            focusBackgroundColor="rgb(255, 255, 255)"
-            border="none"
-            placeholderPaddingLeft="1.5rem"
-            iconSvg="svg/dashboard-page-sprite.svg#search"
-            iconSvgWidth="17px"
-            iconSvgHeight="16px"
-          />
-        </div>
-      </div>
+      <Search />
+      <Options
+        path={path}
+        setPath={setPath}
+        setParentFolderId={setParentFolderId}
+      />
       <div className={styles.storage__content}>
         <div className={styles.storage__table}>
           <div className={styles.tableHeader}>
@@ -84,11 +84,14 @@ export function DashboardPage() {
               Public
             </span>
           </div>
+          {fileSystemItems.length === 0 && <EmptyItem />}
           {fileSystemItems.map((elem) => {
             return (
               <DashboardItem
                 key={elem.id}
                 item={elem}
+                setPath={setPath}
+                setParentFolderId={setParentFolderId}
                 forceUpdate={forceUpdate}
               />
             );
@@ -136,6 +139,11 @@ export function DashboardPage() {
           <FolderCreateModal
             setAddFolderModalOpen={setAddFolderModalOpen}
             forceUpdate={forceUpdate}
+            parentFolderId={
+              parentFolderId.length > 0
+                ? parentFolderId[parentFolderId.length - 1]
+                : null
+            }
           />,
           portalRef.current,
         )}
@@ -143,6 +151,11 @@ export function DashboardPage() {
         addFileModalOpen &&
         createPortal(
           <FileCreateModal
+            parentFolderId={
+              parentFolderId.length > 0
+                ? parentFolderId[parentFolderId.length - 1]
+                : null
+            }
             setAddFileModalOpen={setAddFileModalOpen}
             forceUpdate={forceUpdate}
           />,

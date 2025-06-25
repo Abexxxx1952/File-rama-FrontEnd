@@ -15,6 +15,7 @@ import styles from "./styles.module.css";
 
 type FileCreateModalItemProps = {
   fileWith: FileWithOptions;
+  parentFolderId: string | null;
   setFiles: React.Dispatch<React.SetStateAction<FileWithOptions[]>>;
   setCompletedFiles: React.Dispatch<React.SetStateAction<number>>;
   availableToUpload: number;
@@ -25,6 +26,7 @@ type FileCreateModalItemProps = {
 
 export function FileCreateModalItem({
   fileWith,
+  parentFolderId,
   setFiles,
   setCompletedFiles,
   availableToUpload,
@@ -66,19 +68,18 @@ export function FileCreateModalItem({
     setCompletedSize(data.progress);
     setUploadStatusView(UploadStatus.completed);
     setCompletedFiles((prev) => prev + 1);
-    setTimeout(() => {
-      setFiles((prevFiles) => {
-        return updateFileUploadStatus(
-          prevFiles,
-          id,
-          "completed",
-          setAvailableToUpload,
-        );
-      });
-    }, 1000);
+
+    setFiles((prevFiles) => {
+      return updateFileUploadStatus(
+        prevFiles,
+        id,
+        "completed",
+        setAvailableToUpload,
+      );
+    });
 
     hasCompletedUploadRef.current = true;
-    /*   forceUpdate(); */
+    forceUpdate();
   }
 
   function handleUploadError(err: any) {
@@ -108,16 +109,15 @@ export function FileCreateModalItem({
     });
 
     setUploadStatusView(UploadStatus.cancelled);
-    setTimeout(() => {
-      setFiles((prevFiles) => {
-        return updateFileUploadStatus(
-          prevFiles,
-          id,
-          "error",
-          setAvailableToUpload,
-        );
-      });
-    }, 1000);
+
+    setFiles((prevFiles) => {
+      return updateFileUploadStatus(
+        prevFiles,
+        id,
+        "error",
+        setAvailableToUpload,
+      );
+    });
 
     hasCompletedUploadRef.current = false;
   }
@@ -125,16 +125,16 @@ export function FileCreateModalItem({
   function handleCancelUpload() {
     abortControllerRef.current.abort();
     setUploadStatusView(UploadStatus.cancelled);
-    setTimeout(() => {
-      setFiles((prevFiles) => {
-        return updateFileUploadStatus(
-          prevFiles,
-          id,
-          "queued",
-          setAvailableToUpload,
-        );
-      });
-    }, 1000);
+
+    setFiles((prevFiles) => {
+      return updateFileUploadStatus(
+        prevFiles,
+        id,
+        "queued",
+        setAvailableToUpload,
+      );
+    });
+
     hasCompletedUploadRef.current = false;
   }
 
@@ -154,6 +154,9 @@ export function FileCreateModalItem({
     if (!(uploadStatus === "uploading")) return;
 
     const formData = new FormData();
+    if (parentFolderId) {
+      formData.append("parentFolderId", parentFolderId);
+    }
     formData.append("file", file);
 
     (async () => {
