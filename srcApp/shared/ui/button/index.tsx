@@ -6,35 +6,41 @@ import styles from "./styles.module.css";
 
 type ButtonProps = {
   text: string;
-  textColor?: string;
-  backgroundColor?: string;
-  border?: string;
   icon?: string;
   iconSvg?: string;
-  focusTextColor?: string;
-  focusBackgroundColor?: string;
-  boxShadow?: string;
   loading?: boolean;
   disabled?: boolean;
   type?: "submit" | "button" | "reset" | undefined;
   onClick?: () => void;
+  className?: string;
+  iconSvgClassName?: string;
+  textColor?: string;
+  backgroundColor?: string;
+  border?: string;
+  focusTextColor?: string;
+  focusBackgroundColor?: string;
+  boxShadow?: string;
 };
 
 export function Button({
   text,
-  textColor,
-  backgroundColor,
-  border,
   icon,
   iconSvg,
-  focusTextColor,
-  focusBackgroundColor,
-  boxShadow,
+  iconSvgClassName,
   loading = false,
   disabled = false,
   type,
   onClick,
+  className,
+  textColor,
+  backgroundColor,
+  border,
+  focusTextColor,
+  focusBackgroundColor,
+  boxShadow,
 }: ButtonProps) {
+  const isDisabled = disabled || loading;
+
   const buttonStyle = {
     "--bg-color": backgroundColor,
     "--text-color": textColor,
@@ -43,13 +49,11 @@ export function Button({
     "--focus-text-color": focusTextColor,
     "--box-shadow": boxShadow,
   } as React.CSSProperties;
-
-  const isDisabled = disabled || loading;
   return (
     <button
-      className={styles.button}
-      disabled={isDisabled}
+      className={`${styles.button} ${className || ""}`}
       style={buttonStyle}
+      disabled={isDisabled}
       onClick={onClick}
       type={type ? type : undefined}
       aria-label={loading ? "Loading" : undefined}
@@ -57,7 +61,12 @@ export function Button({
       aria-busy={loading}
     >
       {icon && <Image src={icon} className={styles.icon} alt="Icon" />}
-      {iconSvg && <Icon link={iconSvg} className={styles.svgIcon} />}
+      {iconSvg && (
+        <Icon
+          link={iconSvg}
+          className={`${styles.svgIcon} ${iconSvgClassName || ""}`}
+        />
+      )}
       {loading ? (
         <div className={styles.spinner} aria-hidden="true">
           <svg viewBox="0 0 24 24">

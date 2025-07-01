@@ -1,34 +1,44 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { deleteFile } from "@/srcApp/entities/fileSystemItem/model/deleteFile";
+import { deleteFolder } from "@/srcApp/entities/fileSystemItem/model/deleteFolder";
+import { downloadFile } from "@/srcApp/entities/fileSystemItem/model/downloadFile";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
+import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
+import { isFolder } from "@/srcApp/entities/fileSystemItem/model/isFolder";
+import { openFile } from "@/srcApp/entities/fileSystemItem/model/openFile";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
-import { Icon } from "@/srcApp/shared/ui/icon";
+import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
 import { createPortal } from "react-dom";
-import { deleteFile } from "../../model/deleteFile";
-import { deleteFolder } from "../../model/deleteFolder";
-import { downloadFile } from "../../model/downloadFile";
-import { isFile } from "../../model/isFile";
-import { isFolder } from "../../model/isFolder";
+import { areDashboardItemEqual } from "../../model/areDashboardItemEqual";
 import { FileUpdateModal } from "../file-update-modal";
 import { FolderUpdateModal } from "../folder-update-modal";
 import { DashboardItemContextMenu } from "./dashboardItem-context-menu";
 import styles from "./styles.module.css";
 
-type DashboardItemProps = {
+export type DashboardItemProps = {
   item: FileSystemItem;
+  index: number;
   setPath: React.Dispatch<React.SetStateAction<string[]>>;
   setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
   forceUpdate: () => void;
+  isSelected: boolean;
+  setSelected: React.Dispatch<React.SetStateAction<Map<string, number>>>;
 };
 
-export function DashboardItem({
+export const DashboardItem = React.memo(function ({
   item,
+  index,
   setPath,
   setParentFolderId,
   forceUpdate,
+  isSelected,
+  setSelected,
+  /*  selectionSettersRef, */
 }: DashboardItemProps) {
+  const [loadingOpen, setLoadingOpen] = useState(false);
   const [loadingDownload, setLoadingDownload] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const isFileItem = isFile(item);
@@ -38,6 +48,8 @@ export function DashboardItem({
     useState<boolean>(false);
   const [updateFileModalOpen, setUpdateFileModalOpen] =
     useState<boolean>(false);
+  /*   const [isSelected, setIsSelected] = useState(false); */
+
   const portalRef = useRef<HTMLElement | null>(null);
 
   const body = document.querySelector("body");
@@ -52,6 +64,10 @@ export function DashboardItem({
 
   function handleEllipsis() {
     setDashboardItemContextMenuOpen((prev) => !prev);
+  }
+
+  async function handleOpen() {
+    await openFile(item.id, setLoadingOpen);
   }
 
   async function handleDownload() {
@@ -87,8 +103,12 @@ export function DashboardItem({
     return `${date} ${time}`;
   }
 
-  function doubleClickFolderHandler() {
-    if (!isFileItem) {
+  function doubleClickHandler() {
+    if (isFileItem) {
+      (async () => {
+        await openFile(item.id, setLoadingDownload);
+      })();
+    } else {
       setPath((prev) =>
         prev.length === 1
           ? prev.concat(item.folderName)
@@ -99,8 +119,37 @@ export function DashboardItem({
     }
   }
 
+  function oneClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    if (e.ctrlKey || e.metaKey || e.shiftKey) {
+      selectItemHandler();
+    }
+  }
+
+  function selectItemHandler() {
+    if (isSelected) {
+      setSelected((prev) => {
+        prev.delete(item.id);
+        return new Map(prev);
+      });
+    } else {
+      setSelected((prev) => new Map(prev.set(item.id, index)));
+    }
+  }
+
+  /*   function selectItemsHandler() {
+    setIsSelected(true);
+    const lastSelectItem = [...selectionSettersRef.current].at(-1);
+    selectionSettersRef.current.set(item.id, { setIsSelected, index });
+   setSelected((prev) => prev.concat(item.id)); 
+  } */
+  /* console.log(isSelected); */
+
   return (
-    <div className={styles.tableItem} onDoubleClick={doubleClickFolderHandler}>
+    <div
+      className={`${styles.tableItem} ${isSelected && styles.tableItem_selected}`}
+      onClick={oneClickHandler}
+      onDoubleClick={doubleClickHandler}
+    >
       <span className={`${styles.tableItem__name} ${styles.tableItem__row}`}>
         {isFileItem ? (
           <span className={styles.tableItem__icon}>
@@ -144,42 +193,46 @@ export function DashboardItem({
           <DashboardItemContextMenu
             isFileItem={isFileItem}
             setDashboardItemContextMenuOpen={setDashboardItemContextMenuOpen}
+            loadingOpen={loadingOpen}
             loadingDownload={loadingDownload}
             loadingDelete={loadingDelete}
+            handleOpen={handleOpen}
             handleDownload={handleDownload}
             handleUpdate={handleUpdate}
             handleDelete={handleDelete}
           />
         )}
-        <Icon
-          link="/svg/dashboard-page-sprite.svg#ellipsis"
-          className={styles.tableButton__ellipsis}
+        <ButtonIcon
+          iconUrl="/svg/dashboard-page-sprite.svg#ellipsis"
           onClick={handleEllipsis}
+          className={styles.tableButton__ellipsis}
         />
         {isFileItem && (
-          <Icon
-            link={
-              loadingDownload
-                ? "/svg/settings-sprite.svg#loading"
-                : "/svg/dashboard-page-sprite.svg#download"
-            }
-            className={`${styles.tableButton__download}  ${loadingDownload && styles.tableButton__loading}`}
-            onClick={handleDownload}
+          <ButtonIcon
+            iconUrl="/svg/dashboard-page-sprite.svg#open"
+            onClick={handleOpen}
+            loading={loadingOpen}
+            className={styles.tableButton__open}
           />
         )}
-        <Icon
-          link="/svg/settings-sprite.svg#update"
-          className={styles.tableButton__update}
+        {isFileItem && (
+          <ButtonIcon
+            iconUrl="/svg/dashboard-page-sprite.svg#download"
+            onClick={handleDownload}
+            loading={loadingDownload}
+            className={styles.tableButton__download}
+          />
+        )}
+        <ButtonIcon
+          iconUrl="/svg/settings-sprite.svg#update"
           onClick={handleUpdate}
+          className={styles.tableButton__update}
         />
-        <Icon
-          link={
-            loadingDelete
-              ? "/svg/settings-sprite.svg#loading"
-              : "/svg/settings-sprite.svg#delete"
-          }
-          className={`${styles.tableButton__delete} ${loadingDelete && styles.tableButton__loading}`}
+        <ButtonIcon
+          iconUrl="/svg/settings-sprite.svg#delete"
           onClick={handleDelete}
+          loading={loadingDelete}
+          className={styles.tableButton__delete}
         />
       </span>
       {portalRef.current &&
@@ -210,4 +263,4 @@ export function DashboardItem({
         )}
     </div>
   );
-}
+}, areDashboardItemEqual);

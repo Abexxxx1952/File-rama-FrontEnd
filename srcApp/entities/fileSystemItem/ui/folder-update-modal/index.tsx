@@ -105,7 +105,7 @@ export function FolderUpdateModal({
               )}
             />
           </div>
-          <div className={styles.updateFolder__button}>
+          <div className={styles.updateFolder__buttonContainer}>
             <Button
               text="Update folder"
               backgroundColor="var(--primary-logo-color)"

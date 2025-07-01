@@ -14,6 +14,7 @@ import { Search } from "@/srcApp/features/search/ui";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { createPortal } from "react-dom";
+import { selectBetween } from "../model/selectBetween";
 import styles from "./styles.module.css";
 
 export function DashboardPage() {
@@ -25,11 +26,37 @@ export function DashboardPage() {
   const [version, setVersion] = useState(0);
   const [path, setPath] = useState<string[]>([":/"]);
   const [parentFolderId, setParentFolderId] = useState<string[]>([]);
+  const [selected, setSelected] = useState<Map<string, number>>(new Map());
   const portalRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     portalRef.current = document.getElementById("portal");
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setSelected(new Map());
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
+
+  useEffect(() => {
+    function handleKeyDown(event: MouseEvent) {
+      if (event.shiftKey) {
+        selectBetween(selected, fileSystemItems!, setSelected);
+      }
+    }
+
+    window.addEventListener("click", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("click", handleKeyDown);
+    };
+  }, [selected, fileSystemItems]);
 
   useEffect(() => {
     (async () => {
@@ -47,10 +74,21 @@ export function DashboardPage() {
     })();
   }, [version, parentFolderId]);
 
+  function forceUpdate() {
+    setVersion((v) => v + 1);
+  }
+
+  function isSelected(id: string) {
+    if (selected.size > 0) {
+      return selected.has(id);
+    }
+    return false;
+  }
+
   if (!fileSystemItems) {
     return null;
   }
-  const forceUpdate = () => setVersion((v) => v + 1);
+
   return (
     <>
       <Search />
@@ -85,14 +123,17 @@ export function DashboardPage() {
             </span>
           </div>
           {fileSystemItems.length === 0 && <EmptyItem />}
-          {fileSystemItems.map((elem) => {
+          {fileSystemItems.map((elem, index) => {
             return (
               <DashboardItem
                 key={elem.id}
                 item={elem}
+                index={index}
                 setPath={setPath}
                 setParentFolderId={setParentFolderId}
                 forceUpdate={forceUpdate}
+                isSelected={isSelected(elem.id)}
+                setSelected={setSelected}
               />
             );
           })}
@@ -101,14 +142,14 @@ export function DashboardPage() {
           <div className={styles.dashboard__addButton}>
             <Button
               text="+ Add File"
-              backgroundColor="rgba(116, 181, 227,0.5)"
+              className={styles.dashboard__button}
               onClick={() => setAddFileModalOpen(true)}
             />
           </div>
           <div className={styles.dashboard__addButton}>
             <Button
               text="+ Create Folder"
-              backgroundColor="rgba(116, 181, 227,0.5)"
+              className={styles.dashboard__button}
               onClick={() => setAddFolderModalOpen(true)}
             />
           </div>

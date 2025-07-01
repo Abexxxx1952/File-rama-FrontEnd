@@ -31,7 +31,7 @@
 .list__item:hover {
   background-color: var(--dashboard-background-color);
 }
-
+.contextButton__open,
 .contextButton__download,
 .contextButton__update,
 .contextButton__delete,

@@ -5,27 +5,21 @@ import Link from "next/link";
 import { Icon } from "../icon";
 import styles from "./styles.module.css";
 
-type ButtonProps = {
+type ButtonLinkProps = {
   text: string;
   textColor?: string;
   backgroundColor?: string;
   border?: string;
-  icon?: string;
-  iconSvg?: string;
-  iconSvgWidth?: string;
-  iconSvgHeight?: string;
-  iconSvgFill?: string;
-  iconSvgFocusFill?: string;
-  iconSvgTop?: string;
-  iconSvgLeft?: string;
-  iconSvgRight?: string;
-  iconSvgTransform?: string;
   focusTextColor?: string;
   focusBackgroundColor?: string;
   boxShadow?: string;
   padding?: string;
+  icon?: string;
+  iconSvg?: string;
   loading?: boolean;
   href: string;
+  className?: string;
+  classNameSvg?: string;
   onClick?: (
     e: React.SyntheticEvent<HTMLAnchorElement>,
   ) => void | Promise<void>;
@@ -36,22 +30,18 @@ export function ButtonLink({
   textColor,
   backgroundColor,
   border,
-  icon,
-  iconSvg,
-  iconSvgWidth,
-  iconSvgHeight,
-  iconSvgTop,
-  iconSvgLeft,
-  iconSvgRight,
-  iconSvgTransform,
   focusTextColor,
   focusBackgroundColor,
   boxShadow,
   padding,
+  icon,
+  iconSvg,
   loading = false,
   href,
   onClick,
-}: ButtonProps) {
+  className,
+  classNameSvg,
+}: ButtonLinkProps) {
   const linkStyle = {
     "--bg-color": backgroundColor,
     "--text-color": textColor,
@@ -61,25 +51,20 @@ export function ButtonLink({
     "--box-shadow": boxShadow,
     "--padding": padding,
   } as React.CSSProperties;
-  const iconSvgStyle = {
-    "--icon-svg-width": iconSvgWidth,
-    "--icon-svg-height": iconSvgHeight,
-    "--icon-svg-top": iconSvgTop,
-    "--icon-svg-left": iconSvgLeft,
-    "--icon-svg-right": iconSvgRight,
-    "--icon-svg-transform": iconSvgTransform,
-  } as React.CSSProperties;
   return (
     <Link
       href={href}
       onClick={onClick}
+      className={`${styles.link} ${className || ""}`}
       style={linkStyle}
-      className={styles.link}
       aria-label={`Go to ${href}`}
     >
       {icon && <Image src={icon} className={styles.icon} alt="Icon" />}
       {iconSvg && (
-        <Icon link={iconSvg} className={styles.svgIcon} style={iconSvgStyle} />
+        <Icon
+          link={iconSvg}
+          className={`${styles.svgIcon} ${classNameSvg || ""}`}
+        />
       )}
       {loading ? (
         <div className={styles.spinner} aria-hidden="true">

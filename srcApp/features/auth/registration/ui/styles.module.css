@@ -86,6 +86,7 @@
 .logo__submitIcon {
   right: 50%;
   transform: translate(300%, -50%);
+  pointer-events: none;
 }
 
 .registerForm__submit:hover,

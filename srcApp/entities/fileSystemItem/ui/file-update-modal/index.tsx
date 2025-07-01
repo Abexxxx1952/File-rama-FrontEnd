@@ -102,7 +102,7 @@ export function FileUpdateModal({
               )}
             />
           </div>
-          <div className={styles.updateFile__button}>
+          <div className={styles.updateFile__buttonContainer}>
             <Button
               text="Update file"
               backgroundColor="var(--primary-logo-color)"

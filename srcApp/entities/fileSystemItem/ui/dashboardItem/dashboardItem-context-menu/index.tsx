@@ -10,9 +10,11 @@ type DashboardItemContextMenuProps = {
   setDashboardItemContextMenuOpen: React.Dispatch<
     React.SetStateAction<boolean>
   >;
+  loadingOpen: boolean;
   loadingDownload: boolean;
   loadingDelete: boolean;
-  handleDownload: () => void;
+  handleOpen: () => Promise<void>;
+  handleDownload: () => Promise<void>;
   handleUpdate: () => void;
   handleDelete: () => void;
 };
@@ -20,8 +22,10 @@ type DashboardItemContextMenuProps = {
 export function DashboardItemContextMenu({
   isFileItem,
   setDashboardItemContextMenuOpen,
+  loadingOpen,
   loadingDownload,
   loadingDelete,
+  handleOpen,
   handleDownload,
   handleUpdate,
   handleDelete,
@@ -30,6 +34,13 @@ export function DashboardItemContextMenu({
   useClickOutside(contextMenuRef, () => {
     setDashboardItemContextMenuOpen(false);
   });
+
+  function handleContextMenuOpen() {
+    (async () => {
+      await handleOpen();
+      setDashboardItemContextMenuOpen(false);
+    })();
+  }
 
   function handleContextMenuDownload() {
     (async () => {
@@ -46,6 +57,19 @@ export function DashboardItemContextMenu({
   return (
     <div ref={contextMenuRef} className={styles.contextMenu}>
       <ul className={styles.contextMenu__list}>
+        {isFileItem && (
+          <li className={styles.list__item} onClick={handleContextMenuOpen}>
+            <Icon
+              link={
+                loadingOpen
+                  ? "/svg/settings-sprite.svg#loading"
+                  : "/svg/dashboard-page-sprite.svg#open"
+              }
+              className={`${styles.contextButton__open} ${loadingOpen && styles.contextButton__loading}`}
+            />
+            <span className={styles.contextButton__text}>Open</span>
+          </li>
+        )}
         {isFileItem && (
           <li className={styles.list__item} onClick={handleContextMenuDownload}>
             <Icon

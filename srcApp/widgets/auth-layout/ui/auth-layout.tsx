@@ -71,16 +71,16 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         <div className={styles.form}>
-          <nav className={styles.form_buttons}>
+          <nav className={styles.form__buttons}>
             <ButtonLink
               href="/login"
               text="Sign In"
-              backgroundColor="rgba(255, 255, 255, 0.2)"
+              className={styles.form__button}
             />
             <ButtonLink
               href="/register"
               text="Sign Up"
-              backgroundColor="rgba(255, 255, 255, 0.2)"
+              className={styles.form__button}
             />
           </nav>
           {children}

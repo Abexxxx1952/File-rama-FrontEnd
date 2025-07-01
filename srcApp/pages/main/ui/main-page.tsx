@@ -20,22 +20,18 @@ export function MainPage() {
               rama
             </span>
             <div className={styles.description__buttons}>
-              <div className={styles.description__button}>
+              <div className={styles.description__buttonContainer}>
                 <ButtonLink
                   href="/register"
                   text="Getting Started"
-                  textColor="var(--secondary-logo-color)"
-                  focusTextColor="var(--main-page-font-color)"
-                  boxShadow="0 0 10px rgba(255, 255, 255, 0.5)"
+                  className={styles.description__button}
                 />
               </div>
-              <div className={styles.description__button}>
+              <div className={styles.description__buttonContainer}>
                 <ButtonLink
                   href="/description"
                   text="Descriptions"
-                  textColor="var(--secondary-logo-color)"
-                  focusTextColor="var(--main-page-font-color)"
-                  boxShadow="0 0 10px rgba(255, 255, 255, 0.5)"
+                  className={styles.description__button}
                 />
               </div>
             </div>

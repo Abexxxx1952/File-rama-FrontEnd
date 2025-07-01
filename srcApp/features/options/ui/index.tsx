@@ -26,6 +26,7 @@ export function Options({ path, setPath, setParentFolderId }: OptionsProps) {
       </nav>
       <span className={styles.options__path}>Path:</span>
       <span className={styles.options__pathValue}>{path.join("")}</span>
+      <div className={styles.options__buttons}></div>
     </div>
   );
 }

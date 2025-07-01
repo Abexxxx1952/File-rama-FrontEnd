@@ -61,7 +61,7 @@
   margin-top: 3rem;
 }
 
-.description__button {
+.description__buttonContainer {
   width: clamp(8rem, 15vw, 20rem);
   height: 3.5rem;
   border-radius: 1rem;
@@ -70,8 +70,14 @@
   letter-spacing: 0.3px;
 }
 
-.description__button:hover {
+.description__buttonContainer:hover {
   background-color: var(--main-page-button-hover-color);
+  color: var(--main-page-font-color);
+}
+
+.description__button {
+  color: var(--secondary-logo-color);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .representative {

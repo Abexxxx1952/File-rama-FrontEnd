@@ -78,7 +78,7 @@ export function FolderCreateModal({
               )}
             />
           </div>
-          <div className={styles.addFolder__button}>
+          <div className={styles.addFolder__buttonContainer}>
             <Button
               text="Add folder"
               backgroundColor="var(--primary-logo-color)"

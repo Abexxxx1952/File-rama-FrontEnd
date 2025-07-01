@@ -88,6 +88,10 @@
   height: 3rem;
 }
 
+.dashboard__button {
+  background-color: var(--dashboard-button-background-color);
+}
+
 .dashboard__usageSize {
   width: 100%;
   height: calc(100% - 7rem);

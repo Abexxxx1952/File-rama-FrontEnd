@@ -13,6 +13,14 @@
   width: 63%;
 }
 
+.signIn__button {
+  color: var(--secondary-font-color);
+}
+
+.signUp__button {
+  background-color: var(--secondary-logo-color);
+}
+
 @media (max-width: 768px) {
   .signIn,
   .signUp {

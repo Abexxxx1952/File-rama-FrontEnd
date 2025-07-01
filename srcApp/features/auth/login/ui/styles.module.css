@@ -91,6 +91,7 @@
 .logo__submitIcon {
   right: 50%;
   transform: translate(200%, -50%);
+  pointer-events: none;
 }
 
 .loginForm__divider {

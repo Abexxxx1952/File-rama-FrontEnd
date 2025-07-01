@@ -12,6 +12,11 @@
   background-color: var(--dashboard-background-item-hover-color);
 }
 
+.tableItem.tableItem_selected {
+  border-radius: 0.5rem;
+  background-color: var(--dashboard-background-item-selected-color);
+}
+
 .tableItem__row {
   display: flex;
   align-items: center;
@@ -48,7 +53,7 @@
 .tableButton__ellipsis {
   display: none;
 }
-
+.tableButton__open,
 .tableButton__download,
 .tableButton__update,
 .tableButton__delete,
@@ -60,7 +65,8 @@
   margin-left: 0.25rem;
   transition: all 0.1s ease-in-out;
 }
-
+.tableItem:hover .tableButton__open,
+.tableItem:focus-visible .tableButton__open,
 .tableItem:hover .tableButton__download,
 .tableItem:focus-visible .tableButton__download,
 .tableItem:hover .tableButton__update,
@@ -75,7 +81,9 @@
 }
 
 .tableButton__download:hover,
-.tableButton__download:focus-visible {
+.tableButton__download:focus-visible,
+.tableButton__open:hover,
+.tableButton__open:focus-visible {
   transform: scale(1.2);
 }
 
@@ -112,6 +120,7 @@
   position: relative;
   width: 24px;
   height: 24px;
+  user-select: none;
 }
 
 .tableItem__text {
@@ -121,6 +130,7 @@
 }
 
 @media screen and (max-width: 1200px) {
+  .tableItem:hover .tableButton__open,
   .tableItem:hover .tableButton__download,
   .tableItem:focus-visible .tableButton__download,
   .tableItem:hover .tableButton__update,
@@ -140,6 +150,12 @@
     height: 20px;
     justify-self: flex-end;
     align-self: flex-end;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .tableButton__ellipsis:hover,
+  .tableButton__ellipsis:focus-visible {
+    transform: scale(1.2);
   }
 
   .tableItem__public {

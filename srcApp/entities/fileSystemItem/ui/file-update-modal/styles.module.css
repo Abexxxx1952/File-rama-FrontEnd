@@ -22,7 +22,7 @@
   margin-bottom: 1.5rem;
 }
 
-.updateFile__button {
+.updateFile__buttonContainer {
   width: 75%;
   height: 3rem;
   max-width: 20rem;
@@ -34,7 +34,7 @@
   .updateFile__form {
     width: 70%;
   }
-  .updateFile__button {
+  .updateFile__buttonContainer {
     height: 2.5rem;
     margin-top: 1rem;
     font-size: 0.9rem;
@@ -45,7 +45,7 @@
   .updateFile__form {
     width: 85%;
   }
-  .updateFile__button {
+  .updateFile__buttonContainer {
     height: 2rem;
     margin-top: 0.75rem;
     font-size: 0.75rem;

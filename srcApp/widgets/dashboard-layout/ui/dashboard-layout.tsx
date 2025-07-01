@@ -74,7 +74,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     link={`/svg/dashboard-page-sprite.svg#${item.icon}`}
                     className={styles.dashboard__navItemIcon}
                   />
-
                   <ButtonLink
                     href={item.path}
                     onClick={onClickHandler}

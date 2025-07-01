@@ -1,0 +1,40 @@
+.button {
+  --border: none;
+  --border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  border: var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button__loading:hover,
+.button__loading:focus-visible {
+  transform: scale(1.2);
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+}

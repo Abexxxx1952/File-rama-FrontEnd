@@ -10,12 +10,16 @@
   --main-page-font-color: rgb(255, 255, 255);
   --main-footer-height: clamp(3rem, 20vh, 5rem);
   --main-footer-background-color: rgb(118, 87, 230);
+  --auth-button-background-primary-color: rgba(118, 87, 230, 0.5);
+  --auth-button-background-secondary-color: rgba(255, 255, 255, 0.2);
+  --dashboard-button-background-color: rgba(116, 181, 227, 0.5);
   --link-color: rgb(14, 118, 183);
   --dashboard-color: rgb(94, 190, 196);
   --dashboard-nav-width: 10rem;
   --dashboardMini-nav-width: 5rem;
   --dashboard-background-color: rgb(240, 240, 240);
   --dashboard-background-item-color: rgb(255, 255, 255);
+  --dashboard-background-item-selected-color: rgb(139, 170, 199);
   --dashboard-background-item-hover-color: rgb(246, 246, 246);
   --dashboard-table-background-color: rgb(250, 250, 244);
   --dashboard-table-column-name-width: 55%;
@@ -27,7 +31,7 @@
   --dashboard-table-column-public-width-maxwidth1200: 7%;
   --dashboard-table-column-public-width-maxwidth768: 10%;
   --dashboard-table-column-public-width-maxwidth576: 15%;
-  --dashboard-table-column-buttons-width: 9%;
+  --dashboard-table-column-buttons-width: 10%;
   --dashboard-table-column-buttons-width-maxwidth1200: 7%;
   --dashboard-table-column-buttons-width-maxwidth768: 6%;
   --dashboard-table-column-buttons-width-maxwidth576: 5%;

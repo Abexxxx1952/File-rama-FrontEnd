@@ -1,4 +1,7 @@
 .dashboard {
+  --dashboard-profile-icon-width: 60px;
+  --dashboard-profile-icon-height: 60px;
+  --dashboard-profile-name-font-size: 1.25rem;
   width: 100%;
   height: 100vh;
   padding: var(--main-padding-size);
@@ -56,12 +59,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: calc(
+    50% -
+      (
+        (
+            var(--dashboard-profile-icon-height) +
+              var(--dashboard-profile-name-font-size) + 0.5rem
+          ) /
+          2
+      )
+  );
 }
 
 .dashboard__profileIcon {
-  --dashboard-profile-icon-width: 60px;
-  --dashboard-profile-icon-height: 60px;
   width: var(--dashboard-profile-icon-width);
   height: var(--dashboard-profile-icon-height);
   display: flex;
@@ -71,7 +82,7 @@
 
 .dashboard__name {
   margin-top: 0.5rem;
-  font-size: 1.25rem;
+  font-size: var(--dashboard-profile-name-font-size);
   font-weight: 400;
   color: var(--main-page-font-color);
   text-align: center;
