@@ -8,6 +8,7 @@ import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
 import { isFolder } from "@/srcApp/entities/fileSystemItem/model/isFolder";
 import { openFile } from "@/srcApp/entities/fileSystemItem/model/openFile";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
@@ -25,7 +26,7 @@ export type DashboardItemProps = {
   setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
   forceUpdate: () => void;
   isSelected: boolean;
-  setSelected: React.Dispatch<React.SetStateAction<Map<string, number>>>;
+  setSelected: React.Dispatch<React.SetStateAction<SelectedMap>>;
 };
 
 export const DashboardItem = React.memo(function ({
@@ -36,7 +37,6 @@ export const DashboardItem = React.memo(function ({
   forceUpdate,
   isSelected,
   setSelected,
-  /*  selectionSettersRef, */
 }: DashboardItemProps) {
   const [loadingOpen, setLoadingOpen] = useState(false);
   const [loadingDownload, setLoadingDownload] = useState(false);
@@ -48,7 +48,6 @@ export const DashboardItem = React.memo(function ({
     useState<boolean>(false);
   const [updateFileModalOpen, setUpdateFileModalOpen] =
     useState<boolean>(false);
-  /*   const [isSelected, setIsSelected] = useState(false); */
 
   const portalRef = useRef<HTMLElement | null>(null);
 
@@ -132,17 +131,12 @@ export const DashboardItem = React.memo(function ({
         return new Map(prev);
       });
     } else {
-      setSelected((prev) => new Map(prev.set(item.id, index)));
+      const mapElement = isFileItem
+        ? { index, fileId: item.id }
+        : { index, folderId: item.id };
+      setSelected((prev) => new Map(prev.set(item.id, mapElement)));
     }
   }
-
-  /*   function selectItemsHandler() {
-    setIsSelected(true);
-    const lastSelectItem = [...selectionSettersRef.current].at(-1);
-    selectionSettersRef.current.set(item.id, { setIsSelected, index });
-   setSelected((prev) => prev.concat(item.id)); 
-  } */
-  /* console.log(isSelected); */
 
   return (
     <div
@@ -212,6 +206,7 @@ export const DashboardItem = React.memo(function ({
             iconUrl="/svg/dashboard-page-sprite.svg#open"
             onClick={handleOpen}
             loading={loadingOpen}
+            disabled={loadingDownload || loadingDelete}
             className={styles.tableButton__open}
           />
         )}
@@ -220,18 +215,21 @@ export const DashboardItem = React.memo(function ({
             iconUrl="/svg/dashboard-page-sprite.svg#download"
             onClick={handleDownload}
             loading={loadingDownload}
+            disabled={loadingOpen || loadingDelete}
             className={styles.tableButton__download}
           />
         )}
         <ButtonIcon
           iconUrl="/svg/settings-sprite.svg#update"
           onClick={handleUpdate}
+          disabled={loadingOpen || loadingDelete || loadingDownload}
           className={styles.tableButton__update}
         />
         <ButtonIcon
           iconUrl="/svg/settings-sprite.svg#delete"
           onClick={handleDelete}
           loading={loadingDelete}
+          disabled={loadingOpen || loadingDownload}
           className={styles.tableButton__delete}
         />
       </span>

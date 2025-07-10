@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { deleteMany } from "@/srcApp/entities/fileSystemItem/model/deleteMany";
 import { getFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/getFileSystemItem";
+import { FetchDeleteMany } from "@/srcApp/entities/fileSystemItem/model/types/fetchDeleteMany";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import {
   DashboardItem,
@@ -15,6 +17,7 @@ import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { createPortal } from "react-dom";
 import { selectBetween } from "../model/selectBetween";
+import { SelectedMap } from "../model/types/selectedMap";
 import styles from "./styles.module.css";
 
 export function DashboardPage() {
@@ -26,7 +29,8 @@ export function DashboardPage() {
   const [version, setVersion] = useState(0);
   const [path, setPath] = useState<string[]>([":/"]);
   const [parentFolderId, setParentFolderId] = useState<string[]>([]);
-  const [selected, setSelected] = useState<Map<string, number>>(new Map());
+  const [selected, setSelected] = useState<SelectedMap>(new Map());
+
   const portalRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -78,11 +82,30 @@ export function DashboardPage() {
     setVersion((v) => v + 1);
   }
 
-  function isSelected(id: string) {
+  function isSelected(id?: string) {
+    if (id && selected.size > 0) return selected.has(id);
     if (selected.size > 0) {
-      return selected.has(id);
+      return true;
     }
     return false;
+  }
+
+  const selectedMapped = useMemo(() => {
+    const result: FetchDeleteMany = [];
+
+    selected.forEach(({ index, ...id }) => {
+      result.push(id);
+    });
+
+    return result;
+  }, [selected]);
+
+  async function handleDelete(
+    setLoadingDelete: React.Dispatch<React.SetStateAction<boolean>>,
+  ) {
+    await deleteMany(selectedMapped, setLoadingDelete);
+    setSelected(new Map());
+    forceUpdate();
   }
 
   if (!fileSystemItems) {
@@ -96,6 +119,8 @@ export function DashboardPage() {
         path={path}
         setPath={setPath}
         setParentFolderId={setParentFolderId}
+        isSelected={isSelected()}
+        handleDelete={handleDelete}
       />
       <div className={styles.storage__content}>
         <div className={styles.storage__table}>

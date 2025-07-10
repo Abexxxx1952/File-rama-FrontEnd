@@ -6,13 +6,14 @@ import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import { FileSystemItemChangeResult } from "../model/types/FileSystemItemChangeResult";
+import { FetchDeleteMany } from "../model/types/fetchDeleteMany";
 
-export async function fetchDeleteFolder(
+export async function fetchDeleteMany(
   access_token: string,
-  id: string,
+  deleteMany: FetchDeleteMany,
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<FileSystemItemChangeResult[] | ErrorData | null> {
-  const url: string = `${process.env.DELETE_FOLDER_URL}`;
+  const url: string = `${process.env.DELETE_MANY_URL}`;
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
@@ -21,7 +22,7 @@ export async function fetchDeleteFolder(
     additionalHeaders: {
       Authorization: `Bearer ${access_token}`,
     },
-    bodyData: { folderId: id },
+    bodyData: { deleteMany },
   };
 
   try {

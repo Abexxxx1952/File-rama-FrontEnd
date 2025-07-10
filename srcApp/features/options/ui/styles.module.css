@@ -2,6 +2,7 @@
   width: calc(100% - 2rem);
   height: 2rem;
   display: flex;
+  align-items: center;
   margin-top: 0.5rem;
   border-radius: 0.25rem;
   background-color: var(--dashboard-background-color);
@@ -45,4 +46,20 @@
   margin-left: 1rem;
   display: flex;
   align-items: center;
+}
+
+.options__deleteBtn {
+  margin-left: auto;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.options__deleteBtn:hover,
+.options__deleteBtn:focus-visible {
+  --delete-icon-bg-color: rgb(228, 14, 14);
+  --delete-icon-color: transparent;
+  transform: scale(1.1);
 }

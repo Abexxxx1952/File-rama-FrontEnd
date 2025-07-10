@@ -6,11 +6,12 @@ import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { fetchDeleteFolder } from "../api/fetchDeleteFolder";
+import { fetchDeleteMany } from "../api/fetchDeleteMany";
 import { FileSystemItemChangeResult } from "./types/FileSystemItemChangeResult";
+import { FetchDeleteMany } from "./types/fetchDeleteMany";
 
-export async function deleteFolder(
-  id: string,
+export async function deleteMany(
+  selected: FetchDeleteMany,
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<FileSystemItemChangeResult[] | null> {
   setLoading(true);
@@ -19,7 +20,7 @@ export async function deleteFolder(
 
     if (access_token) {
       const data: FileSystemItemChangeResult[] | ErrorData | null =
-        await fetchDeleteFolder(access_token, id);
+        await fetchDeleteMany(access_token, selected);
 
       if (isErrorData(data)) {
         notifyResponse({
@@ -36,6 +37,7 @@ export async function deleteFolder(
         });
         return null;
       }
+
       let successFiles: number = 0;
       let errorFiles: number = 0;
       let successFolders: number = 0;
@@ -86,7 +88,7 @@ export async function deleteFolder(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return deleteFolder(id, setLoading);
+      return deleteMany(selected, setLoading);
     }
     return null;
   } catch (error: unknown) {

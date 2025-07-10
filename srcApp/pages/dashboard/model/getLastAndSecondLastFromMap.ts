@@ -1,24 +1,18 @@
-export function getLastAndSecondLastFromMap<K, V>(
-  map: Map<K, V>,
-): {
-  secondLast: { key: K; index: V };
-  last: { key: K; index: V };
+import { SelectedMap } from "./types/selectedMap";
+
+export function getLastAndSecondLastFromMap(map: SelectedMap): {
+  secondLast: number;
+  last: number;
 } | null {
   if (map.size < 2) {
     return null;
   }
 
-  const entries = Array.from(map.entries());
+  const values = Array.from(map.values());
 
-  const last = {
-    key: entries[entries.length - 1][0],
-    index: entries[entries.length - 1][1],
-  };
+  const last = values[values.length - 1]["index"];
 
-  const secondLast = {
-    key: entries[entries.length - 2][0],
-    index: entries[entries.length - 2][1],
-  };
+  const secondLast = values[values.length - 2]["index"];
 
   return { secondLast, last };
 }

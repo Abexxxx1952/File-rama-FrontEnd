@@ -19,8 +19,8 @@
   cursor: not-allowed;
 }
 
-.button__loading:hover,
-.button__loading:focus-visible {
+.button__loading,
+.button__loading {
   transform: scale(1.2);
   animation: spin 2s linear infinite;
 }
