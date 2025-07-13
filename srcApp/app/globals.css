@@ -20,6 +20,7 @@
   --dashboard-background-color: rgb(240, 240, 240);
   --dashboard-background-item-color: rgb(255, 255, 255);
   --dashboard-background-item-selected-color: rgb(139, 170, 199);
+  --dashboard-background-item-dragOver-color: rgb(185, 223, 231);
   --dashboard-background-item-hover-color: rgb(246, 246, 246);
   --dashboard-table-background-color: rgb(250, 250, 244);
   --dashboard-table-column-name-width: 55%;

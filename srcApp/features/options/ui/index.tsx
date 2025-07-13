@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
+import { areOptionsEqual } from "../model/areOptionsEqual";
 import styles from "./styles.module.css";
 
-type OptionsProps = {
+export type OptionsProps = {
   path: string[];
   setPath: React.Dispatch<React.SetStateAction<string[]>>;
   setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
@@ -13,7 +14,7 @@ type OptionsProps = {
   ) => void;
 };
 
-export function Options({
+export const Options = memo(function ({
   path,
   setPath,
   setParentFolderId,
@@ -21,6 +22,7 @@ export function Options({
   handleDelete,
 }: OptionsProps) {
   const [loadingDelete, setLoadingDelete] = useState(false);
+
   function handleBackClick() {
     setPath((prev) => {
       if (prev.length === 1) return prev;
@@ -52,4 +54,4 @@ export function Options({
       )}
     </div>
   );
-}
+}, areOptionsEqual);

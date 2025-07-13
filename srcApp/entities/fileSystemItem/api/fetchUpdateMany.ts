@@ -6,23 +6,23 @@ import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import type { ErrorData } from "@/srcApp/shared/model/types/errorData";
 import type { FileSystemItemChangeResult } from "../model/types/FileSystemItemChangeResult";
-import type { FetchDeleteMany } from "../model/types/fetchDeleteMany";
+import type { FetchUpdateMany } from "../model/types/fetchUpdateMany";
 
-export async function fetchDeleteMany(
+export async function fetchUpdateMany(
   access_token: string,
-  deleteMany: FetchDeleteMany,
+  updateMany: FetchUpdateMany,
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<FileSystemItemChangeResult[] | ErrorData | null> {
-  const url: string = `${process.env.DELETE_MANY_URL}`;
+  const url: string = `${process.env.UPDATE_MANY_URL}`;
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
-    method: "DELETE",
+    method: "PATCH",
     ...(abortControllerRef && { abortControllerRef }),
     additionalHeaders: {
       Authorization: `Bearer ${access_token}`,
     },
-    bodyData: { deleteMany },
+    bodyData: { updateMany },
   };
 
   try {

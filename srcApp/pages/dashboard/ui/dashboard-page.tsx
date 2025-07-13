@@ -5,11 +5,12 @@ import { deleteMany } from "@/srcApp/entities/fileSystemItem/model/deleteMany";
 import { getFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/getFileSystemItem";
 import { FetchDeleteMany } from "@/srcApp/entities/fileSystemItem/model/types/fetchDeleteMany";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { updateMany } from "@/srcApp/entities/fileSystemItem/model/updateMany";
 import {
   DashboardItem,
   FolderCreateModal,
 } from "@/srcApp/entities/fileSystemItem/ui";
-import { EmptyItem } from "@/srcApp/entities/fileSystemItem/ui/emptyItem";
+import { EmptyItem } from "@/srcApp/entities/fileSystemItem/ui/empty-item";
 import { FileCreateModal } from "@/srcApp/entities/fileSystemItem/ui/file-create-modal";
 import { Options } from "@/srcApp/features/options/ui";
 import { Search } from "@/srcApp/features/search/ui";
@@ -17,7 +18,9 @@ import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { createPortal } from "react-dom";
 import { selectBetween } from "../model/selectBetween";
-import { SelectedMap } from "../model/types/selectedMap";
+import type { Dnd } from "../model/types/dnd";
+import type { Draggable } from "../model/types/draggable";
+import type { SelectedMap } from "../model/types/selectedMap";
 import styles from "./styles.module.css";
 
 export function DashboardPage() {
@@ -32,6 +35,8 @@ export function DashboardPage() {
   const [selected, setSelected] = useState<SelectedMap>(new Map());
 
   const portalRef = useRef<HTMLElement | null>(null);
+  const dndRef = useRef<Dnd>({ draggable: [], droppable: "" });
+  const cursorPositionRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     portalRef.current = document.getElementById("portal");
@@ -82,12 +87,28 @@ export function DashboardPage() {
     setVersion((v) => v + 1);
   }
 
-  function isSelected(id?: string) {
+  function isSelected(id?: string): boolean {
     if (id && selected.size > 0) return selected.has(id);
     if (selected.size > 0) {
       return true;
     }
     return false;
+  }
+
+  function isDraggable(id: string): boolean {
+    return dndRef.current.draggable.some((draggableItem) => {
+      if ("folderId" in draggableItem) {
+        return draggableItem.folderId === id;
+      }
+      if ("fileId" in draggableItem) {
+        return draggableItem.fileId === id;
+      }
+      return false;
+    });
+  }
+
+  function draggableMoreThenOne(selected: SelectedMap): boolean {
+    return selected.size > 1;
   }
 
   const selectedMapped = useMemo(() => {
@@ -108,6 +129,60 @@ export function DashboardPage() {
     forceUpdate();
   }
 
+  async function handleDragStart() {
+    if (selected.size > 0) {
+      const currentDraggableItem = dndRef.current.draggable[0];
+
+      if (!currentDraggableItem) return;
+
+      let id: string | undefined;
+
+      if ("folderId" in currentDraggableItem) {
+        id = currentDraggableItem.folderId;
+      }
+      if ("fileId" in currentDraggableItem) {
+        id = currentDraggableItem.fileId;
+      }
+
+      if (!id || !selected.has(id)) {
+        setSelected(new Map());
+        return;
+      }
+
+      const draggable: Draggable = [];
+      selected.forEach((value) => {
+        const { index, ...rest } = value;
+        draggable.push(rest);
+      });
+
+      dndRef.current.draggable = draggable;
+    }
+    forceUpdate();
+  }
+
+  function handleDragOver(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault();
+    cursorPositionRef.current = { x: e.clientX, y: e.clientY };
+  }
+  async function handleDrop(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault();
+    const dropItemId = dndRef.current.droppable;
+    if (dropItemId === "") return;
+    const selectedToUpdate = dndRef.current.draggable.map((item) => ({
+      ...item,
+      parentFolderId: dropItemId,
+    }));
+
+    await updateMany(selectedToUpdate);
+    setSelected(new Map());
+  }
+
+  function handleDragEnd(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault();
+    dndRef.current = { draggable: [], droppable: "" };
+    forceUpdate();
+  }
+
   if (!fileSystemItems) {
     return null;
   }
@@ -123,7 +198,13 @@ export function DashboardPage() {
         handleDelete={handleDelete}
       />
       <div className={styles.storage__content}>
-        <div className={styles.storage__table}>
+        <div
+          className={styles.storage__table}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          onDrop={handleDrop}
+        >
           <div className={styles.tableHeader}>
             <span
               className={`${styles.tableHeader__name} ${styles.tableHeader__column}`}
@@ -159,6 +240,10 @@ export function DashboardPage() {
                 forceUpdate={forceUpdate}
                 isSelected={isSelected(elem.id)}
                 setSelected={setSelected}
+                dndRef={dndRef}
+                isDraggable={isDraggable(elem.id)}
+                cursorPosition={cursorPositionRef}
+                draggableQuantity={selected.size}
               />
             );
           })}
