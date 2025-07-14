@@ -3,19 +3,21 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { deleteMany } from "@/srcApp/entities/fileSystemItem/model/deleteMany";
 import { getFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/getFileSystemItem";
-import { FetchDeleteMany } from "@/srcApp/entities/fileSystemItem/model/types/fetchDeleteMany";
+import { debouncedSetSearchFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/searchFileSystemItems";
+import type { FetchDeleteMany } from "@/srcApp/entities/fileSystemItem/model/types/fetchDeleteMany";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import { updateMany } from "@/srcApp/entities/fileSystemItem/model/updateMany";
 import {
+  DashboardExtraItem,
   DashboardItem,
+  EmptyItem,
+  FileCreateModal,
   FolderCreateModal,
 } from "@/srcApp/entities/fileSystemItem/ui";
-import { EmptyItem } from "@/srcApp/entities/fileSystemItem/ui/empty-item";
-import { FileCreateModal } from "@/srcApp/entities/fileSystemItem/ui/file-create-modal";
+import { getStat } from "@/srcApp/entities/stats/model/getStat";
+import type { Stat } from "@/srcApp/entities/stats/model/types/stat";
 import { Options } from "@/srcApp/features/options/ui";
 import { Search } from "@/srcApp/features/search/ui";
-import { Button } from "@/srcApp/shared/ui/button";
-import { Icon } from "@/srcApp/shared/ui/icon";
 import { createPortal } from "react-dom";
 import { selectBetween } from "../model/selectBetween";
 import type { Dnd } from "../model/types/dnd";
@@ -27,6 +29,11 @@ export function DashboardPage() {
   const [fileSystemItems, setFileSystemItems] = useState<
     FileSystemItem[] | null
   >();
+  const [filteredFileSystemItems, setFilteredFileSystemItems] = useState<
+    FileSystemItem[]
+  >([]);
+  const [stat, setStat] = useState<Stat | null>();
+  const [search, setSearch] = useState("");
   const [addFolderModalOpen, setAddFolderModalOpen] = useState<boolean>(false);
   const [addFileModalOpen, setAddFileModalOpen] = useState<boolean>(false);
   const [version, setVersion] = useState(0);
@@ -80,8 +87,29 @@ export function DashboardPage() {
       }
 
       setFileSystemItems(fileSystemItems);
+      setFilteredFileSystemItems(fileSystemItems || []);
     })();
   }, [version, parentFolderId]);
+
+  useEffect(() => {
+    (async () => {
+      const stat = await getStat();
+
+      setStat(stat);
+    })();
+  }, [version]);
+
+  useEffect(() => {
+    console.log("search", search);
+
+    if (search === "") setFilteredFileSystemItems(fileSystemItems || []);
+
+    debouncedSetSearchFileSystemItems(
+      fileSystemItems,
+      search,
+      setFilteredFileSystemItems,
+    );
+  }, [search]);
 
   function forceUpdate() {
     setVersion((v) => v + 1);
@@ -105,10 +133,6 @@ export function DashboardPage() {
       }
       return false;
     });
-  }
-
-  function draggableMoreThenOne(selected: SelectedMap): boolean {
-    return selected.size > 1;
   }
 
   const selectedMapped = useMemo(() => {
@@ -189,7 +213,7 @@ export function DashboardPage() {
 
   return (
     <>
-      <Search />
+      <Search setSearch={setSearch} />
       <Options
         path={path}
         setPath={setPath}
@@ -228,8 +252,8 @@ export function DashboardPage() {
               Public
             </span>
           </div>
-          {fileSystemItems.length === 0 && <EmptyItem />}
-          {fileSystemItems.map((elem, index) => {
+          {filteredFileSystemItems.length === 0 && <EmptyItem />}
+          {filteredFileSystemItems.map((elem, index) => {
             return (
               <DashboardItem
                 key={elem.id}
@@ -248,41 +272,12 @@ export function DashboardPage() {
             );
           })}
         </div>
-        <div className={styles.dashboard__extraItem}>
-          <div className={styles.dashboard__addButton}>
-            <Button
-              text="+ Add File"
-              className={styles.dashboard__button}
-              onClick={() => setAddFileModalOpen(true)}
-            />
-          </div>
-          <div className={styles.dashboard__addButton}>
-            <Button
-              text="+ Create Folder"
-              className={styles.dashboard__button}
-              onClick={() => setAddFolderModalOpen(true)}
-            />
-          </div>
-          <div className={styles.dashboard__usageSize}>
-            <div className={styles.dashboard__usageSizeHeader}>
-              <Icon
-                link="/svg/dashboard-page-sprite.svg#cloud"
-                className={styles.dashboard__cloudIcon}
-                viewBox="0 0 36 36"
-              />
-              <span className={styles.dashboard__usageSizeTitle}>
-                My Storage
-              </span>
-            </div>
-            <div className={styles.dashboard__usageSizeValue}>
-              <span className={styles.dashboard__totalValue}></span>
-              <span className={styles.dashboard__usageValue}></span>
-            </div>
-            <span className={styles.dashboard__usageSizeText}>
-              Used 5 GB out of 15 GB.
-            </span>
-          </div>
-        </div>
+        <DashboardExtraItem
+          usedSize={stat?.usedSize || 0}
+          totalSize={stat?.totalSize || 0}
+          setAddFileModalOpen={setAddFileModalOpen}
+          setAddFolderModalOpen={setAddFolderModalOpen}
+        />
       </div>
       {portalRef.current &&
         addFolderModalOpen &&

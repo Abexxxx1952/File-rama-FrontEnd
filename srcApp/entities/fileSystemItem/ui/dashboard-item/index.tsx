@@ -1,4 +1,10 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, {
+  memo,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import { areDashboardItemEqual } from "@/srcApp/entities/fileSystemItem/model/areDashboardItemEqual";
 import { deleteFile } from "@/srcApp/entities/fileSystemItem/model/deleteFile";
@@ -10,7 +16,7 @@ import { isFolder } from "@/srcApp/entities/fileSystemItem/model/isFolder";
 import { openFile } from "@/srcApp/entities/fileSystemItem/model/openFile";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import type { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
-import { SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
+import type { SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
@@ -81,7 +87,7 @@ export const DashboardItem = memo(function ({
     portalRef.current = document.getElementById("portal");
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (previewRef.current && stage === "fly") {
       const rect = previewRef.current.getBoundingClientRect();
 

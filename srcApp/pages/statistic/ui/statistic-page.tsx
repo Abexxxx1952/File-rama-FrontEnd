@@ -16,9 +16,11 @@ export function StatisticPage() {
       setStat(stat);
     })();
   }, []);
+
   if (!stat) {
     return null;
   }
+
   const availableSize = stat.totalSize - stat.usedSize;
 
   return (

@@ -1,4 +1,4 @@
-import { DashboardItemProps } from "../ui/dashboardItem";
+import { DashboardItemProps } from "../ui/dashboard-item";
 import { isFile } from "./isFile";
 import { isFolder } from "./isFolder";
 
