@@ -56,6 +56,7 @@ export async function openFile(
       }
 
       const disposition = response.headers.get("Content-Disposition");
+
       let fileName = "";
 
       if (disposition && disposition.includes("filename=")) {

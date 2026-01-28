@@ -9,7 +9,7 @@ export type OptionsProps = {
   setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
   isSelected: boolean;
 
-  handleDelete: (
+  handleDeleteMany: (
     setLoadingDelete: React.Dispatch<React.SetStateAction<boolean>>,
   ) => void;
 };
@@ -19,7 +19,7 @@ export const Options = memo(function ({
   setPath,
   setParentFolderId,
   isSelected,
-  handleDelete,
+  handleDeleteMany,
 }: OptionsProps) {
   const [loadingDelete, setLoadingDelete] = useState(false);
 
@@ -46,7 +46,7 @@ export const Options = memo(function ({
         <div className={styles.options__deleteBtn}>
           <ButtonIcon
             iconUrl="/svg/settings-sprite.svg#delete"
-            onClick={() => handleDelete(setLoadingDelete)}
+            onClick={() => handleDeleteMany(setLoadingDelete)}
             loading={loadingDelete}
             className={styles.tableButton__delete}
           />

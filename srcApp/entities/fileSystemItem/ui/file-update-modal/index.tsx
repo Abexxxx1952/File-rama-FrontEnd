@@ -79,6 +79,7 @@ export function FileUpdateModal({
                   placeholder="Enter file name"
                   backgroundColor="var(--main-header-background-color)"
                   focusBackgroundColor="var(--main-header-background-color)"
+                  focusBoxShadow="0 0 10px white"
                   border="none"
                   textColor="var(--secondary-font-color)"
                   labelTextColor="var(--main-page-font-color)"

@@ -1,13 +1,13 @@
 .input {
   --text-color: var(--main-page-font-color);
   --text-size: 1rem;
-
   --bg-color: transparent;
   --border: 1px solid var(--secondary-logo-color);
   --outline: none;
   --focus-outline: 1px solid var(--secondary-logo-color);
   --focus-bg-color: var(--secondary-logo-color);
   --focus-text-color: var(--secondary-font-color);
+  --focus-box-shadow: none;
   --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   --placeholder-color: rgba(0, 0, 0, 0.5);
   --placeholder-padding-left: calc(0.8 * var(--variableUnitsSize));
@@ -33,6 +33,7 @@
   outline: var(--focus-outline);
   background-color: var(--focus-bg-color);
   color: var(--focus-text-color);
+  box-shadow: var(--focus-box-shadow);
 }
 
 .input::placeholder {

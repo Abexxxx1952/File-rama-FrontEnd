@@ -42,7 +42,11 @@ export function Modal({
   return (
     <div className={styles.modal}>
       <div className={styles.overlay} onClick={() => setModalOpen(false)}></div>
-      <div className={styles.modal__content} style={contentStyle}>
+      <div
+        className={styles.modal__content}
+        style={contentStyle}
+        onClick={(e) => e.stopPropagation()}
+      >
         <Icon
           link="/svg/settings-sprite.svg#delete"
           onClick={() => setModalOpen(false)}

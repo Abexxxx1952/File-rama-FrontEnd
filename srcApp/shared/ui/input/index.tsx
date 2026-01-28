@@ -15,6 +15,7 @@ type InputProps = {
   focusBackgroundColor?: string;
   focusOutline?: string;
   focusTextColor?: string;
+  focusBoxShadow?: string;
   iconSvg?: string;
   iconSvgWidth?: string;
   iconSvgHeight?: string;
@@ -45,6 +46,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       focusBackgroundColor,
       focusOutline,
       focusTextColor,
+      focusBoxShadow,
       iconSvg,
       iconSvgWidth,
       iconSvgHeight,
@@ -72,6 +74,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       "--focus-bg-color": focusBackgroundColor,
       "--focus-outline": focusOutline,
       "--focus-text-color": focusTextColor,
+      "--focus-box-shadow": focusBoxShadow,
       "--box-shadow": boxShadow,
       "--placeholder-color": placeholderColor,
       "--placeholder-padding-left": placeholderPaddingLeft,

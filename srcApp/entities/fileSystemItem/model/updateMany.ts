@@ -11,11 +11,7 @@ import type { FetchUpdateMany } from "./types/fetchUpdateMany";
 
 export async function updateMany(
   selected: FetchUpdateMany,
-  /*  setLoading: Dispatch<SetStateAction<boolean>>, */
 ): Promise<FileSystemItemChangeResult[] | null> {
-  /*   setLoading(true); */
-  console.log("selected", selected);
-
   try {
     const { access_token, refresh_token } = await getCookies();
 

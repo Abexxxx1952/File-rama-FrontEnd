@@ -2,9 +2,9 @@
   position: relative;
   display: flex;
   align-items: center;
-
   height: 100%;
   aspect-ratio: 2 / 1;
+  caret-color: transparent;
 }
 
 .input {

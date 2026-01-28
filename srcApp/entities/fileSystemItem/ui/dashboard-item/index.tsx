@@ -7,22 +7,17 @@ import React, {
 } from "react";
 import Image from "next/image";
 import { areDashboardItemEqual } from "@/srcApp/entities/fileSystemItem/model/areDashboardItemEqual";
-import { deleteFile } from "@/srcApp/entities/fileSystemItem/model/deleteFile";
-import { deleteFolder } from "@/srcApp/entities/fileSystemItem/model/deleteFolder";
-import { downloadFile } from "@/srcApp/entities/fileSystemItem/model/downloadFile";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
 import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
-import { isFolder } from "@/srcApp/entities/fileSystemItem/model/isFolder";
-import { openFile } from "@/srcApp/entities/fileSystemItem/model/openFile";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import type { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
-import type { SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
-import { createPortal } from "react-dom";
-import { FileUpdateModal } from "../file-update-modal";
-import { FolderUpdateModal } from "../folder-update-modal";
+import { formatDate } from "../../model/formatDate";
+import { DeleteHandlerArgs } from "../../model/types/deleteHandlerArgs";
+import { DoubleClickMeta } from "../../model/types/doubleClickHandlerArgs";
+import { OneClickMeta } from "../../model/types/oneClickHandlerArgs";
 import { DashboardItemContextMenu } from "./dashboardItem-context-menu";
 import { DraggablePreviewItemContent } from "./draggable-preview-item-content";
 import styles from "./styles.module.css";
@@ -30,11 +25,23 @@ import styles from "./styles.module.css";
 export type DashboardItemProps = {
   item: FileSystemItem;
   index: number;
-  setPath: React.Dispatch<React.SetStateAction<string[]>>;
-  setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
   forceUpdate: () => void;
   isSelected: boolean;
-  setSelected: React.Dispatch<React.SetStateAction<SelectedMap>>;
+  oneClickHandler: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    meta: OneClickMeta,
+  ) => void;
+  doubleClickHandler: (meta: DoubleClickMeta) => void;
+  handleOpen: (
+    id: string,
+    setLoadingOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => Promise<void>;
+  handleDownload: (
+    id: string,
+    setLoadingDownload: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => Promise<void>;
+  handleUpdate: (isFile: boolean, item: FileSystemItem) => void;
+  handleDelete: (deleteHandlerArgs: DeleteHandlerArgs) => Promise<void>;
   dndRef: React.MutableRefObject<Dnd>;
   isDraggable: boolean;
   cursorPosition: React.MutableRefObject<{
@@ -47,11 +54,14 @@ export type DashboardItemProps = {
 export const DashboardItem = memo(function ({
   item,
   index,
-  setPath,
-  setParentFolderId,
   forceUpdate,
   isSelected,
-  setSelected,
+  oneClickHandler,
+  doubleClickHandler,
+  handleOpen,
+  handleDownload,
+  handleUpdate,
+  handleDelete,
   dndRef,
   isDraggable,
   cursorPosition,
@@ -63,16 +73,9 @@ export const DashboardItem = memo(function ({
   const isFileItem = isFile(item);
   const [dashboardItemMenuOpen, setDashboardItemContextMenuOpen] =
     useState<boolean>(false);
-  const [updateFolderModalOpen, setUpdateFolderModalOpen] =
-    useState<boolean>(false);
-  const [updateFileModalOpen, setUpdateFileModalOpen] =
-    useState<boolean>(false);
-
   const [dragEnter, setDragEnter] = useState(false);
   const [stage, setStage] = useState<"shrink" | "fly" | "follow">("shrink");
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
-
-  const portalRef = useRef<HTMLElement | null>(null);
 
   const previewRef = useRef<HTMLDivElement | null>(null);
 
@@ -82,10 +85,6 @@ export const DashboardItem = memo(function ({
   useKeyboardHandler(body, [
     ["Escape", () => setDashboardItemContextMenuOpen(false)],
   ]);
-
-  useEffect(() => {
-    portalRef.current = document.getElementById("portal");
-  }, []);
 
   useLayoutEffect(() => {
     if (previewRef.current && stage === "fly") {
@@ -122,7 +121,9 @@ export const DashboardItem = memo(function ({
 
     const updatePosition = () => {
       el.style.left = cursorPosition.current.x - startPos.x + "px";
-      el.style.top = cursorPosition.current.y - startPos.y + "px";
+      el.style.top = cursorPosition.current.y + "px";
+      el.style.position = "fixed";
+      el.style.transform = "translate(calc(25% + 10px), 5px)";
       animationFrameId = requestAnimationFrame(updatePosition);
     };
 
@@ -137,77 +138,31 @@ export const DashboardItem = memo(function ({
     setDashboardItemContextMenuOpen((prev) => !prev);
   }
 
-  async function handleOpen() {
-    await openFile(item.id, setLoadingOpen);
+  async function handleOpenWrapper() {
+    await handleOpen(item.id, setLoadingOpen);
   }
 
-  async function handleDownload() {
-    await downloadFile(item.id, setLoadingDownload);
+  async function handleDownloadWrapper() {
+    await handleDownload(item.id, setLoadingDownload);
   }
 
-  function handleUpdate() {
-    if (isFileItem) setUpdateFileModalOpen(true);
-    else setUpdateFolderModalOpen(true);
+  async function handleDeleteWrapper() {
+    await handleDelete({ isFileItem, id: item.id, setLoadingDelete });
   }
 
-  function handleDelete() {
-    if (isFileItem) {
-      (async () => {
-        await deleteFile(item.id, setLoadingDelete);
-      })();
-    } else {
-      (async () => {
-        await deleteFolder(item.id, setLoadingDelete);
-      })();
-    }
-    forceUpdate();
+  function oneClickHandlerWrapper(
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) {
+    oneClickHandler(e, { id: item.id, isFileItem, index });
   }
 
-  function formatDate(isoDate: string) {
-    const dateFromIso = new Date(isoDate);
-    const date = dateFromIso.toLocaleDateString("ru-RU");
-    const time = dateFromIso.toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit",
+  function doubleClickHandlerWrapper() {
+    doubleClickHandler({
+      isFileItem,
+      id: item.id,
+      folderName: isFileItem ? "" : item?.folderName,
+      setLoadingOpen,
     });
-
-    return `${date} ${time}`;
-  }
-
-  function doubleClickHandler() {
-    if (isFileItem) {
-      (async () => {
-        await openFile(item.id, setLoadingOpen);
-      })();
-    } else {
-      setPath((prev) =>
-        prev.length === 1
-          ? prev.concat(item.folderName)
-          : prev.concat(`/${item.folderName}`),
-      );
-      setParentFolderId((prev) => prev.concat(item.id));
-      forceUpdate();
-    }
-  }
-
-  function oneClickHandler(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    if (e.ctrlKey || e.metaKey || e.shiftKey) {
-      selectItemHandler();
-    }
-  }
-
-  function selectItemHandler() {
-    if (isSelected) {
-      setSelected((prev) => {
-        prev.delete(item.id);
-        return new Map(prev);
-      });
-    } else {
-      const mapElement = isFileItem
-        ? { index, fileId: item.id }
-        : { index, folderId: item.id };
-      setSelected((prev) => new Map(prev.set(item.id, mapElement)));
-    }
   }
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>) {
@@ -215,9 +170,12 @@ export const DashboardItem = memo(function ({
     dndRef.current.draggable = [
       isFileItem ? { fileId: item.id } : { folderId: item.id },
     ];
+    forceUpdate();
   }
 
-  function handleDragOver(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {}
+  function handleDragOver(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    e.preventDefault();
+  }
 
   function handleDragEnter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!isFileItem && !isSelected) {
@@ -259,8 +217,8 @@ export const DashboardItem = memo(function ({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`${styles.tableItem} ${isSelected && styles.tableItem__selected} ${dragEnter && styles.tableItem__dragEnter} ${isDraggable && styles.tableItem__dragStart}`}
-        onClick={oneClickHandler}
-        onDoubleClick={doubleClickHandler}
+        onClick={oneClickHandlerWrapper}
+        onDoubleClick={doubleClickHandlerWrapper}
       >
         <span className={`${styles.tableItem__name} ${styles.tableItem__row}`}>
           {isFileItem ? (
@@ -312,10 +270,10 @@ export const DashboardItem = memo(function ({
               loadingOpen={loadingOpen}
               loadingDownload={loadingDownload}
               loadingDelete={loadingDelete}
-              handleOpen={handleOpen}
-              handleDownload={handleDownload}
-              handleUpdate={handleUpdate}
-              handleDelete={handleDelete}
+              handleOpen={handleOpenWrapper}
+              handleDownload={handleDownloadWrapper}
+              handleUpdate={() => handleUpdate(isFileItem, item)}
+              handleDelete={handleDeleteWrapper}
             />
           )}
           <ButtonIcon
@@ -326,7 +284,7 @@ export const DashboardItem = memo(function ({
           {isFileItem && (
             <ButtonIcon
               iconUrl="/svg/dashboard-page-sprite.svg#open"
-              onClick={handleOpen}
+              onClick={handleOpenWrapper}
               loading={loadingOpen}
               disabled={loadingDownload || loadingDelete}
               className={styles.tableButton__open}
@@ -335,7 +293,7 @@ export const DashboardItem = memo(function ({
           {isFileItem && (
             <ButtonIcon
               iconUrl="/svg/dashboard-page-sprite.svg#download"
-              onClick={handleDownload}
+              onClick={handleDownloadWrapper}
               loading={loadingDownload}
               disabled={loadingOpen || loadingDelete}
               className={styles.tableButton__download}
@@ -343,44 +301,18 @@ export const DashboardItem = memo(function ({
           )}
           <ButtonIcon
             iconUrl="/svg/settings-sprite.svg#update"
-            onClick={handleUpdate}
+            onClick={() => handleUpdate(isFileItem, item)}
             disabled={loadingOpen || loadingDelete || loadingDownload}
             className={styles.tableButton__update}
           />
           <ButtonIcon
             iconUrl="/svg/settings-sprite.svg#delete"
-            onClick={handleDelete}
+            onClick={handleDeleteWrapper}
             loading={loadingDelete}
             disabled={loadingOpen || loadingDownload}
             className={styles.tableButton__delete}
           />
         </span>
-        {portalRef.current &&
-          updateFolderModalOpen &&
-          isFolder(item) &&
-          createPortal(
-            <FolderUpdateModal
-              folderId={item.id}
-              folderName={item.folderName}
-              isPublic={item.isPublic}
-              setUpdateFolderModalOpen={setUpdateFolderModalOpen}
-              forceUpdate={forceUpdate}
-            />,
-            portalRef.current,
-          )}
-        {portalRef.current &&
-          updateFileModalOpen &&
-          isFile(item) &&
-          createPortal(
-            <FileUpdateModal
-              fileId={item.id}
-              fileName={item.fileName}
-              isPublic={item.isPublic}
-              setUpdateFileModalOpen={setUpdateFileModalOpen}
-              forceUpdate={forceUpdate}
-            />,
-            portalRef.current,
-          )}
       </div>
 
       {isDraggable && (
