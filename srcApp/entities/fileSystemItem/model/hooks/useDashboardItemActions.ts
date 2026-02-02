@@ -39,7 +39,7 @@ export function useDashboardItemActions({
     [toggle],
   );
 
-  const doubleClickHandler = useCallback(
+  const handleOpen = useCallback(
     async ({
       isFileItem,
       id,
@@ -59,16 +59,6 @@ export function useDashboardItemActions({
       }
     },
     [openFile, setPath, setParentFolderId, forceUpdate],
-  );
-
-  const handleOpen = useCallback(
-    async (
-      id: string,
-      setLoadingOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    ): Promise<void> => {
-      await openFile(id, setLoadingOpen);
-    },
-    [openFile],
   );
 
   const handleDownload = useCallback(
@@ -109,7 +99,6 @@ export function useDashboardItemActions({
 
   return {
     oneClickHandler,
-    doubleClickHandler,
     handleOpen,
     handleDownload,
     handleUpdate,

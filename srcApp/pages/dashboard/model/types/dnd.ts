@@ -7,5 +7,5 @@ export type Dnd = {
         folderId: string;
       }
   )[];
-  droppable: string;
+  droppable: string | null;
 };

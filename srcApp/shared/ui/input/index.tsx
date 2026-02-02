@@ -24,6 +24,7 @@ type InputProps = {
   placeholderPaddingLeft?: string;
   type?: string;
   required?: boolean;
+  readOnly?: boolean;
   disabled?: boolean;
   pattern?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -56,6 +57,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       type,
       required,
       disabled,
+      readOnly,
       pattern,
       onChange,
       value,
@@ -107,6 +109,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           placeholder={placeholder}
           required={required || false}
           disabled={disabled || false}
+          readOnly={readOnly || false}
           pattern={pattern || undefined}
           value={value}
           ref={ref}

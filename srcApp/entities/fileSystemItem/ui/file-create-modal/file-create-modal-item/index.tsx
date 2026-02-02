@@ -7,10 +7,10 @@ import { FileUploadEvent } from "@/srcApp/entities/fileSystemItem/model/types/fi
 import { FileWithOptions } from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
 import type { UploadStatusType } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
 import { UploadStatus } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
+import { updateFileUploadStatus } from "@/srcApp/entities/fileSystemItem/model/updateFileUploadStatus";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { Icon } from "@/srcApp/shared/ui/icon";
-import { updateFileUploadStatus } from "../../../model/updateFileUploadStatus";
 import styles from "./styles.module.css";
 
 type FileCreateModalItemProps = {

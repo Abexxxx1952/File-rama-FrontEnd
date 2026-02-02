@@ -8,4 +8,7 @@ export const fileUpdateSchema = z.object({
       message: "File name must be a non-empty string",
     }),
   isPublic: z.boolean(),
+  canRewritten: z.boolean(),
+  fileGDriveUrl: z.string(),
+  fileStaticUrl: z.string(),
 });

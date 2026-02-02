@@ -1,10 +1,9 @@
 export type FetchUpdateFolder = {
   folderId: string;
   folderName?: string;
-  parentFolderId?: string;
+  parentFolderId?: string | null;
 };
 
 export type FetchUpdateFolderForm = {
   folderName: string;
-  isPublic: boolean;
 };

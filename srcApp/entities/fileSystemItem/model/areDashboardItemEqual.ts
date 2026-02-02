@@ -18,7 +18,7 @@ export function areDashboardItemEqual(
     return (
       prevItem.fileName === nextItem.fileName &&
       prevItem.parentFolderId === nextItem.parentFolderId &&
-      prevItem.isPublic === nextItem.isPublic &&
+      prevItem.publicAccessRole === nextItem.publicAccessRole &&
       baseEquality
     );
   }

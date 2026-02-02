@@ -69,59 +69,56 @@ export function FileCreateModal({
       backgroundColor="#fff"
       height="90%"
     >
-      {() => (
-        <div className={styles.uploader}>
-          <div className={styles.uploader__header}>
-            <h2 className={styles.uploader__title}>File Uploader</h2>
-            <h4 className={styles.uploader__fileCompletedStatus}>
-              {!!totalFiles &&
-                `${completedFiles}/${totalFiles} files completed`}
-            </h4>
-          </div>
-          <ul className={styles.fileList}>
-            {files.length > 0 &&
-              files.map((file) => (
-                <FileCreateModalItem
-                  key={file.id}
-                  fileWith={file}
-                  setFiles={setFiles}
-                  parentFolderId={parentFolderId}
-                  setCompletedFiles={setCompletedFiles}
-                  availableToUpload={availableToUpload}
-                  setAvailableToUpload={setAvailableToUpload}
-                  forceUpdate={forceUpdate}
-                  isRevalidateCacheRef={isRevalidateCacheRef}
-                />
-              ))}
-          </ul>
-          <div
-            className={`${styles.fileUploadBox} ${isDragOver ? styles.active : ""}`}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-          >
-            <h2 className={styles.fileUploadBox__title}>
-              <span className={styles.fileUploadBox__instruction}>
-                {isDragOver ? "Release to upload or" : "Drag files here or"}
-              </span>{" "}
-              <span
-                className={styles.fileUploadBox__button}
-                onClick={handleBrowseClick}
-              >
-                browse
-              </span>
-            </h2>
-            <input
-              className={styles.fileUploadBox__input}
-              type="file"
-              multiple
-              hidden
-              ref={inputRef}
-              onChange={(e) => handleSelectedFiles(e.target.files!)}
-            ></input>
-          </div>
+      <div className={styles.uploader}>
+        <div className={styles.uploader__header}>
+          <h2 className={styles.uploader__title}>File Uploader</h2>
+          <h4 className={styles.uploader__fileCompletedStatus}>
+            {!!totalFiles && `${completedFiles}/${totalFiles} files completed`}
+          </h4>
         </div>
-      )}
+        <ul className={styles.fileList}>
+          {files.length > 0 &&
+            files.map((file) => (
+              <FileCreateModalItem
+                key={file.id}
+                fileWith={file}
+                setFiles={setFiles}
+                parentFolderId={parentFolderId}
+                setCompletedFiles={setCompletedFiles}
+                availableToUpload={availableToUpload}
+                setAvailableToUpload={setAvailableToUpload}
+                forceUpdate={forceUpdate}
+                isRevalidateCacheRef={isRevalidateCacheRef}
+              />
+            ))}
+        </ul>
+        <div
+          className={`${styles.fileUploadBox} ${isDragOver ? styles.active : ""}`}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+        >
+          <h2 className={styles.fileUploadBox__title}>
+            <span className={styles.fileUploadBox__instruction}>
+              {isDragOver ? "Release to upload or" : "Drag files here or"}
+            </span>{" "}
+            <span
+              className={styles.fileUploadBox__button}
+              onClick={handleBrowseClick}
+            >
+              browse
+            </span>
+          </h2>
+          <input
+            className={styles.fileUploadBox__input}
+            type="file"
+            multiple
+            hidden
+            ref={inputRef}
+            onChange={(e) => handleSelectedFiles(e.target.files!)}
+          ></input>
+        </div>
+      </div>
     </Modal>
   );
 }

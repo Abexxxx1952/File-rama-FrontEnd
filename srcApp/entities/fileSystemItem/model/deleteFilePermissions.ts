@@ -6,23 +6,21 @@ import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { fetchUpdateFile } from "../api/fetchUpdateFile";
-import type { FetchUpdateFile } from "./types/fetchUpdateFile";
+import { fetchDeleteFilePermissions } from "../api/fetchDeleteFilePermissions";
 import type { File } from "./types/file";
 
-export async function updateFile(
-  params: FetchUpdateFile,
+export async function deleteFilePermissions(
+  fileId: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<File | null> {
   setLoading(true);
-
   try {
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: File | ErrorData | null = await fetchUpdateFile(
+      const data: File | ErrorData | null = await fetchDeleteFilePermissions(
         access_token,
-        params,
+        fileId,
       );
 
       if (isErrorData(data)) {
@@ -43,14 +41,14 @@ export async function updateFile(
 
       notifyResponse({
         isError: false,
-        successMessage: `File ${data.fileName} edited successfully`,
+        successMessage: `Permissions for file ${data.fileName} deleted successfully`,
       });
       setLoading(false);
       return data;
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return updateFile(params, setLoading);
+      return deleteFilePermissions(fileId, setLoading);
     }
     return null;
   } catch (error: unknown) {

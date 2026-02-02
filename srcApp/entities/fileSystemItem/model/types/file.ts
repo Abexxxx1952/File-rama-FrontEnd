@@ -1,3 +1,5 @@
+import { publicAccessRole } from "./publicAccessRole";
+
 export type File = {
   id: string;
   userId: string;
@@ -11,6 +13,7 @@ export type File = {
   fileGoogleDriveParentFolderId: string;
   fileGoogleDriveClientEmail: string;
   uploadDate: string;
-  isPublic: boolean;
-  fileDescription?: string | null;
+  fileStaticUrl: string;
+  publicAccessRole: publicAccessRole | null;
+  fileDescription: string | null;
 };

@@ -2,9 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { deleteMany } from "@/srcApp/entities/fileSystemItem/model/deleteMany";
+import { useDashboardDnd } from "@/srcApp/entities/fileSystemItem/model/hooks/useDashboardDnd";
+import { useDashboardItemActions } from "@/srcApp/entities/fileSystemItem/model/hooks/useDashboardItemActions";
+import { useFileSystem } from "@/srcApp/entities/fileSystemItem/model/hooks/useFileSystem";
 import type { FetchDeleteMany } from "@/srcApp/entities/fileSystemItem/model/types/fetchDeleteMany";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import {
+  BackItem,
   DashboardExtraItem,
   DashboardItem,
   EmptyItem,
@@ -13,11 +17,9 @@ import { getStat } from "@/srcApp/entities/stats/model/getStat";
 import type { Stat } from "@/srcApp/entities/stats/model/types/stat";
 import { Options } from "@/srcApp/features/options/ui";
 import { Search } from "@/srcApp/features/search/ui";
+import { getPenultimate } from "@/srcApp/shared/model/getPenultimate";
 import { DashboardModals } from "@/srcApp/widgets/dashboard-modals";
 import { DashboardTableHeader } from "@/srcApp/widgets/dashboard-table-header";
-import { useDashboardDnd } from "../model/hooks/useDashboardDnd";
-import { useDashboardItemActions } from "../model/hooks/useDashboardItemActions";
-import { useFileSystem } from "../model/hooks/useFileSystem";
 import { useSearch } from "../model/hooks/useSearch";
 import { useSelection } from "../model/hooks/useSelection";
 import { selectBetween } from "../model/selectBetween";
@@ -38,7 +40,7 @@ export function DashboardPage() {
     onDrop,
     onDragEnd,
     isDraggable,
-  } = useDashboardDnd(selected, forceUpdate);
+  } = useDashboardDnd(selected, clear, forceUpdate);
   const [currentFileSystemItem, setCurrentFileSystemItem] =
     useState<FileSystemItem | null>(null);
   const [stat, setStat] = useState<Stat | null>();
@@ -52,7 +54,6 @@ export function DashboardPage() {
 
   const {
     oneClickHandler,
-    doubleClickHandler,
     handleOpen,
     handleDownload,
     handleUpdate,
@@ -127,6 +128,7 @@ export function DashboardPage() {
     clear();
     forceUpdate();
   }
+  const grandParentId = getPenultimate(parentFolderId);
 
   if (!fileSystemItems) {
     return null;
@@ -151,6 +153,14 @@ export function DashboardPage() {
           onDrop={onDrop}
         >
           <DashboardTableHeader />
+          {parentFolderId.length !== 0 && (
+            <BackItem
+              grandParentId={grandParentId}
+              dndRef={dndRef}
+              setPath={setPath}
+              setParentFolderId={setParentFolderId}
+            />
+          )}
           {filteredFileSystemItems.length === 0 && <EmptyItem />}
           {filteredFileSystemItems.map((elem, index) => {
             return (
@@ -161,7 +171,6 @@ export function DashboardPage() {
                 forceUpdate={forceUpdate}
                 isSelected={isSelected(elem.id)}
                 oneClickHandler={oneClickHandler}
-                doubleClickHandler={doubleClickHandler}
                 handleOpen={handleOpen}
                 handleDownload={handleDownload}
                 handleUpdate={handleUpdate}

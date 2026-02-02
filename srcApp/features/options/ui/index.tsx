@@ -1,6 +1,7 @@
 import { memo, useState } from "react";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
 import { areOptionsEqual } from "../model/areOptionsEqual";
+import { levelUpHandler } from "../model/levelUpHandler";
 import styles from "./styles.module.css";
 
 export type OptionsProps = {
@@ -8,7 +9,6 @@ export type OptionsProps = {
   setPath: React.Dispatch<React.SetStateAction<string[]>>;
   setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
   isSelected: boolean;
-
   handleDeleteMany: (
     setLoadingDelete: React.Dispatch<React.SetStateAction<boolean>>,
   ) => void;
@@ -24,14 +24,7 @@ export const Options = memo(function ({
   const [loadingDelete, setLoadingDelete] = useState(false);
 
   function handleBackClick() {
-    setPath((prev) => {
-      if (prev.length === 1) return prev;
-      return prev.slice(0, prev.length - 1);
-    });
-    setParentFolderId((prev) => {
-      if (prev.length === 0) return prev;
-      return prev.slice(0, prev.length - 1);
-    });
+    levelUpHandler(setPath, setParentFolderId);
   }
   return (
     <div className={styles.options}>

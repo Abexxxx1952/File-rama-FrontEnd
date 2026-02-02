@@ -1,3 +1,5 @@
+export { BackItem } from "./back-item";
+export type { BackItemProps } from "./back-item";
 export { DashboardExtraItem } from "./dashboard-extra-item";
 export type { DashboardExtraIItemProps } from "./dashboard-extra-item";
 export { DashboardItem } from "./dashboard-item";

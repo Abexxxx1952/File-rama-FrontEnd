@@ -7,17 +7,21 @@ import React, {
 } from "react";
 import Image from "next/image";
 import { areDashboardItemEqual } from "@/srcApp/entities/fileSystemItem/model/areDashboardItemEqual";
+import { formatDate } from "@/srcApp/entities/fileSystemItem/model/formatDate";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
 import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
+import type { AnimationStageValues } from "@/srcApp/entities/fileSystemItem/model/types/animationStage";
+import { AnimationStage } from "@/srcApp/entities/fileSystemItem/model/types/animationStage";
+import type { DeleteHandlerArgs } from "@/srcApp/entities/fileSystemItem/model/types/deleteHandlerArgs";
+import type { DoubleClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/doubleClickHandlerArgs";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { FileSystemItemPermissions } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItemPermissions";
+import type { OneClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/oneClickHandlerArgs";
 import type { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
-import { formatDate } from "../../model/formatDate";
-import { DeleteHandlerArgs } from "../../model/types/deleteHandlerArgs";
-import { DoubleClickMeta } from "../../model/types/doubleClickHandlerArgs";
-import { OneClickMeta } from "../../model/types/oneClickHandlerArgs";
+import { Icon } from "@/srcApp/shared/ui/icon";
 import { DashboardItemContextMenu } from "./dashboardItem-context-menu";
 import { DraggablePreviewItemContent } from "./draggable-preview-item-content";
 import styles from "./styles.module.css";
@@ -31,11 +35,7 @@ export type DashboardItemProps = {
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     meta: OneClickMeta,
   ) => void;
-  doubleClickHandler: (meta: DoubleClickMeta) => void;
-  handleOpen: (
-    id: string,
-    setLoadingOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  ) => Promise<void>;
+  handleOpen: (meta: DoubleClickMeta) => void;
   handleDownload: (
     id: string,
     setLoadingDownload: React.Dispatch<React.SetStateAction<boolean>>,
@@ -57,7 +57,6 @@ export const DashboardItem = memo(function ({
   forceUpdate,
   isSelected,
   oneClickHandler,
-  doubleClickHandler,
   handleOpen,
   handleDownload,
   handleUpdate,
@@ -74,7 +73,9 @@ export const DashboardItem = memo(function ({
   const [dashboardItemMenuOpen, setDashboardItemContextMenuOpen] =
     useState<boolean>(false);
   const [dragEnter, setDragEnter] = useState(false);
-  const [stage, setStage] = useState<"shrink" | "fly" | "follow">("shrink");
+  const [stage, setStage] = useState<AnimationStageValues>(
+    AnimationStage.SHRINK,
+  );
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
   const previewRef = useRef<HTMLDivElement | null>(null);
@@ -87,7 +88,7 @@ export const DashboardItem = memo(function ({
   ]);
 
   useLayoutEffect(() => {
-    if (previewRef.current && stage === "fly") {
+    if (previewRef.current && stage === AnimationStage.FLY) {
       const rect = previewRef.current.getBoundingClientRect();
 
       setStartPos({ x: rect.left, y: rect.top });
@@ -95,8 +96,8 @@ export const DashboardItem = memo(function ({
     if (!isDraggable) return;
 
     const timerId = setTimeout(() => {
-      if (stage === "shrink") setStage("fly");
-      if (stage === "fly") setStage("follow");
+      if (stage === AnimationStage.SHRINK) setStage(AnimationStage.FLY);
+      if (stage === AnimationStage.FLY) setStage(AnimationStage.FOLLOW);
     }, 300);
 
     return () => {
@@ -107,12 +108,12 @@ export const DashboardItem = memo(function ({
 
   useEffect(() => {
     if (!isDraggable) {
-      setStage("shrink");
+      setStage(AnimationStage.SHRINK);
     }
   }, [isDraggable]);
 
   useEffect(() => {
-    if (stage !== "follow") return;
+    if (stage !== AnimationStage.FOLLOW) return;
 
     const el = previewRef.current;
     if (!el) return;
@@ -122,8 +123,6 @@ export const DashboardItem = memo(function ({
     const updatePosition = () => {
       el.style.left = cursorPosition.current.x - startPos.x + "px";
       el.style.top = cursorPosition.current.y + "px";
-      el.style.position = "fixed";
-      el.style.transform = "translate(calc(25% + 10px), 5px)";
       animationFrameId = requestAnimationFrame(updatePosition);
     };
 
@@ -136,10 +135,6 @@ export const DashboardItem = memo(function ({
 
   function handleEllipsis() {
     setDashboardItemContextMenuOpen((prev) => !prev);
-  }
-
-  async function handleOpenWrapper() {
-    await handleOpen(item.id, setLoadingOpen);
   }
 
   async function handleDownloadWrapper() {
@@ -157,7 +152,7 @@ export const DashboardItem = memo(function ({
   }
 
   function doubleClickHandlerWrapper() {
-    doubleClickHandler({
+    handleOpen({
       isFileItem,
       id: item.id,
       folderName: isFileItem ? "" : item?.folderName,
@@ -167,9 +162,12 @@ export const DashboardItem = memo(function ({
 
   function handleDragStart(e: React.DragEvent<HTMLDivElement>) {
     e.dataTransfer.setDragImage(document.createElement("img"), 0, 0);
-    dndRef.current.draggable = [
-      isFileItem ? { fileId: item.id } : { folderId: item.id },
-    ];
+    const itemDraggable = isFileItem
+      ? { fileId: item.id }
+      : { folderId: item.id };
+
+    dndRef.current.draggable = [itemDraggable];
+
     forceUpdate();
   }
 
@@ -178,31 +176,30 @@ export const DashboardItem = memo(function ({
   }
 
   function handleDragEnter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    if (!isFileItem && !isSelected) {
-      e.preventDefault();
-      setDragEnter(true);
-    }
+    if (isFileItem || isSelected) return;
+    e.preventDefault();
+    setDragEnter(true);
   }
 
   function handleDragLeave(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.preventDefault();
-    if (
-      !isFileItem &&
-      !isSelected &&
-      !e.currentTarget.contains(e.relatedTarget as Node)
-    ) {
-      setDragEnter(false);
-    }
+
+    if (isFileItem || isSelected) return;
+    if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+
+    setDragEnter(false);
   }
 
   function handleDrop() {
     if (isFileItem || isSelected) return;
     const draggableItem = dndRef.current.draggable?.[0];
-    if (draggableItem && "folderId" in draggableItem) {
-      if (draggableItem.folderId === item.id) {
-        return;
-      }
-    }
+    if (
+      draggableItem &&
+      "folderId" in draggableItem &&
+      draggableItem.folderId === item.id
+    )
+      return;
+
     dndRef.current.droppable = item.id;
     setDragEnter(false);
   }
@@ -256,9 +253,27 @@ export const DashboardItem = memo(function ({
             : formatDate(item.createdDate)}
         </span>
         <span
-          className={`${styles.tableItem__public} ${styles.tableItem__row}`}
+          className={`${styles.tableItem__publicRead} ${styles.tableItem__row}`}
         >
-          {item.isPublic}
+          {isFileItem &&
+            (item.publicAccessRole === FileSystemItemPermissions.READER ||
+              item.publicAccessRole === FileSystemItemPermissions.WRITER) && (
+              <Icon
+                link={`/svg/isPublic-sprite.svg#reader`}
+                className={styles.tableItem__publicReadIcon}
+              />
+            )}
+        </span>
+        <span
+          className={`${styles.tableItem__publicWrite} ${styles.tableItem__row}`}
+        >
+          {isFileItem &&
+            item.publicAccessRole === FileSystemItemPermissions.WRITER && (
+              <Icon
+                link={`/svg/isPublic-sprite.svg#writer`}
+                className={styles.tableItem__publicWriteIcon}
+              />
+            )}
         </span>
         <span
           className={`${styles.tableItem__buttons} ${styles.tableItem__row}`}
@@ -270,7 +285,7 @@ export const DashboardItem = memo(function ({
               loadingOpen={loadingOpen}
               loadingDownload={loadingDownload}
               loadingDelete={loadingDelete}
-              handleOpen={handleOpenWrapper}
+              handleOpen={doubleClickHandlerWrapper}
               handleDownload={handleDownloadWrapper}
               handleUpdate={() => handleUpdate(isFileItem, item)}
               handleDelete={handleDeleteWrapper}
@@ -281,15 +296,13 @@ export const DashboardItem = memo(function ({
             onClick={handleEllipsis}
             className={styles.tableButton__ellipsis}
           />
-          {isFileItem && (
-            <ButtonIcon
-              iconUrl="/svg/dashboard-page-sprite.svg#open"
-              onClick={handleOpenWrapper}
-              loading={loadingOpen}
-              disabled={loadingDownload || loadingDelete}
-              className={styles.tableButton__open}
-            />
-          )}
+          <ButtonIcon
+            iconUrl="/svg/dashboard-page-sprite.svg#open"
+            onClick={doubleClickHandlerWrapper}
+            loading={loadingOpen}
+            disabled={loadingDownload || loadingDelete}
+            className={styles.tableButton__open}
+          />
           {isFileItem && (
             <ButtonIcon
               iconUrl="/svg/dashboard-page-sprite.svg#download"
@@ -317,27 +330,23 @@ export const DashboardItem = memo(function ({
 
       {isDraggable && (
         <div
-          className={`${styles.previewItem} ${stage === "follow" && draggableMoreThenOne && styles.previewItem_follow}`}
+          className={`${styles.previewItem} ${stage === AnimationStage.FOLLOW && styles.previewItem_follow} ${stage === AnimationStage.FLY && styles.previewItem_fly}`}
           ref={previewRef}
           style={
-            stage === "fly"
+            stage === AnimationStage.FLY
               ? {
-                  left: 0,
-                  top: 0,
                   transform: `translate(
                   ${cursorPosition.current.x - startPos.x}px,
                   ${cursorPosition.current.y - startPos.y}px
                 )`,
-
-                  transition: "transform 0.3s ease",
                 }
-              : stage === "shrink"
+              : stage === AnimationStage.SHRINK
                 ? { top: startPos.y, left: startPos.x }
                 : undefined
           }
         >
           <DraggablePreviewItemContent item={item} />
-          {draggableMoreThenOne && stage === "follow" && (
+          {draggableMoreThenOne && stage === AnimationStage.FOLLOW && (
             <div className={styles.previewItem__backElement}>
               <div className={styles.previewItem__quantity}>
                 {draggableQuantity}

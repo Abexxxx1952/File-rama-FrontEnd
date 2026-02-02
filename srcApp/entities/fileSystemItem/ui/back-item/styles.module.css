@@ -1,0 +1,35 @@
+.backItem {
+  width: 100%;
+  height: var(--dashboard-item-height);
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 0.25rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  background-color: var(--dashboard-background-item-color);
+  user-select: none;
+}
+
+.backItem:hover,
+.backItem:focus-visible {
+  background-color: var(--dashboard-background-item-hover-color);
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.backItem__icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+}
+
+.backItem__text {
+  display: block;
+  margin-left: 0.5rem;
+}
+
+.backItem__dragEnter {
+  border-radius: 0.5rem;
+  background-color: var(--dashboard-background-item-dragOver-color);
+}

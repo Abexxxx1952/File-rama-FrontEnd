@@ -11,11 +11,7 @@ type ModalProps = {
   width?: string;
   height?: string;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  children: (
-    props: {
-      setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    } & Record<string, any>,
-  ) => React.ReactNode;
+  children: React.ReactNode;
 } & Record<string, any>;
 
 export function Modal({
@@ -53,7 +49,7 @@ export function Modal({
           className={styles.modal__close}
         />
         {title && <h2 className={styles.modal__title}>{title}</h2>}
-        {children({ setModalOpen, ...rest })}
+        {children}
       </div>
     </div>
   );

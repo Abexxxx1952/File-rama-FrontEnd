@@ -1,5 +1,3 @@
-"use client";
-
 import styles from "./styles.module.css";
 
 export function DashboardTableHeader() {
@@ -22,9 +20,19 @@ export function DashboardTableHeader() {
         Upload Date
       </span>
       <span
-        className={`${styles.tableHeader__public} ${styles.tableHeader__column}`}
+        className={`${styles.tableHeader__publicRead} ${styles.tableHeader__column}`}
       >
-        Public
+        R
+      </span>
+      <span
+        className={`${styles.tableHeader__publicWrite} ${styles.tableHeader__column}`}
+      >
+        W
+      </span>
+      <span
+        className={`${styles.tableHeader__buttons} ${styles.tableHeader__column}`}
+      >
+        Controls
       </span>
     </div>
   );

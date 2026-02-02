@@ -18,6 +18,8 @@
   --dashboard-nav-width: 10rem;
   --dashboardMini-nav-width: 5rem;
   --dashboard-background-color: rgb(240, 240, 240);
+  --dashboard-background-hover-color: rgb(220, 220, 220);
+  --dashboard-item-height: 3rem;
   --dashboard-background-item-color: rgb(255, 255, 255);
   --dashboard-background-item-selected-color: rgb(139, 170, 199);
   --dashboard-background-item-dragOver-color: rgb(185, 223, 231);
@@ -29,9 +31,9 @@
   --dashboard-table-column-size-width: 10%;
   --dashboard-table-column-uploadDate-width: 20%;
   --dashboard-table-column-public-width: 5%;
-  --dashboard-table-column-public-width-maxwidth1200: 7%;
-  --dashboard-table-column-public-width-maxwidth768: 10%;
-  --dashboard-table-column-public-width-maxwidth576: 15%;
+  --dashboard-table-column-public-width-maxwidth1200: 4%;
+  --dashboard-table-column-public-width-maxwidth768: 5.5%;
+  --dashboard-table-column-public-width-maxwidth576: 8%;
   --dashboard-table-column-buttons-width: 10%;
   --dashboard-table-column-buttons-width-maxwidth1200: 7%;
   --dashboard-table-column-buttons-width-maxwidth768: 6%;
@@ -45,6 +47,7 @@
   --switch-false-bg-color: rgb(194, 189, 189);
   --switch-true-bg-color: rgb(89, 237, 247);
   --modal-header-color: rgba(200, 240, 255, 0.7);
+  --input-disabled-color: rgb(190, 190, 190);
 }
 
 *,
@@ -56,8 +59,8 @@
   list-style: none;
   list-style-type: none;
   text-decoration: none;
-  -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 a {

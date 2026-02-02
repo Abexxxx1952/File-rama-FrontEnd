@@ -35,12 +35,13 @@ export function FolderCreateModal({
     defaultValues,
   });
 
-  function handleCreateFolder(
-    data: FetchAddFolderForm,
-    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  ) {
+  function handleCreateFolder(data: FetchAddFolderForm) {
     (async () => {
-      await createFolder({ ...data, parentFolderId }, setLoading, setModalOpen);
+      await createFolder(
+        { ...data, parentFolderId },
+        setLoading,
+        setAddFolderModalOpen,
+      );
 
       forceUpdate();
     })();
@@ -53,41 +54,37 @@ export function FolderCreateModal({
       width="60%"
       height="60%"
     >
-      {({ setModalOpen }) => (
-        <form
-          className={styles.addFolder__form}
-          onSubmit={handleSubmit((data) => {
-            handleCreateFolder(data, setModalOpen);
-          })}
-        >
-          <div className={styles.addFolder__input}>
-            <Controller
-              name="folderName"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  text="Folder Name"
-                  placeholder="Enter folder name"
-                  backgroundColor="var(--main-header-background-color)"
-                  focusBackgroundColor="var(--main-header-background-color)"
-                  border="none"
-                  textColor="var(--secondary-font-color)"
-                  error={errors.folderName?.message}
-                  {...field}
-                />
-              )}
-            />
-          </div>
-          <div className={styles.addFolder__buttonContainer}>
-            <Button
-              text="Add folder"
-              backgroundColor="var(--primary-logo-color)"
-              type="submit"
-              loading={loading}
-            />
-          </div>
-        </form>
-      )}
+      <form
+        className={styles.addFolder__form}
+        onSubmit={handleSubmit(handleCreateFolder)}
+      >
+        <div className={styles.addFolder__input}>
+          <Controller
+            name="folderName"
+            control={control}
+            render={({ field }) => (
+              <Input
+                text="Folder Name"
+                placeholder="Enter folder name"
+                backgroundColor="var(--main-header-background-color)"
+                focusBackgroundColor="var(--main-header-background-color)"
+                border="none"
+                textColor="var(--secondary-font-color)"
+                error={errors.folderName?.message}
+                {...field}
+              />
+            )}
+          />
+        </div>
+        <div className={styles.addFolder__buttonContainer}>
+          <Button
+            text="Add folder"
+            backgroundColor="var(--primary-logo-color)"
+            type="submit"
+            loading={loading}
+          />
+        </div>
+      </form>
     </Modal>
   );
 }

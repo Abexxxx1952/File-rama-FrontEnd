@@ -78,7 +78,6 @@ export function DashboardModals({
           <FolderUpdateModal
             folderId={currentFileSystemItem.id}
             folderName={currentFileSystemItem.folderName}
-            isPublic={currentFileSystemItem.isPublic}
             setUpdateFolderModalOpen={setUpdateFolderModalOpen}
             forceUpdate={forceUpdate}
           />,
@@ -91,7 +90,8 @@ export function DashboardModals({
           <FileUpdateModal
             fileId={currentFileSystemItem.id}
             fileName={currentFileSystemItem.fileName}
-            isPublic={currentFileSystemItem.isPublic}
+            publicAccessRole={currentFileSystemItem.publicAccessRole}
+            fileUrl={currentFileSystemItem.fileUrl}
             setUpdateFileModalOpen={setUpdateFileModalOpen}
             forceUpdate={forceUpdate}
           />,

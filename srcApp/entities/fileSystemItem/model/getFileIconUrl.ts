@@ -25,6 +25,10 @@ export function getFileIconUrl(fileExtension: string): string {
     flv: "video.png",
     html: "html.png",
     rar: "rar.png",
+    zip: "zip.png",
+    json: "json.png",
+    apk: "apk.png",
+    avif: "avif.png",
   };
 
   const iconFileName = iconMap[fileExtension.toLowerCase()] || defaultIcon;

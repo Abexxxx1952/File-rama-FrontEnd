@@ -7,7 +7,6 @@ import { updateFolder } from "@/srcApp/entities/fileSystemItem/model/updateFolde
 import { Button } from "@/srcApp/shared/ui/button";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
-import { Switch } from "@/srcApp/shared/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./styles.module.css";
@@ -15,7 +14,6 @@ import styles from "./styles.module.css";
 type FolderUpdateModalProps = {
   folderId: string;
   folderName: string;
-  isPublic: boolean;
   setUpdateFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
 };
@@ -23,13 +21,12 @@ type FolderUpdateModalProps = {
 export function FolderUpdateModal({
   folderId,
   folderName,
-  isPublic,
   setUpdateFolderModalOpen,
   forceUpdate,
 }: FolderUpdateModalProps) {
   const [loading, setLoading] = useState(false);
 
-  const defaultValues = { folderName: folderName, isPublic: isPublic };
+  const defaultValues = { folderName: folderName };
 
   const {
     control,
@@ -40,10 +37,7 @@ export function FolderUpdateModal({
     defaultValues,
   });
 
-  function handleUpdateFolder(
-    data: FetchUpdateFolderForm,
-    setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  ) {
+  function handleUpdateFolder(data: FetchUpdateFolderForm) {
     if (data.folderName !== folderName) {
       (async () => {
         await updateFolder(
@@ -52,9 +46,7 @@ export function FolderUpdateModal({
         );
       })();
     }
-    if (data.isPublic !== isPublic) {
-    }
-    setModalOpen(false);
+    setUpdateFolderModalOpen(false);
     forceUpdate();
   }
 
@@ -62,59 +54,41 @@ export function FolderUpdateModal({
     <Modal
       title="Edit folder"
       setModalOpen={setUpdateFolderModalOpen}
-      width="60%"
-      height="60%"
+      width="50%"
+      height="50%"
     >
-      {({ setModalOpen }) => (
-        <form
-          className={styles.updateFolder__form}
-          onSubmit={handleSubmit((data) => {
-            handleUpdateFolder(data, setModalOpen);
-          })}
-        >
-          <div className={styles.updateFolder__input}>
-            <Controller
-              name="folderName"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  text="Folder Name"
-                  placeholder="Enter folder name"
-                  backgroundColor="var(--main-header-background-color)"
-                  focusBackgroundColor="var(--main-header-background-color)"
-                  border="none"
-                  textColor="var(--secondary-font-color)"
-                  labelTextColor="var(--main-page-font-color)"
-                  error={errors.folderName?.message}
-                  {...field}
-                />
-              )}
-            />
-          </div>
-          <div className={styles.updateFolder__switch}>
-            <Controller
-              name="isPublic"
-              control={control}
-              render={({ field }) => (
-                <Switch
-                  text="Is Public"
-                  focusBoxShadow="0 0 10px white"
-                  error={errors.isPublic?.message}
-                  {...field}
-                />
-              )}
-            />
-          </div>
-          <div className={styles.updateFolder__buttonContainer}>
-            <Button
-              text="Update folder"
-              backgroundColor="var(--primary-logo-color)"
-              type="submit"
-              loading={loading}
-            />
-          </div>
-        </form>
-      )}
+      <form
+        className={styles.updateFolder__form}
+        onSubmit={handleSubmit(handleUpdateFolder)}
+      >
+        <div className={styles.updateFolder__input}>
+          <Controller
+            name="folderName"
+            control={control}
+            render={({ field }) => (
+              <Input
+                text="Folder Name"
+                placeholder="Enter folder name"
+                backgroundColor="var(--main-header-background-color)"
+                focusBackgroundColor="var(--main-header-background-color)"
+                border="none"
+                textColor="var(--secondary-font-color)"
+                labelTextColor="var(--main-page-font-color)"
+                error={errors.folderName?.message}
+                {...field}
+              />
+            )}
+          />
+        </div>
+        <div className={styles.updateFolder__buttonContainer}>
+          <Button
+            text="Update folder"
+            backgroundColor="var(--primary-logo-color)"
+            type="submit"
+            loading={loading}
+          />
+        </div>
+      </form>
     </Modal>
   );
 }
