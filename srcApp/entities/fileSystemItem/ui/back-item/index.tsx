@@ -1,22 +1,20 @@
 import { memo, useState } from "react";
 import Image from "next/image";
 import { areBackItemEqual } from "@/srcApp/entities/fileSystemItem/model/areBackItemEqual";
-import { levelUpHandler } from "@/srcApp/features/options/model/levelUpHandler";
 import { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
 import styles from "./styles.module.css";
 
 export type BackItemProps = {
   grandParentId: string | null;
   dndRef: React.MutableRefObject<Dnd>;
-  setPath: React.Dispatch<React.SetStateAction<string[]>>;
-  setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
+
+  routerBack: () => void;
 };
 
 export const BackItem = memo(function ({
   grandParentId,
   dndRef,
-  setPath,
-  setParentFolderId,
+  routerBack,
 }: BackItemProps) {
   const [dragEnter, setDragEnter] = useState(false);
   function handleDragOver(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -42,7 +40,7 @@ export const BackItem = memo(function ({
   }
 
   const onClick = () => {
-    levelUpHandler(setPath, setParentFolderId);
+    routerBack();
   };
   return (
     <div

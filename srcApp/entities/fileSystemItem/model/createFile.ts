@@ -12,9 +12,9 @@ import { FileUploadResult, StatusUpload } from "./types/fileUploadResult";
 export async function createFile(
   params: FormData,
   fileUploadId: string,
-  isRevalidateCacheRef: React.MutableRefObject<boolean>,
+  fileSystemItemsCurrentTag: string,
   abortControllerRef?: React.RefObject<AbortController | null>,
-): Promise<FileUploadResult | null> {
+): Promise<FileUploadResult | null | ErrorData> {
   let signal: AbortSignal | undefined;
   if (abortControllerRef) {
     if (abortControllerRef.current) {
@@ -23,7 +23,6 @@ export async function createFile(
     abortControllerRef.current = new AbortController();
     signal = abortControllerRef.current.signal;
   }
-
   try {
     const { access_token, refresh_token } = await getCookies();
 
@@ -54,7 +53,11 @@ export async function createFile(
           });
         }
 
-        return null;
+        return {
+          message: errorData.message || "Unexpected error",
+          statusCode: errorData.statusCode || 500,
+          error: errorData.error || "Unexpected error",
+        };
       }
 
       const parsedData: FileUploadResult[] = await response.json();
@@ -69,13 +72,11 @@ export async function createFile(
         return item;
       });
 
-      if (!isRevalidateCacheRef.current) {
-        await revalidateFromClientByTag([
-          CACHE_TAG.FILE_SYSTEM_ITEM,
-          CACHE_TAG.STAT,
-        ]);
-        isRevalidateCacheRef.current = true;
-      }
+      await revalidateFromClientByTag([
+        fileSystemItemsCurrentTag,
+        CACHE_TAG.STAT,
+      ]);
+
       return data[0];
     }
     if (!access_token && refresh_token) {
@@ -83,7 +84,7 @@ export async function createFile(
       return createFile(
         params,
         fileUploadId,
-        isRevalidateCacheRef,
+        fileSystemItemsCurrentTag,
         abortControllerRef,
       );
     }

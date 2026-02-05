@@ -3,30 +3,30 @@ import { deleteFile } from "@/srcApp/entities/fileSystemItem/model/deleteFile";
 import { deleteFolder } from "@/srcApp/entities/fileSystemItem/model/deleteFolder";
 import { downloadFile } from "@/srcApp/entities/fileSystemItem/model/downloadFile";
 import { openFile } from "@/srcApp/entities/fileSystemItem/model/openFile";
-import { DeleteHandlerArgs } from "@/srcApp/entities/fileSystemItem/model/types/deleteHandlerArgs";
-import { DoubleClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/doubleClickHandlerArgs";
+import type { DeleteHandlerArgs } from "@/srcApp/entities/fileSystemItem/model/types/deleteHandlerArgs";
+import type { DoubleClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/doubleClickHandlerArgs";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
-import { OneClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/oneClickHandlerArgs";
+import type { OneClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/oneClickHandlerArgs";
 
-interface useDashboardItemActionsArgs {
+interface useDashboardItemActionsParams {
   toggle: Function;
   forceUpdate: () => void;
-  setPath: React.Dispatch<React.SetStateAction<string[]>>;
-  setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
+  routerForward: (param: string) => void;
   setCurrentFileSystemItem: (item: FileSystemItem) => void;
   setUpdateFileModalOpen: (v: boolean) => void;
   setUpdateFolderModalOpen: (v: boolean) => void;
+  fileSystemItemsCurrentTag: string;
 }
 
 export function useDashboardItemActions({
   toggle,
   forceUpdate,
-  setPath,
-  setParentFolderId,
+  routerForward,
   setCurrentFileSystemItem,
   setUpdateFileModalOpen,
   setUpdateFolderModalOpen,
-}: useDashboardItemActionsArgs) {
+  fileSystemItemsCurrentTag,
+}: useDashboardItemActionsParams) {
   const oneClickHandler = useCallback(
     (
       e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -43,22 +43,15 @@ export function useDashboardItemActions({
     async ({
       isFileItem,
       id,
-      folderName,
       setLoadingOpen,
     }: DoubleClickMeta): Promise<void> => {
       if (isFileItem) {
         await openFile(id, setLoadingOpen);
       } else {
-        setPath((prev) =>
-          prev.length === 1
-            ? prev.concat(folderName)
-            : prev.concat(`/${folderName}`),
-        );
-        setParentFolderId((prev) => prev.concat(id));
-        forceUpdate();
+        routerForward(id);
       }
     },
-    [openFile, setPath, setParentFolderId, forceUpdate],
+    [],
   );
 
   const handleDownload = useCallback(
@@ -68,7 +61,7 @@ export function useDashboardItemActions({
     ): Promise<void> => {
       await downloadFile(id, setLoadingDownload);
     },
-    [downloadFile],
+    [],
   );
 
   const handleUpdate = useCallback(
@@ -76,11 +69,7 @@ export function useDashboardItemActions({
       setCurrentFileSystemItem(item);
       isFile ? setUpdateFileModalOpen(true) : setUpdateFolderModalOpen(true);
     },
-    [
-      setCurrentFileSystemItem,
-      setUpdateFileModalOpen,
-      setUpdateFolderModalOpen,
-    ],
+    [],
   );
 
   const handleDelete = useCallback(
@@ -90,11 +79,11 @@ export function useDashboardItemActions({
       setLoadingDelete,
     }: DeleteHandlerArgs): Promise<void> => {
       isFileItem
-        ? await deleteFile(id, setLoadingDelete)
-        : await deleteFolder(id, setLoadingDelete);
+        ? await deleteFile(id, fileSystemItemsCurrentTag, setLoadingDelete)
+        : await deleteFolder(id, fileSystemItemsCurrentTag, setLoadingDelete);
       forceUpdate();
     },
-    [deleteFile, deleteFolder, forceUpdate],
+    [],
   );
 
   return {

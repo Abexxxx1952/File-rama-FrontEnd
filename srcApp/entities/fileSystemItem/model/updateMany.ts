@@ -11,13 +11,18 @@ import type { FetchUpdateMany } from "./types/fetchUpdateMany";
 
 export async function updateMany(
   selected: FetchUpdateMany,
+  fileSystemItemsCurrentTags: string[],
 ): Promise<FileSystemItemChangeResult[] | null> {
   try {
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
       const data: FileSystemItemChangeResult[] | ErrorData | null =
-        await fetchUpdateMany(access_token, selected);
+        await fetchUpdateMany(
+          access_token,
+          selected,
+          fileSystemItemsCurrentTags,
+        );
 
       if (isErrorData(data)) {
         notifyResponse({
@@ -85,7 +90,7 @@ export async function updateMany(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return updateMany(selected /* setLoading */);
+      return updateMany(selected, fileSystemItemsCurrentTags);
     }
     return null;
   } catch (error: unknown) {

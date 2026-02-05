@@ -11,6 +11,7 @@ import { FileSystemItemChangeResult } from "./types/FileSystemItemChangeResult";
 
 export async function deleteFolder(
   id: string,
+  fileSystemItemsCurrentTag: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<FileSystemItemChangeResult[] | null> {
   setLoading(true);
@@ -19,7 +20,7 @@ export async function deleteFolder(
 
     if (access_token) {
       const data: FileSystemItemChangeResult[] | ErrorData | null =
-        await fetchDeleteFolder(access_token, id);
+        await fetchDeleteFolder(access_token, id, fileSystemItemsCurrentTag);
 
       if (isErrorData(data)) {
         notifyResponse({
@@ -86,7 +87,7 @@ export async function deleteFolder(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return deleteFolder(id, setLoading);
+      return deleteFolder(id, fileSystemItemsCurrentTag, setLoading);
     }
     return null;
   } catch (error: unknown) {

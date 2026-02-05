@@ -6,7 +6,6 @@ import { StatusUpload } from "../types/fileUploadResult";
 
 export function useUploadProgress(
   fileUploadId: string,
-
   onProgress: (data: FileUploadEvent) => void,
   onComplete?: (data: FileUploadEvent) => void,
   onError?: (err: any) => void,

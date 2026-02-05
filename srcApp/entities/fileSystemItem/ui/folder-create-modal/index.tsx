@@ -15,12 +15,14 @@ type FolderCreateModalProps = {
   setAddFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
   parentFolderId: string | null;
+  fileSystemItemsCurrentTag: string;
 };
 
 export function FolderCreateModal({
   setAddFolderModalOpen,
   forceUpdate,
   parentFolderId,
+  fileSystemItemsCurrentTag,
 }: FolderCreateModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -39,6 +41,7 @@ export function FolderCreateModal({
     (async () => {
       await createFolder(
         { ...data, parentFolderId },
+        fileSystemItemsCurrentTag,
         setLoading,
         setAddFolderModalOpen,
       );

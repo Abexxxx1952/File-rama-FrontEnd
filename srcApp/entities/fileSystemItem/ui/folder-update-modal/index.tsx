@@ -16,6 +16,7 @@ type FolderUpdateModalProps = {
   folderName: string;
   setUpdateFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
+  fileSystemItemsCurrentTag: string;
 };
 
 export function FolderUpdateModal({
@@ -23,6 +24,7 @@ export function FolderUpdateModal({
   folderName,
   setUpdateFolderModalOpen,
   forceUpdate,
+  fileSystemItemsCurrentTag,
 }: FolderUpdateModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -42,6 +44,7 @@ export function FolderUpdateModal({
       (async () => {
         await updateFolder(
           { folderId, folderName: data.folderName },
+          [fileSystemItemsCurrentTag],
           setLoading,
         );
       })();

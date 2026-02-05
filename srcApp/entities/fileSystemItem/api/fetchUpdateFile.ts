@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import type { ErrorData } from "@/srcApp/shared/model/types/errorData";
@@ -11,6 +10,7 @@ import type { File } from "../model/types/file";
 export async function fetchUpdateFile(
   access_token: string,
   updateFileData: FetchUpdateFile,
+  fileSystemItemsCurrentTags: string[],
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<File | ErrorData | null> {
   const url: string = `${process.env.UPDATE_FILE_URL}`;
@@ -33,7 +33,8 @@ export async function fetchUpdateFile(
 
       throw errorData;
     }
-    revalidateTag(CACHE_TAG.FILE_SYSTEM_ITEM);
+
+    fileSystemItemsCurrentTags.forEach((tag) => revalidateTag(tag));
 
     const data: File = await response.json();
 

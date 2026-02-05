@@ -11,9 +11,11 @@ import type { FetchDeleteMany } from "../model/types/fetchDeleteMany";
 export async function fetchDeleteMany(
   access_token: string,
   deleteMany: FetchDeleteMany,
+  fileSystemItemsCurrentTag: string,
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<FileSystemItemChangeResult[] | ErrorData | null> {
   const url: string = `${process.env.DELETE_MANY_URL}`;
+  console.log("deleteMany", fileSystemItemsCurrentTag);
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
@@ -33,7 +35,7 @@ export async function fetchDeleteMany(
 
       throw errorData;
     }
-    revalidateTag(CACHE_TAG.FILE_SYSTEM_ITEM);
+    revalidateTag(fileSystemItemsCurrentTag);
     revalidateTag(CACHE_TAG.STAT);
     const data: FileSystemItemChangeResult[] = await response.json();
 

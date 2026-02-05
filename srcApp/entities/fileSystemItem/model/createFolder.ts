@@ -12,6 +12,7 @@ import { Folder } from "./types/folder";
 
 export async function createFolder(
   params: FetchAddFolder,
+  fileSystemItemsCurrentTag: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
 ): Promise<Folder | null> {
@@ -23,6 +24,7 @@ export async function createFolder(
       const data: Folder | ErrorData | null = await fetchCreateFolder(
         access_token,
         params,
+        fileSystemItemsCurrentTag,
       );
 
       if (isErrorData(data)) {
@@ -50,7 +52,12 @@ export async function createFolder(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return createFolder(params, setLoading, setModalOpen);
+      return createFolder(
+        params,
+        fileSystemItemsCurrentTag,
+        setLoading,
+        setModalOpen,
+      );
     }
     return null;
   } catch (error: unknown) {

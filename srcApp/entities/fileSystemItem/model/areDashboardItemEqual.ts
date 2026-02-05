@@ -9,26 +9,24 @@ export function areDashboardItemEqual(
   const prevItem = prevProps.item;
   const nextItem = nextProps.item;
 
-  const baseEquality =
-    prevProps.isSelected === nextProps.isSelected &&
-    prevProps.index === nextProps.index &&
-    prevProps.isDraggable === nextProps.isDraggable;
+  if (prevProps.isSelected !== nextProps.isSelected) return false;
+  if (prevProps.isDraggable !== nextProps.isDraggable) return false;
+  /*  if (prevProps.item.id === nextProps.item.id) return true; */
+  if (prevProps.index === nextProps.index) return true;
 
   if (isFile(prevItem) && isFile(nextItem)) {
     return (
       prevItem.fileName === nextItem.fileName &&
+      prevItem.fileExtension === nextItem.fileExtension &&
       prevItem.parentFolderId === nextItem.parentFolderId &&
-      prevItem.publicAccessRole === nextItem.publicAccessRole &&
-      baseEquality
+      prevItem.publicAccessRole === nextItem.publicAccessRole
     );
   }
 
   if (isFolder(prevItem) && isFolder(nextItem)) {
     return (
       prevItem.folderName === nextItem.folderName &&
-      prevItem.parentFolderId === nextItem.parentFolderId &&
-      prevItem.isPublic === nextItem.isPublic &&
-      baseEquality
+      prevItem.parentFolderId === nextItem.parentFolderId
     );
   }
 

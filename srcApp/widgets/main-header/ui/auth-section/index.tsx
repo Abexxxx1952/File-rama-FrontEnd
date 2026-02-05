@@ -14,7 +14,7 @@ export function AuthSection() {
       const user: User | null = await getUser();
 
       if (user !== null) {
-        router.replace("/dashboard");
+        router.replace("/dashboard/null");
       }
     })();
   }, []);

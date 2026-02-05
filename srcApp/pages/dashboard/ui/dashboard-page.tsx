@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { deleteMany } from "@/srcApp/entities/fileSystemItem/model/deleteMany";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDashboardDnd } from "@/srcApp/entities/fileSystemItem/model/hooks/useDashboardDnd";
 import { useDashboardItemActions } from "@/srcApp/entities/fileSystemItem/model/hooks/useDashboardItemActions";
 import { useFileSystem } from "@/srcApp/entities/fileSystemItem/model/hooks/useFileSystem";
-import type { FetchDeleteMany } from "@/srcApp/entities/fileSystemItem/model/types/fetchDeleteMany";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import {
   BackItem,
@@ -17,20 +15,51 @@ import { getStat } from "@/srcApp/entities/stats/model/getStat";
 import type { Stat } from "@/srcApp/entities/stats/model/types/stat";
 import { Options } from "@/srcApp/features/options/ui";
 import { Search } from "@/srcApp/features/search/ui";
-import { getPenultimate } from "@/srcApp/shared/model/getPenultimate";
+import { Icon } from "@/srcApp/shared/ui/icon";
 import { DashboardModals } from "@/srcApp/widgets/dashboard-modals";
 import { DashboardTableHeader } from "@/srcApp/widgets/dashboard-table-header";
+import { useDashboardNavigation } from "../model/hooks/useDashboardNavigation";
+import { useLazyScrollLoading } from "../model/hooks/useLazyScrollLoading";
 import { useSearch } from "../model/hooks/useSearch";
 import { useSelection } from "../model/hooks/useSelection";
-import { selectBetween } from "../model/selectBetween";
+import { useWindowListeners } from "../model/hooks/useWindowListeners";
 import styles from "./styles.module.css";
 
-export function DashboardPage() {
-  const [parentFolderId, setParentFolderId] = useState<string[]>([]);
+const INITIAL_MAX_COUNT =
+  Number(
+    process.env.NEXT_PUBLIC_NEXT_PUBLIC_INITIAL_MAX_FILE_SYSTEM_ITEMS_COUNT,
+  ) || 20;
+const ADD_STEP =
+  Number(process.env.NEXT_PUBLIC_ADD_STEP_FILE_SYSTEM_ITEMS_COUNT) || 20;
+export function DashboardPage({ ids }: { ids: string[] }) {
+  console.log("DashboardPage");
+
   const [version, setVersion] = useState(0);
+  const forceUpdate = useCallback(() => {
+    setVersion((v) => v + 1);
+  }, []);
+  const {
+    routerForward,
+    routerBack,
+    currentParentFolderId,
+    grandParentId,
+    fileSystemItemsCurrentTag,
+    folderPathTag,
+    sort,
+    upsertSortRule,
+    sortRules,
+  } = useDashboardNavigation(ids);
+
   const [search, setSearch] = useState("");
-  const fileSystemItems = useFileSystem(parentFolderId, version);
+  const [fileSystemItems, loading] = useFileSystem({
+    currentParentFolderId,
+    sortRules,
+    version,
+    fileSystemItemsCurrentTag,
+  });
   const filteredFileSystemItems = useSearch(fileSystemItems, search);
+  const [filteredFileSystemItemsSliced, setFilteredFileSystemItemsSliced] =
+    useState<FileSystemItem[]>([]);
   const { selected, setSelected, isSelected, toggle, clear } = useSelection();
   const {
     dndRef,
@@ -40,18 +69,29 @@ export function DashboardPage() {
     onDrop,
     onDragEnd,
     isDraggable,
-  } = useDashboardDnd(selected, clear, forceUpdate);
+  } = useDashboardDnd({
+    selected,
+    clear,
+    fileSystemItemsCurrentTag,
+    forceUpdate,
+  });
   const [currentFileSystemItem, setCurrentFileSystemItem] =
     useState<FileSystemItem | null>(null);
+  const { portalRef, handleDeleteMany, loadingDelete } = useWindowListeners({
+    fileSystemItemsCurrentTag,
+    clear,
+    selected,
+    setSelected,
+    fileSystemItems,
+    forceUpdate,
+  });
   const [stat, setStat] = useState<Stat | null>();
   const [addFolderModalOpen, setAddFolderModalOpen] = useState<boolean>(false);
   const [addFileModalOpen, setAddFileModalOpen] = useState<boolean>(false);
-  const [path, setPath] = useState<string[]>([":/"]);
   const [updateFolderModalOpen, setUpdateFolderModalOpen] =
     useState<boolean>(false);
   const [updateFileModalOpen, setUpdateFileModalOpen] =
     useState<boolean>(false);
-
   const {
     oneClickHandler,
     handleOpen,
@@ -61,43 +101,21 @@ export function DashboardPage() {
   } = useDashboardItemActions({
     toggle,
     forceUpdate,
-    setPath,
-    setParentFolderId,
+    routerForward,
     setCurrentFileSystemItem,
     setUpdateFileModalOpen,
     setUpdateFolderModalOpen,
+    fileSystemItemsCurrentTag,
   });
 
-  const portalRef = useRef<HTMLElement | null>(null);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    portalRef.current = document.getElementById("portal");
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        clear();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  useEffect(() => {
-    function handleKeyDown(event: MouseEvent) {
-      if (event.shiftKey) {
-        selectBetween(selected, fileSystemItems!, setSelected);
-      }
-    }
-
-    window.addEventListener("click", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("click", handleKeyDown);
-    };
-  }, [selected, fileSystemItems]);
+  const maxCount = useLazyScrollLoading(
+    INITIAL_MAX_COUNT,
+    filteredFileSystemItems.length || 0,
+    ADD_STEP,
+    sentinelRef,
+  );
 
   useEffect(() => {
     (async () => {
@@ -107,42 +125,22 @@ export function DashboardPage() {
     })();
   }, [version]);
 
-  function forceUpdate() {
-    setVersion((v) => v + 1);
-  }
-
-  const selectedMapped = useMemo(() => {
-    const result: FetchDeleteMany = [];
-
-    selected.forEach(({ index, ...id }) => {
-      result.push(id);
-    });
-
-    return result;
-  }, [selected]);
-
-  async function handleDeleteMany(
-    setLoadingDelete: React.Dispatch<React.SetStateAction<boolean>>,
-  ) {
-    await deleteMany(selectedMapped, setLoadingDelete);
-    clear();
-    forceUpdate();
-  }
-  const grandParentId = getPenultimate(parentFolderId);
-
-  if (!fileSystemItems) {
-    return null;
-  }
+  useEffect(() => {
+    setFilteredFileSystemItemsSliced(
+      filteredFileSystemItems.slice(0, maxCount),
+    );
+  }, [maxCount, filteredFileSystemItems]);
 
   return (
     <>
       <Search setSearch={setSearch} />
       <Options
-        path={path}
-        setPath={setPath}
-        setParentFolderId={setParentFolderId}
+        currentParentFolderId={currentParentFolderId}
+        folderPathTag={folderPathTag}
+        routerBack={routerBack}
         isSelected={isSelected()}
         handleDeleteMany={handleDeleteMany}
+        loadingDelete={loadingDelete}
       />
       <div className={styles.storage__content}>
         <div
@@ -152,17 +150,26 @@ export function DashboardPage() {
           onDragEnd={onDragEnd}
           onDrop={onDrop}
         >
-          <DashboardTableHeader />
-          {parentFolderId.length !== 0 && (
+          <DashboardTableHeader sort={sort} upsertSortRule={upsertSortRule} />
+          {ids.length > 1 && (
             <BackItem
               grandParentId={grandParentId}
               dndRef={dndRef}
-              setPath={setPath}
-              setParentFolderId={setParentFolderId}
+              routerBack={routerBack}
             />
           )}
-          {filteredFileSystemItems.length === 0 && <EmptyItem />}
-          {filteredFileSystemItems.map((elem, index) => {
+          {loading && (
+            <div className={styles.storage__itemsLoading}>
+              <Icon
+                link={"/svg/settings-sprite.svg#loading"}
+                className={styles.storage__loading}
+              />
+            </div>
+          )}
+          {filteredFileSystemItemsSliced.length === 0 && !loading && (
+            <EmptyItem />
+          )}
+          {filteredFileSystemItemsSliced.map((elem, index) => {
             return (
               <DashboardItem
                 key={elem.id}
@@ -175,13 +182,14 @@ export function DashboardPage() {
                 handleDownload={handleDownload}
                 handleUpdate={handleUpdate}
                 handleDelete={handleDelete}
-                dndRef={dndRef}
                 isDraggable={isDraggable(elem.id)}
+                dndRef={dndRef}
                 cursorPosition={cursorPositionRef}
                 draggableQuantity={selected.size}
               />
             );
           })}
+          <div ref={sentinelRef} />
         </div>
         <DashboardExtraItem
           usedSize={stat?.usedSize || 0}
@@ -195,7 +203,7 @@ export function DashboardPage() {
         addFolderModalOpen={addFolderModalOpen}
         setAddFolderModalOpen={setAddFolderModalOpen}
         forceUpdate={forceUpdate}
-        parentFolderId={parentFolderId}
+        currentParentFolderId={currentParentFolderId}
         addFileModalOpen={addFileModalOpen}
         setAddFileModalOpen={setAddFileModalOpen}
         currentFileSystemItem={currentFileSystemItem}
@@ -203,6 +211,7 @@ export function DashboardPage() {
         setUpdateFolderModalOpen={setUpdateFolderModalOpen}
         updateFileModalOpen={updateFileModalOpen}
         setUpdateFileModalOpen={setUpdateFileModalOpen}
+        fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
       />
     </>
   );

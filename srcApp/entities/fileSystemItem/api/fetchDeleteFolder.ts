@@ -10,9 +10,10 @@ import { FileSystemItemChangeResult } from "../model/types/FileSystemItemChangeR
 export async function fetchDeleteFolder(
   access_token: string,
   id: string,
+  fileSystemItemsCurrentTag: string,
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<FileSystemItemChangeResult[] | ErrorData | null> {
-  const url: string = `${process.env.DELETE_FOLDER_URL}`;
+  const url: string = `${process.env.DELETE_FOLDER_URL}/${id}`;
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
@@ -21,7 +22,6 @@ export async function fetchDeleteFolder(
     additionalHeaders: {
       Authorization: `Bearer ${access_token}`,
     },
-    bodyData: { folderId: id },
   };
 
   try {
@@ -32,7 +32,7 @@ export async function fetchDeleteFolder(
 
       throw errorData;
     }
-    revalidateTag(CACHE_TAG.FILE_SYSTEM_ITEM);
+    revalidateTag(fileSystemItemsCurrentTag);
     revalidateTag(CACHE_TAG.STAT);
     const data: FileSystemItemChangeResult[] = await response.json();
 

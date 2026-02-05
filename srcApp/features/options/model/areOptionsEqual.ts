@@ -4,8 +4,13 @@ export function areOptionsEqual(
   prevProps: OptionsProps,
   nextProps: OptionsProps,
 ) {
-  const prevPath = prevProps.path.toString();
-  const nextPath = nextProps.path.toString();
+  if (
+    prevProps.currentParentFolderId === nextProps.currentParentFolderId &&
+    prevProps.isSelected === nextProps.isSelected &&
+    prevProps.loadingDelete === nextProps.loadingDelete
+  ) {
+    return true;
+  }
 
-  return prevPath === nextPath;
+  return false;
 }

@@ -53,7 +53,7 @@ export async function loginUser(
       successMessage: `Successfully logged ${data.email}`,
     });
 
-    router.push("/dashboard");
+    router.push("/dashboard/null");
   } catch (error) {
     console.log("error", error);
     return null;

@@ -1,20 +1,38 @@
 import { useEffect, useState } from "react";
-import { getFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/getFileSystemItem";
+import { getFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/getFileSystemItems";
 import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { SortFileSystemRules } from "@/srcApp/pages/dashboard/model/types/sort";
 
-export function useFileSystem(parentFolderId: string[], version: number) {
-  const [items, setItems] = useState<FileSystemItem[] | null>(null);
+type useFileSystemParams = {
+  currentParentFolderId: string | null;
+  sortRules: SortFileSystemRules;
+  version: number;
+  fileSystemItemsCurrentTag: string;
+};
+
+export function useFileSystem({
+  currentParentFolderId,
+  sortRules,
+  version,
+  fileSystemItemsCurrentTag,
+}: useFileSystemParams): [FileSystemItem[] | null, boolean] {
+  const [fileSystemItems, setFileSystemItems] = useState<
+    FileSystemItem[] | null
+  >(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const parentId =
-        parentFolderId.length > 0
-          ? parentFolderId[parentFolderId.length - 1]
-          : undefined;
-
-      setItems(await getFileSystemItems(parentId));
+      setFileSystemItems(
+        await getFileSystemItems(
+          currentParentFolderId,
+          sortRules,
+          fileSystemItemsCurrentTag,
+          setLoading,
+        ),
+      );
     })();
-  }, [parentFolderId, version]);
+  }, [sortRules, version]);
 
-  return items;
+  return [fileSystemItems, loading];
 }

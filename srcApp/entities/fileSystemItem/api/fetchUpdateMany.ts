@@ -11,6 +11,7 @@ import type { FetchUpdateMany } from "../model/types/fetchUpdateMany";
 export async function fetchUpdateMany(
   access_token: string,
   updateMany: FetchUpdateMany,
+  fileSystemItemsCurrentTags: string[],
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<FileSystemItemChangeResult[] | ErrorData | null> {
   const url: string = `${process.env.UPDATE_MANY_URL}`;
@@ -33,7 +34,8 @@ export async function fetchUpdateMany(
 
       throw errorData;
     }
-    revalidateTag(CACHE_TAG.FILE_SYSTEM_ITEM);
+
+    fileSystemItemsCurrentTags.forEach((tag) => revalidateTag(tag));
     revalidateTag(CACHE_TAG.STAT);
     const data: FileSystemItemChangeResult[] = await response.json();
 

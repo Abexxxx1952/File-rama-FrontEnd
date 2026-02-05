@@ -13,6 +13,7 @@ import type { Folder } from "./types/folder";
 
 export async function updateFolder(
   params: FetchUpdateFolder,
+  fileSystemItemsCurrentTags: string[],
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<Folder | null> {
   setLoading(true);
@@ -23,6 +24,7 @@ export async function updateFolder(
       const data: FileSystemItem | ErrorData | null = await fetchUpdateFolder(
         access_token,
         params,
+        fileSystemItemsCurrentTags,
       );
 
       if (isErrorData(data)) {
@@ -50,7 +52,7 @@ export async function updateFolder(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return updateFolder(params, setLoading);
+      return updateFolder(params, fileSystemItemsCurrentTags, setLoading);
     }
     return null;
   } catch (error: unknown) {

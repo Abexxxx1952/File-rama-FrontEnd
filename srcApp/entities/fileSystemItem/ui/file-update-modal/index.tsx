@@ -25,6 +25,7 @@ type FileUpdateModalProps = {
   fileUrl: string;
   setUpdateFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
+  fileSystemItemsCurrentTag: string;
 };
 
 export function FileUpdateModal({
@@ -34,6 +35,7 @@ export function FileUpdateModal({
   fileUrl,
   setUpdateFileModalOpen,
   forceUpdate,
+  fileSystemItemsCurrentTag,
 }: FileUpdateModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -67,12 +69,17 @@ export function FileUpdateModal({
 
   async function handleUpdateFile(data: FetchUpdateFileForm) {
     if (data.fileName !== fileName) {
-      await updateFile({ fileId, fileName: data.fileName }, setLoading);
+      await updateFile(
+        { fileId, fileName: data.fileName },
+        [fileSystemItemsCurrentTag],
+        setLoading,
+      );
     }
     if (data.isPublic !== isPublic || data.canRewritten !== canRewritten) {
       if (data.isPublic === true) {
         await createFilePermissions(
           { fileId, role: data.canRewritten ? "writer" : "reader" },
+          fileSystemItemsCurrentTag,
           setLoading,
         );
       } else {

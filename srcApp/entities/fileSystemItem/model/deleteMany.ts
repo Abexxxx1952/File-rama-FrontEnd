@@ -12,6 +12,7 @@ import { FetchDeleteMany } from "./types/fetchDeleteMany";
 
 export async function deleteMany(
   selected: FetchDeleteMany,
+  fileSystemItemsCurrentTag: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<FileSystemItemChangeResult[] | null> {
   setLoading(true);
@@ -20,7 +21,11 @@ export async function deleteMany(
 
     if (access_token) {
       const data: FileSystemItemChangeResult[] | ErrorData | null =
-        await fetchDeleteMany(access_token, selected);
+        await fetchDeleteMany(
+          access_token,
+          selected,
+          fileSystemItemsCurrentTag,
+        );
 
       if (isErrorData(data)) {
         notifyResponse({
@@ -83,12 +88,12 @@ export async function deleteMany(
         isError: false,
         successMessage: `Successfully deleted: ${deletedParts}${errorMessage}`,
       });
-      setLoading(false);
+
       return data;
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return deleteMany(selected, setLoading);
+      return deleteMany(selected, fileSystemItemsCurrentTag, setLoading);
     }
     return null;
   } catch (error: unknown) {

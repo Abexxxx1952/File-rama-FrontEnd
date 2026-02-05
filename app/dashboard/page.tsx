@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
-import { DashboardPage } from "@/srcApp/pages/dashboard";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Your dashboard",
-  icons: "/meta-icon.svg",
-};
-
-export default DashboardPage;
+export default function DashboardIndexPage() {
+  redirect("/dashboard/null");
+}

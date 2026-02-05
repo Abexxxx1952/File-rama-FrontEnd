@@ -11,6 +11,7 @@ import { File } from "./types/file";
 
 export async function deleteFile(
   id: string,
+  fileSystemItemsCurrentTag: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<File | null> {
   setLoading(true);
@@ -21,6 +22,7 @@ export async function deleteFile(
       const data: File | ErrorData | null = await fetchDeleteFile(
         access_token,
         id,
+        fileSystemItemsCurrentTag,
       );
 
       if (isErrorData(data)) {
@@ -48,7 +50,7 @@ export async function deleteFile(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return deleteFile(id, setLoading);
+      return deleteFile(id, fileSystemItemsCurrentTag, setLoading);
     }
     return null;
   } catch (error: unknown) {

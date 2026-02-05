@@ -1,5 +1,6 @@
 import React, {
   memo,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -42,9 +43,9 @@ export type DashboardItemProps = {
   ) => Promise<void>;
   handleUpdate: (isFile: boolean, item: FileSystemItem) => void;
   handleDelete: (deleteHandlerArgs: DeleteHandlerArgs) => Promise<void>;
-  dndRef: React.MutableRefObject<Dnd>;
   isDraggable: boolean;
-  cursorPosition: React.MutableRefObject<{
+  dndRef: React.RefObject<Dnd>;
+  cursorPosition: React.RefObject<{
     x: number;
     y: number;
   }>;
@@ -61,8 +62,8 @@ export const DashboardItem = memo(function ({
   handleDownload,
   handleUpdate,
   handleDelete,
-  dndRef,
   isDraggable,
+  dndRef,
   cursorPosition,
   draggableQuantity,
 }: DashboardItemProps) {
@@ -133,43 +134,49 @@ export const DashboardItem = memo(function ({
     };
   }, [stage]);
 
-  function handleEllipsis() {
+  const handleEllipsis = useCallback(() => {
     setDashboardItemContextMenuOpen((prev) => !prev);
-  }
+  }, []);
 
-  async function handleDownloadWrapper() {
+  const handleDownloadWrapper = useCallback(async () => {
     await handleDownload(item.id, setLoadingDownload);
-  }
+  }, [handleDownload, item.id]);
 
-  async function handleDeleteWrapper() {
+  const handleDeleteWrapper = useCallback(async () => {
     await handleDelete({ isFileItem, id: item.id, setLoadingDelete });
-  }
+  }, [handleDelete, isFileItem, item.id]);
 
-  function oneClickHandlerWrapper(
-    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ) {
-    oneClickHandler(e, { id: item.id, isFileItem, index });
-  }
+  const oneClickHandlerWrapper = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      oneClickHandler(e, { id: item.id, isFileItem, index });
+    },
+    [oneClickHandler, item.id, isFileItem, index],
+  );
 
-  function doubleClickHandlerWrapper() {
+  const doubleClickHandlerWrapper = useCallback(() => {
     handleOpen({
       isFileItem,
       id: item.id,
       folderName: isFileItem ? "" : item?.folderName,
       setLoadingOpen,
     });
-  }
+  }, [handleOpen, isFileItem, item]);
 
-  function handleDragStart(e: React.DragEvent<HTMLDivElement>) {
-    e.dataTransfer.setDragImage(document.createElement("img"), 0, 0);
-    const itemDraggable = isFileItem
-      ? { fileId: item.id }
-      : { folderId: item.id };
+  const handleDragStart = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      e.dataTransfer.setDragImage(document.createElement("img"), 0, 0);
+      isFileItem
+        ? dndRef.current.draggable.set(item.id, {
+            fileId: item.id,
+          })
+        : dndRef.current.draggable.set(item.id, {
+            folderId: item.id,
+          });
 
-    dndRef.current.draggable = [itemDraggable];
-
-    forceUpdate();
-  }
+      forceUpdate();
+    },
+    [isFileItem, item.id, dndRef, forceUpdate],
+  );
 
   function handleDragOver(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.preventDefault();
@@ -192,7 +199,7 @@ export const DashboardItem = memo(function ({
 
   function handleDrop() {
     if (isFileItem || isSelected) return;
-    const draggableItem = dndRef.current.draggable?.[0];
+    const draggableItem = dndRef.current.draggable.values().next().value;
     if (
       draggableItem &&
       "folderId" in draggableItem &&
@@ -238,7 +245,9 @@ export const DashboardItem = memo(function ({
             </span>
           )}
           <span className={styles.tableItem__text}>
-            {isFileItem ? item.fileName : item.folderName}
+            {isFileItem
+              ? item.fileName + "." + item.fileExtension
+              : item.folderName}
           </span>
         </span>
 
@@ -327,7 +336,6 @@ export const DashboardItem = memo(function ({
           />
         </span>
       </div>
-
       {isDraggable && (
         <div
           className={`${styles.previewItem} ${stage === AnimationStage.FOLLOW && styles.previewItem_follow} ${stage === AnimationStage.FLY && styles.previewItem_fly}`}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { createFile } from "@/srcApp/entities/fileSystemItem/model/createFile";
 import { useUploadProgress } from "@/srcApp/entities/fileSystemItem/model/hooks/useUploadProgress";
 import { FileUploadEvent } from "@/srcApp/entities/fileSystemItem/model/types/fileUploadEvent";
@@ -9,11 +9,13 @@ import type { UploadStatusType } from "@/srcApp/entities/fileSystemItem/model/ty
 import { UploadStatus } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
 import { updateFileUploadStatus } from "@/srcApp/entities/fileSystemItem/model/updateFileUploadStatus";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
+import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { Icon } from "@/srcApp/shared/ui/icon";
+import { areFileCreateModalItemEqual } from "../../../model/areFileCreateModalItemEqual";
 import styles from "./styles.module.css";
 
-type FileCreateModalItemProps = {
+export type FileCreateModalItemProps = {
   fileWith: FileWithOptions;
   parentFolderId: string | null;
   setFiles: React.Dispatch<React.SetStateAction<FileWithOptions[]>>;
@@ -21,10 +23,10 @@ type FileCreateModalItemProps = {
   availableToUpload: number;
   setAvailableToUpload: React.Dispatch<React.SetStateAction<number>>;
   forceUpdate: () => void;
-  isRevalidateCacheRef: React.MutableRefObject<boolean>;
+  fileSystemItemsCurrentTag: string;
 };
 
-export function FileCreateModalItem({
+export const FileCreateModalItem = memo(function FileCreateModalItem({
   fileWith,
   parentFolderId,
   setFiles,
@@ -32,7 +34,7 @@ export function FileCreateModalItem({
   availableToUpload,
   setAvailableToUpload,
   forceUpdate,
-  isRevalidateCacheRef,
+  fileSystemItemsCurrentTag,
 }: FileCreateModalItemProps) {
   const [version, setVersion] = useState(0);
   const [completedSize, setCompletedSize] = useState(0);
@@ -48,7 +50,6 @@ export function FileCreateModalItem({
   let progressBarStyle = {
     "--progress-bar-size": (completedSize / file.size) * 100 + "%",
   } as React.CSSProperties;
-
   useUploadProgress(
     id,
     handleUploadStatusChange,
@@ -163,19 +164,25 @@ export function FileCreateModalItem({
       const result = await createFile(
         formData,
         id,
-        isRevalidateCacheRef,
+        fileSystemItemsCurrentTag,
         abortControllerRef,
       );
+      const isError = isErrorData(result);
+
+      if (isError) {
+        handleUploadError(result);
+      }
       if (result === null) {
         return;
       }
-      if (result.status === "COMPLETED") {
+      if (!isError && result.status === "COMPLETED") {
         handleUploadComplete({
           fileName: result.file.fileName,
           progress: file.size,
           status: "COMPLETED",
           error: null,
         });
+        forceUpdate();
       }
     })();
   }, [uploadStatus, file, id, version]);
@@ -239,4 +246,4 @@ export function FileCreateModalItem({
       </div>
     </li>
   );
-}
+}, areFileCreateModalItemEqual);

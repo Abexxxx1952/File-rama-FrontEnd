@@ -1,22 +1,25 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { getFilesWithOptions } from "@/srcApp/entities/fileSystemItem/model/getFilesWithId";
 import { FileWithOptions } from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
 import { Modal } from "@/srcApp/shared/ui/modal";
+import { areFileCreateModalEqual } from "../../model/areFileCreateModalEqual";
 import { FileCreateModalItem } from "./file-create-modal-item";
 import styles from "./styles.module.css";
 
-type FileCreateModalProps = {
+export type FileCreateModalProps = {
   parentFolderId: string | null;
   setAddFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
+  fileSystemItemsCurrentTag: string;
 };
 
-export function FileCreateModal({
+export const FileCreateModal = memo(function ({
   parentFolderId,
   setAddFileModalOpen,
   forceUpdate,
+  fileSystemItemsCurrentTag,
 }: FileCreateModalProps) {
   const [files, setFiles] = useState<FileWithOptions[]>([]);
   const [availableToUpload, setAvailableToUpload] = useState(
@@ -26,7 +29,6 @@ export function FileCreateModal({
   const [totalFiles, setTotalFiles] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const isRevalidateCacheRef = useRef<boolean>(false);
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -88,7 +90,7 @@ export function FileCreateModal({
                 availableToUpload={availableToUpload}
                 setAvailableToUpload={setAvailableToUpload}
                 forceUpdate={forceUpdate}
-                isRevalidateCacheRef={isRevalidateCacheRef}
+                fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
               />
             ))}
         </ul>
@@ -121,4 +123,4 @@ export function FileCreateModal({
       </div>
     </Modal>
   );
-}
+}, areFileCreateModalEqual);

@@ -12,6 +12,7 @@ import type { File } from "./types/file";
 
 export async function updateFile(
   params: FetchUpdateFile,
+  fileSystemItemsCurrentTags: string[],
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<File | null> {
   setLoading(true);
@@ -23,6 +24,7 @@ export async function updateFile(
       const data: File | ErrorData | null = await fetchUpdateFile(
         access_token,
         params,
+        fileSystemItemsCurrentTags,
       );
 
       if (isErrorData(data)) {
@@ -50,7 +52,7 @@ export async function updateFile(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return updateFile(params, setLoading);
+      return updateFile(params, fileSystemItemsCurrentTags, setLoading);
     }
     return null;
   } catch (error: unknown) {

@@ -1,0 +1,13 @@
+.tableHeader__arrow {
+  --icon-svg-width: 12px;
+  --icon-svg-height: 20px;
+  --icon-arrow-color: var(--secondary-font-color);
+  width: var(--icon-svg-width);
+  height: var(--icon-svg-height);
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.tableHeader__arrow--desc {
+  transform: rotate(180deg);
+}

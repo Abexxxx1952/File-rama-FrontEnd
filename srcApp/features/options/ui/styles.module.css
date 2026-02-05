@@ -9,6 +9,7 @@
   position: sticky;
   top: 0;
   z-index: 3;
+  caret-color: transparent;
   border: 1px solid var(--secondary-logo-color);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -27,8 +28,14 @@
   transition: background-color 0.3s ease;
 }
 
-.options__backBtn:hover {
+.options__backBtn:hover,
+.options__backBtn:focus-visible {
   background-color: var(--secondary-logo-color);
+}
+
+.options__backBtn_disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .options__path {
@@ -46,6 +53,26 @@
   margin-left: 1rem;
   display: flex;
   align-items: center;
+}
+
+.options__pathLoading {
+  width: 2rem;
+  height: 80%;
+}
+
+.options__loading {
+  width: 100%;
+  height: 100%;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .options__deleteBtn {

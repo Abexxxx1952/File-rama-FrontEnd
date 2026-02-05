@@ -1,5 +1,7 @@
+import { Dispatch, SetStateAction } from "react";
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
+import { SortFileSystemRules } from "@/srcApp/pages/dashboard/model/types/sort";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { ErrorData } from "@/srcApp/shared/model/types/errorData";
@@ -7,8 +9,12 @@ import { fetchFileSystemItem } from "../api/fetchFileSystemItem";
 import { FileSystemItem } from "./types/fileSystemItem";
 
 export async function getFileSystemItems(
-  parentFolderId?: string,
+  parentFolderId: string | null,
+  sort: SortFileSystemRules,
+  fileSystemItemsCurrentTag: string,
+  setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<FileSystemItem[] | null> {
+  setLoading(true);
   try {
     const { access_token, refresh_token } = await getCookies();
 
@@ -16,6 +22,8 @@ export async function getFileSystemItems(
       const data: FileSystemItem | ErrorData | null = await fetchFileSystemItem(
         access_token,
         parentFolderId,
+        sort,
+        fileSystemItemsCurrentTag,
       );
 
       if (isErrorData(data)) {
@@ -38,11 +46,18 @@ export async function getFileSystemItems(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return getFileSystemItems();
+      return getFileSystemItems(
+        parentFolderId,
+        sort,
+        fileSystemItemsCurrentTag,
+        setLoading,
+      );
     }
     return null;
   } catch (error: unknown) {
     console.log("error", error);
     return null;
+  } finally {
+    setLoading(false);
   }
 }

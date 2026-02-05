@@ -12,6 +12,7 @@ import type { File } from "./types/file";
 
 export async function createFilePermissions(
   createFilePermissionsData: FetchCreateFilePermissions,
+  fileSystemItemsCurrentTag: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<File | null> {
   setLoading(true);
@@ -22,6 +23,7 @@ export async function createFilePermissions(
       const data: File | ErrorData | null = await fetchCreateFilePermissions(
         access_token,
         createFilePermissionsData,
+        fileSystemItemsCurrentTag,
       );
 
       if (isErrorData(data)) {
@@ -49,7 +51,11 @@ export async function createFilePermissions(
     }
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return createFilePermissions(createFilePermissionsData, setLoading);
+      return createFilePermissions(
+        createFilePermissionsData,
+        fileSystemItemsCurrentTag,
+        setLoading,
+      );
     }
     return null;
   } catch (error: unknown) {

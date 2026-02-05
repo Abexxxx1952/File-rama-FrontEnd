@@ -16,7 +16,7 @@ interface DashboardModalsProps {
   addFolderModalOpen: boolean;
   setAddFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   forceUpdate: () => void;
-  parentFolderId: string[];
+  currentParentFolderId: string | null;
   addFileModalOpen: boolean;
   setAddFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   currentFileSystemItem: FileSystemItem | null;
@@ -24,6 +24,7 @@ interface DashboardModalsProps {
   setUpdateFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   updateFileModalOpen: boolean;
   setUpdateFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  fileSystemItemsCurrentTag: string;
 }
 
 export function DashboardModals({
@@ -31,7 +32,7 @@ export function DashboardModals({
   addFolderModalOpen,
   setAddFolderModalOpen,
   forceUpdate,
-  parentFolderId,
+  currentParentFolderId,
   addFileModalOpen,
   setAddFileModalOpen,
   currentFileSystemItem,
@@ -39,6 +40,7 @@ export function DashboardModals({
   setUpdateFolderModalOpen,
   updateFileModalOpen,
   setUpdateFileModalOpen,
+  fileSystemItemsCurrentTag,
 }: DashboardModalsProps) {
   if (!portalRef) return null;
   return (
@@ -49,11 +51,8 @@ export function DashboardModals({
           <FolderCreateModal
             setAddFolderModalOpen={setAddFolderModalOpen}
             forceUpdate={forceUpdate}
-            parentFolderId={
-              parentFolderId.length > 0
-                ? parentFolderId[parentFolderId.length - 1]
-                : null
-            }
+            fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
+            parentFolderId={currentParentFolderId}
           />,
           portalRef.current,
         )}
@@ -61,13 +60,10 @@ export function DashboardModals({
         addFileModalOpen &&
         createPortal(
           <FileCreateModal
-            parentFolderId={
-              parentFolderId.length > 0
-                ? parentFolderId[parentFolderId.length - 1]
-                : null
-            }
+            parentFolderId={currentParentFolderId}
             setAddFileModalOpen={setAddFileModalOpen}
             forceUpdate={forceUpdate}
+            fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
           />,
           portalRef.current,
         )}
@@ -80,6 +76,7 @@ export function DashboardModals({
             folderName={currentFileSystemItem.folderName}
             setUpdateFolderModalOpen={setUpdateFolderModalOpen}
             forceUpdate={forceUpdate}
+            fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
           />,
           portalRef.current,
         )}
@@ -94,6 +91,7 @@ export function DashboardModals({
             fileUrl={currentFileSystemItem.fileUrl}
             setUpdateFileModalOpen={setUpdateFileModalOpen}
             forceUpdate={forceUpdate}
+            fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
           />,
           portalRef.current,
         )}

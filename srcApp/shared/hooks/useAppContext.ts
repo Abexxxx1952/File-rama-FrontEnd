@@ -1,4 +1,4 @@
-import { useContext } from "react";
+/* import { useContext } from "react";
 import { AppContext } from "@/srcApp/app/providers/withContext";
 
 export const useAppContext = () => {
@@ -8,3 +8,4 @@ export const useAppContext = () => {
   }
   return context;
 };
+ */

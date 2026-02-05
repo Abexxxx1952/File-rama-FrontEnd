@@ -1,45 +1,78 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
+import { Icon } from "@/srcApp/shared/ui/icon";
 import { areOptionsEqual } from "../model/areOptionsEqual";
-import { levelUpHandler } from "../model/levelUpHandler";
+import { getFolderPath } from "../model/getFolderPath";
 import styles from "./styles.module.css";
 
 export type OptionsProps = {
-  path: string[];
-  setPath: React.Dispatch<React.SetStateAction<string[]>>;
-  setParentFolderId: React.Dispatch<React.SetStateAction<string[]>>;
+  currentParentFolderId: string | null;
+  folderPathTag: string;
+  routerBack: () => void;
   isSelected: boolean;
-  handleDeleteMany: (
-    setLoadingDelete: React.Dispatch<React.SetStateAction<boolean>>,
-  ) => void;
+  handleDeleteMany: () => void;
+  loadingDelete: boolean;
 };
 
 export const Options = memo(function ({
-  path,
-  setPath,
-  setParentFolderId,
+  currentParentFolderId,
+  folderPathTag,
+  routerBack,
   isSelected,
   handleDeleteMany,
+  loadingDelete,
 }: OptionsProps) {
-  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [path, setPath] = useState(":/");
+  const [loadingGetPath, setLoadingGetPath] = useState(false);
 
+  useEffect(() => {
+    if (currentParentFolderId === "null" || currentParentFolderId === null) {
+      setPath(":/");
+      return;
+    }
+    (async () => {
+      const pathResponse = await getFolderPath(
+        currentParentFolderId,
+        folderPathTag,
+        setLoadingGetPath,
+      );
+      console.log(pathResponse);
+
+      if (pathResponse === ":/") {
+        return;
+      }
+      setPath(`:/${pathResponse}`);
+    })();
+  }, [currentParentFolderId]);
   function handleBackClick() {
-    levelUpHandler(setPath, setParentFolderId);
+    routerBack();
   }
   return (
     <div className={styles.options}>
       <nav>
-        <button className={styles.options__backBtn} onClick={handleBackClick}>
+        <button
+          className={`${styles.options__backBtn} ${path === ":/" && styles.options__backBtn_disabled}`}
+          onClick={handleBackClick}
+        >
           Back
         </button>
       </nav>
       <span className={styles.options__path}>Path:</span>
-      <span className={styles.options__pathValue}>{path.join("")}</span>
+      {loadingGetPath ? (
+        <div className={styles.options__pathLoading}>
+          <Icon
+            link={"/svg/settings-sprite.svg#loading"}
+            className={styles.options__loading}
+          />
+        </div>
+      ) : (
+        <span className={styles.options__pathValue}>{path}</span>
+      )}
       {isSelected && (
         <div className={styles.options__deleteBtn}>
           <ButtonIcon
             iconUrl="/svg/settings-sprite.svg#delete"
-            onClick={() => handleDeleteMany(setLoadingDelete)}
+            onClick={handleDeleteMany}
             loading={loadingDelete}
             className={styles.tableButton__delete}
           />

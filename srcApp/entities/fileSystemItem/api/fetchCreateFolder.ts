@@ -11,6 +11,7 @@ import { Folder } from "../model/types/folder";
 export async function fetchCreateFolder(
   access_token: string,
   addFolderData: FetchAddFolder,
+  fileSystemItemsCurrentTag: string,
   abortControllerRef?: React.RefObject<AbortController | null>,
 ): Promise<Folder | ErrorData | null> {
   const url: string = `${process.env.CREATE_FOLDER_URL}`;
@@ -33,7 +34,7 @@ export async function fetchCreateFolder(
 
       throw errorData;
     }
-    revalidateTag(CACHE_TAG.FILE_SYSTEM_ITEM);
+    revalidateTag(fileSystemItemsCurrentTag);
     revalidateTag(CACHE_TAG.STAT);
     const data: Folder = await response.json();
 

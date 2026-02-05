@@ -1,29 +1,52 @@
 import { useRef } from "react";
-import { updateFile } from "@/srcApp/entities/fileSystemItem/model/updateFile";
-import { updateFolder } from "@/srcApp/entities/fileSystemItem/model/updateFolder";
-import { updateMany } from "@/srcApp/entities/fileSystemItem/model/updateMany";
-import { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
+import type { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
 import { SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
+import { getAdditionalTag } from "../getAdditionalTag";
+import { updateFile } from "../updateFile";
+import { updateFolder } from "../updateFolder";
+import { updateMany } from "../updateMany";
 
-export function useDashboardDnd(
-  selected: SelectedMap,
-  clear: () => void,
-  forceUpdate: () => void,
-) {
-  const dndRef = useRef<Dnd>({ draggable: [], droppable: "" });
+type useDashboardDndParams = {
+  selected: SelectedMap;
+  clear: () => void;
+  fileSystemItemsCurrentTag: string;
+  forceUpdate: () => void;
+};
+
+const initialDndState = (): Dnd => ({
+  draggable: new Map(),
+  droppable: "",
+});
+
+export function useDashboardDnd({
+  selected,
+  clear,
+  fileSystemItemsCurrentTag,
+  forceUpdate,
+}: useDashboardDndParams) {
+  const dndRef = useRef<Dnd>(initialDndState());
   const cursorPositionRef = useRef({ x: 0, y: 0 });
 
   const onDragStart = () => {
     if (selected.size < 2) return;
-    dndRef.current.draggable = [...selected.values()].map(
-      ({ index, ...id }) => id,
-    );
+
+    for (const item of selected.values()) {
+      if ("fileId" in item) {
+        dndRef.current.draggable.set(item.fileId, { fileId: item.fileId });
+      } else {
+        dndRef.current.draggable.set(item.folderId, {
+          folderId: item.folderId,
+        });
+      }
+    }
+
     forceUpdate();
   };
 
   const onDragOver = (e: React.MouseEvent) => {
     e.preventDefault();
-    cursorPositionRef.current = { x: e.clientX, y: e.clientY };
+    cursorPositionRef.current.x = e.clientX;
+    cursorPositionRef.current.y = e.clientY;
   };
 
   const onDrop = async () => {
@@ -31,52 +54,50 @@ export function useDashboardDnd(
     if (dropId !== null && (typeof dropId !== "string" || dropId === "")) {
       return;
     }
+
+    const additionalTag = getAdditionalTag(fileSystemItemsCurrentTag, dropId);
+
     if (selected.size > 1) {
       await updateMany(
-        dndRef.current.draggable.map((i) => ({
+        [...dndRef.current.draggable.values()].map((i) => ({
           ...i,
           parentFolderId: dropId,
         })),
+        [fileSystemItemsCurrentTag, additionalTag],
       );
       clear();
-      forceUpdate();
       return;
     }
-    const draggableItem = dndRef.current.draggable[0];
+
+    const draggableItem = dndRef.current.draggable.values().next().value;
+
+    if (!draggableItem) return;
+
     if ("folderId" in draggableItem) {
       await updateFolder(
         { folderId: draggableItem.folderId, parentFolderId: dropId },
+        [fileSystemItemsCurrentTag, additionalTag],
         () => {},
       );
-      forceUpdate();
       return;
     }
+
     if ("fileId" in draggableItem) {
       await updateFile(
         { fileId: draggableItem.fileId, parentFolderId: dropId },
+        [fileSystemItemsCurrentTag, additionalTag],
         () => {},
       );
-      forceUpdate();
       return;
     }
   };
 
   const onDragEnd = () => {
-    dndRef.current = { draggable: [], droppable: "" };
+    dndRef.current = initialDndState();
     forceUpdate();
   };
 
-  const isDraggable = (id: string): boolean => {
-    return dndRef.current.draggable.some((draggableItem) => {
-      if ("folderId" in draggableItem) {
-        return draggableItem.folderId === id;
-      }
-      if ("fileId" in draggableItem) {
-        return draggableItem.fileId === id;
-      }
-      return false;
-    });
-  };
+  const isDraggable = (id: string): boolean => dndRef.current.draggable.has(id);
 
   return {
     dndRef,
