@@ -11,8 +11,8 @@ export function areDashboardItemEqual(
 
   if (prevProps.isSelected !== nextProps.isSelected) return false;
   if (prevProps.isDraggable !== nextProps.isDraggable) return false;
-  /*  if (prevProps.item.id === nextProps.item.id) return true; */
-  if (prevProps.index === nextProps.index) return true;
+  if (prevItem.id !== nextItem.id) return false;
+  if (prevProps.index !== nextProps.index) return false;
 
   if (isFile(prevItem) && isFile(nextItem)) {
     return (

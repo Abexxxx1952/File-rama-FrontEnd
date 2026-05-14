@@ -23,6 +23,7 @@
   letter-spacing: inherit;
   cursor: pointer;
   user-select: none;
+  caret-color: transparent;
   transition: all 0.2s ease-in-out;
 }
 

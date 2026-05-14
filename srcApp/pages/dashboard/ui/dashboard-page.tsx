@@ -15,7 +15,7 @@ import { getStat } from "@/srcApp/entities/stats/model/getStat";
 import type { Stat } from "@/srcApp/entities/stats/model/types/stat";
 import { Options } from "@/srcApp/features/options/ui";
 import { Search } from "@/srcApp/features/search/ui";
-import { Icon } from "@/srcApp/shared/ui/icon";
+import { Loading } from "@/srcApp/shared/ui/loading";
 import { DashboardModals } from "@/srcApp/widgets/dashboard-modals";
 import { DashboardTableHeader } from "@/srcApp/widgets/dashboard-table-header";
 import { useDashboardNavigation } from "../model/hooks/useDashboardNavigation";
@@ -26,18 +26,16 @@ import { useWindowListeners } from "../model/hooks/useWindowListeners";
 import styles from "./styles.module.css";
 
 const INITIAL_MAX_COUNT =
-  Number(
-    process.env.NEXT_PUBLIC_NEXT_PUBLIC_INITIAL_MAX_FILE_SYSTEM_ITEMS_COUNT,
-  ) || 20;
+  Number(process.env.NEXT_PUBLIC_INITIAL_MAX_FILE_SYSTEM_ITEMS_COUNT) || 20;
 const ADD_STEP =
   Number(process.env.NEXT_PUBLIC_ADD_STEP_FILE_SYSTEM_ITEMS_COUNT) || 20;
-export function DashboardPage({ ids }: { ids: string[] }) {
-  console.log("DashboardPage");
 
+export function DashboardPage({ ids }: { ids: string[] }) {
   const [version, setVersion] = useState(0);
   const forceUpdate = useCallback(() => {
     setVersion((v) => v + 1);
   }, []);
+
   const {
     routerForward,
     routerBack,
@@ -158,14 +156,7 @@ export function DashboardPage({ ids }: { ids: string[] }) {
               routerBack={routerBack}
             />
           )}
-          {loading && (
-            <div className={styles.storage__itemsLoading}>
-              <Icon
-                link={"/svg/settings-sprite.svg#loading"}
-                className={styles.storage__loading}
-              />
-            </div>
-          )}
+          {loading && <Loading />}
           {filteredFileSystemItemsSliced.length === 0 && !loading && (
             <EmptyItem />
           )}

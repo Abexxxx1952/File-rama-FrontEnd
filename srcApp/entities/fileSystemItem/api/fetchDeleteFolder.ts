@@ -9,9 +9,15 @@ import { FileSystemItemChangeResult } from "../model/types/FileSystemItemChangeR
 
 export async function fetchDeleteFolder(
   access_token: string,
-  id: string,
-  fileSystemItemsCurrentTag: string,
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  {
+    id,
+    fileSystemItemsCurrentTag,
+    abortControllerRef,
+  }: {
+    id: string;
+    fileSystemItemsCurrentTag: string;
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  },
 ): Promise<FileSystemItemChangeResult[] | ErrorData | null> {
   const url: string = `${process.env.DELETE_FOLDER_URL}/${id}`;
 

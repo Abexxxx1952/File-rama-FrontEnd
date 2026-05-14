@@ -70,6 +70,7 @@ export const FileCreateModal = memo(function ({
       setModalOpen={setAddFileModalOpen}
       backgroundColor="#fff"
       height="90%"
+      contentPadding="0"
     >
       <div className={styles.uploader}>
         <div className={styles.uploader__header}>

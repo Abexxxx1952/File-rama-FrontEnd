@@ -9,9 +9,15 @@ import type { File } from "../model/types/file";
 
 export async function fetchCreateFilePermissions(
   access_token: string,
-  createFilePermissionsData: FetchCreateFilePermissions,
-  fileSystemItemsCurrentTag: string,
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  {
+    createFilePermissionsData,
+    fileSystemItemsCurrentTag,
+    abortControllerRef,
+  }: {
+    createFilePermissionsData: FetchCreateFilePermissions;
+    fileSystemItemsCurrentTag: string;
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  },
 ): Promise<File | ErrorData | null> {
   const url: string = `${process.env.CREATE_FILE_PERMISSIONS_URL}`;
 
@@ -33,6 +39,7 @@ export async function fetchCreateFilePermissions(
 
       throw errorData;
     }
+
     revalidateTag(fileSystemItemsCurrentTag);
 
     const data: File = await response.json();

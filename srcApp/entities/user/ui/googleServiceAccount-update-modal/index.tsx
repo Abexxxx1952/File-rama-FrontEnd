@@ -54,6 +54,8 @@ export function GoogleServiceAccountUpdateModal({
     <Modal
       title="Update your google service account"
       setModalOpen={setUpdateModalOpen}
+      width="60%"
+      height="50%"
     >
       <form
         className={styles.userDriveUpdate__form}

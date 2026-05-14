@@ -7,9 +7,15 @@ import { FileSystemItem } from "../model/types/fileSystemItem";
 
 export async function fetchFileSystemItem(
   access_token: string,
-  parentFolderId: string | null,
-  sort: SortFileSystemRules,
-  fileSystemItemsCurrentTag: string,
+  {
+    parentFolderId,
+    sort,
+    fileSystemItemsCurrentTag,
+  }: {
+    parentFolderId: string | null;
+    sort: SortFileSystemRules;
+    fileSystemItemsCurrentTag: string;
+  },
 ): Promise<FileSystemItem[] | ErrorData | null> {
   const urlFromEnv: string = `${process.env.GET_FILE_SYSTEM_ITEM_URL}`;
   const url = new URL(urlFromEnv);
@@ -29,7 +35,7 @@ export async function fetchFileSystemItem(
     url.searchParams.set("orderFilesBy", JSON.stringify(sort.sortFileRules));
   }
 
-  return fetchEntity<FileSystemItem>(url, access_token, [
+  return fetchEntity<FileSystemItem[]>(url, access_token, [
     fileSystemItemsCurrentTag,
   ]);
 }

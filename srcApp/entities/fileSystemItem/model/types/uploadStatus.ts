@@ -1,7 +1,8 @@
-export const UploadStatus = {
+export const UploadStatusView = {
   uploading: "Uploading...",
   cancelled: "Cancelled",
   completed: "Completed",
 } as const;
 
-export type UploadStatusType = (typeof UploadStatus)[keyof typeof UploadStatus];
+export type UploadStatusViewType =
+  (typeof UploadStatusView)[keyof typeof UploadStatusView];

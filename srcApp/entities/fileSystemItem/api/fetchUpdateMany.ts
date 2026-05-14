@@ -10,9 +10,15 @@ import type { FetchUpdateMany } from "../model/types/fetchUpdateMany";
 
 export async function fetchUpdateMany(
   access_token: string,
-  updateMany: FetchUpdateMany,
-  fileSystemItemsCurrentTags: string[],
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  {
+    updateMany,
+    fileSystemItemsCurrentTags,
+    abortControllerRef,
+  }: {
+    updateMany: FetchUpdateMany;
+    fileSystemItemsCurrentTags: string[];
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  },
 ): Promise<FileSystemItemChangeResult[] | ErrorData | null> {
   const url: string = `${process.env.UPDATE_MANY_URL}`;
 

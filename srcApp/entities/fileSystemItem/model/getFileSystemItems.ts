@@ -1,10 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { SortFileSystemRules } from "@/srcApp/pages/dashboard/model/types/sort";
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 import { fetchFileSystemItem } from "../api/fetchFileSystemItem";
 import { FileSystemItem } from "./types/fileSystemItem";
 
@@ -14,50 +10,17 @@ export async function getFileSystemItems(
   fileSystemItemsCurrentTag: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
 ): Promise<FileSystemItem[] | null> {
-  setLoading(true);
-  try {
-    const { access_token, refresh_token } = await getCookies();
-
-    if (access_token) {
-      const data: FileSystemItem | ErrorData | null = await fetchFileSystemItem(
-        access_token,
-        parentFolderId,
-        sort,
-        fileSystemItemsCurrentTag,
-      );
-
-      if (isErrorData(data)) {
-        notifyResponse({
-          isError: true,
-          responseResult: data,
-        });
-        return null;
-      }
-
-      if (data === null) {
-        notifyResponse({
-          isError: true,
-          responseResult: null,
-        });
-        return null;
-      }
-
-      return data;
+  return await fetchWithAuth<
+    FileSystemItem[],
+    {
+      parentFolderId: string | null;
+      sort: SortFileSystemRules;
+      fileSystemItemsCurrentTag: string;
     }
-    if (!access_token && refresh_token) {
-      await refreshTokens(refresh_token);
-      return getFileSystemItems(
-        parentFolderId,
-        sort,
-        fileSystemItemsCurrentTag,
-        setLoading,
-      );
-    }
-    return null;
-  } catch (error: unknown) {
-    console.log("error", error);
-    return null;
-  } finally {
-    setLoading(false);
-  }
+  >(
+    fetchFileSystemItem,
+    { parentFolderId, sort, fileSystemItemsCurrentTag },
+    undefined,
+    setLoading,
+  );
 }

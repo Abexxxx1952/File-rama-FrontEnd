@@ -19,6 +19,7 @@ export function Modal({
   backgroundColor,
   width,
   height,
+  contentPadding = "3rem",
   setModalOpen,
   children,
   ...rest
@@ -33,6 +34,7 @@ export function Modal({
     "--content-bg-color": backgroundColor,
     "--content-width": width,
     "--content-height": height,
+    "--content-padding": contentPadding,
   } as React.CSSProperties;
 
   return (

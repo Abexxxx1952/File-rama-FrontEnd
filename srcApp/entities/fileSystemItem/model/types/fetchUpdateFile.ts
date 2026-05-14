@@ -6,6 +6,7 @@ export type FetchUpdateFile = {
 
 export type FetchUpdateFileForm = {
   fileName: string;
+  fileExtension: string;
   isPublic: boolean;
   canRewritten: boolean;
   fileGDriveUrl: string;

@@ -55,7 +55,7 @@ export function FolderCreateModal({
       title="Add folder"
       setModalOpen={setAddFolderModalOpen}
       width="60%"
-      height="60%"
+      height="45%"
     >
       <form
         className={styles.addFolder__form}

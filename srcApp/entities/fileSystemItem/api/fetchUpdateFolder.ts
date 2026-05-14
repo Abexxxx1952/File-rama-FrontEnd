@@ -9,9 +9,15 @@ import type { Folder } from "../model/types/folder";
 
 export async function fetchUpdateFolder(
   access_token: string,
-  updateFolderData: FetchUpdateFolder,
-  fileSystemItemsCurrentTags: string[],
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  {
+    updateFolderData,
+    fileSystemItemsCurrentTags,
+    abortControllerRef,
+  }: {
+    updateFolderData: FetchUpdateFolder;
+    fileSystemItemsCurrentTags: string[];
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  },
 ): Promise<Folder | ErrorData | null> {
   const url: string = `${process.env.UPDATE_FOLDER_URL}`;
 

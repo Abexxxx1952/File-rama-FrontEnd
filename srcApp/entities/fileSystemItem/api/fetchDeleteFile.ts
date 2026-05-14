@@ -9,9 +9,15 @@ import { File } from "../model/types/file";
 
 export async function fetchDeleteFile(
   access_token: string,
-  id: string,
-  fileSystemItemsCurrentTag: string,
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  {
+    id,
+    fileSystemItemsCurrentTag,
+    abortControllerRef,
+  }: {
+    id: string;
+    fileSystemItemsCurrentTag: string;
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  },
 ): Promise<File | ErrorData | null> {
   const url: string = `${process.env.DELETE_FILE_URL}/${id}`;
 

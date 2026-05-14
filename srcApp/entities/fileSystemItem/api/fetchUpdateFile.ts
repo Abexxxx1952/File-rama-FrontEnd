@@ -9,9 +9,15 @@ import type { File } from "../model/types/file";
 
 export async function fetchUpdateFile(
   access_token: string,
-  updateFileData: FetchUpdateFile,
-  fileSystemItemsCurrentTags: string[],
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  {
+    updateFileData,
+    fileSystemItemsCurrentTags,
+    abortControllerRef,
+  }: {
+    updateFileData: FetchUpdateFile;
+    fileSystemItemsCurrentTags: string[];
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  },
 ): Promise<File | ErrorData | null> {
   const url: string = `${process.env.UPDATE_FILE_URL}`;
 

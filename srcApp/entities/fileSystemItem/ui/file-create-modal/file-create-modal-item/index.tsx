@@ -4,12 +4,15 @@ import { memo, useEffect, useRef, useState } from "react";
 import { createFile } from "@/srcApp/entities/fileSystemItem/model/createFile";
 import { useUploadProgress } from "@/srcApp/entities/fileSystemItem/model/hooks/useUploadProgress";
 import { FileUploadEvent } from "@/srcApp/entities/fileSystemItem/model/types/fileUploadEvent";
-import { FileWithOptions } from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
-import type { UploadStatusType } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
-import { UploadStatus } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
+import { StatusUpload } from "@/srcApp/entities/fileSystemItem/model/types/fileUploadResult";
+import {
+  FileWithOptions,
+  UploadStatus,
+} from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
+import type { UploadStatusViewType } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
+import { UploadStatusView } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
 import { updateFileUploadStatus } from "@/srcApp/entities/fileSystemItem/model/updateFileUploadStatus";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { areFileCreateModalItemEqual } from "../../../model/areFileCreateModalItemEqual";
@@ -38,9 +41,8 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
 }: FileCreateModalItemProps) {
   const [version, setVersion] = useState(0);
   const [completedSize, setCompletedSize] = useState(0);
-  const [uploadStatusView, setUploadStatusView] = useState<UploadStatusType>(
-    UploadStatus.uploading,
-  );
+  const [uploadStatusView, setUploadStatusView] =
+    useState<UploadStatusViewType>(UploadStatusView.uploading);
   const hasCompletedUploadRef = useRef(false);
   const abortControllerRef = useRef(new AbortController());
 
@@ -67,14 +69,14 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
   function handleUploadComplete(data: FileUploadEvent) {
     if (hasCompletedUploadRef.current === true) return;
     setCompletedSize(data.progress);
-    setUploadStatusView(UploadStatus.completed);
+    setUploadStatusView(UploadStatusView.completed);
     setCompletedFiles((prev) => prev + 1);
 
     setFiles((prevFiles) => {
       return updateFileUploadStatus(
         prevFiles,
         id,
-        "completed",
+        UploadStatus.completed,
         setAvailableToUpload,
       );
     });
@@ -109,13 +111,13 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
       responseResult: null,
     });
 
-    setUploadStatusView(UploadStatus.cancelled);
+    setUploadStatusView(UploadStatusView.cancelled);
 
     setFiles((prevFiles) => {
       return updateFileUploadStatus(
         prevFiles,
         id,
-        "error",
+        UploadStatus.error,
         setAvailableToUpload,
       );
     });
@@ -125,13 +127,13 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
 
   function handleCancelUpload() {
     abortControllerRef.current.abort();
-    setUploadStatusView(UploadStatus.cancelled);
+    setUploadStatusView(UploadStatusView.cancelled);
 
     setFiles((prevFiles) => {
       return updateFileUploadStatus(
         prevFiles,
         id,
-        "queued",
+        UploadStatus.queued,
         setAvailableToUpload,
       );
     });
@@ -141,10 +143,12 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
 
   function handleRefreshUpload() {
     if (availableToUpload > 0) {
-      setUploadStatusView(UploadStatus.uploading);
+      setUploadStatusView(UploadStatusView.uploading);
       setFiles((prevFiles) =>
         prevFiles.map((item) =>
-          item.id === id ? { ...item, uploadStatus: "uploading" } : item,
+          item.id === id
+            ? { ...item, uploadStatus: UploadStatus.uploading }
+            : item,
         ),
       );
       setVersion((v) => v + 1);
@@ -152,7 +156,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
   }
 
   useEffect(() => {
-    if (!(uploadStatus === "uploading")) return;
+    if (!(uploadStatus === UploadStatus.uploading)) return;
 
     const formData = new FormData();
     if (parentFolderId) {
@@ -167,19 +171,16 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
         fileSystemItemsCurrentTag,
         abortControllerRef,
       );
-      const isError = isErrorData(result);
 
-      if (isError) {
-        handleUploadError(result);
-      }
       if (result === null) {
         return;
       }
-      if (!isError && result.status === "COMPLETED") {
+
+      if (result.status === StatusUpload.COMPLETED) {
         handleUploadComplete({
           fileName: result.file.fileName,
           progress: file.size,
-          status: "COMPLETED",
+          status: StatusUpload.COMPLETED,
           error: null,
         });
         forceUpdate();
@@ -201,9 +202,9 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
               <small className={styles.file__divider}>•</small>
               <small
                 className={`${
-                  uploadStatusView === "Completed"
+                  uploadStatusView === UploadStatusView.completed
                     ? styles.file__statusCompleted
-                    : uploadStatusView === "Cancelled"
+                    : uploadStatusView === UploadStatusView.cancelled
                       ? styles.file__statusCancelled
                       : styles.file__statusUploading
                 }`}
@@ -212,7 +213,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
               </small>
             </div>
           </div>
-          {uploadStatusView === UploadStatus.uploading && (
+          {uploadStatusView === UploadStatusView.uploading && (
             <button
               type="button"
               className={styles.file__cancelButton}
@@ -224,7 +225,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
               />
             </button>
           )}
-          {uploadStatusView === UploadStatus.cancelled && (
+          {uploadStatusView === UploadStatusView.cancelled && (
             <button
               type="button"
               className={styles.file__refreshButton}

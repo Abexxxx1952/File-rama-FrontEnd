@@ -21,6 +21,7 @@ import styles from "./styles.module.css";
 type FileUpdateModalProps = {
   fileId: string;
   fileName: string;
+  fileExtension: string;
   publicAccessRole: publicAccessRole | null;
   fileUrl: string;
   setUpdateFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,6 +32,7 @@ type FileUpdateModalProps = {
 export function FileUpdateModal({
   fileId,
   fileName,
+  fileExtension,
   publicAccessRole,
   fileUrl,
   setUpdateFileModalOpen,
@@ -49,6 +51,7 @@ export function FileUpdateModal({
 
   const defaultValues = {
     fileName,
+    fileExtension,
     isPublic,
     canRewritten,
     fileGDriveUrl: fileUrl,
@@ -68,9 +71,9 @@ export function FileUpdateModal({
   const isPublicValue = watch("isPublic");
 
   async function handleUpdateFile(data: FetchUpdateFileForm) {
-    if (data.fileName !== fileName) {
+    if (data.fileName !== fileName || data.fileExtension !== fileExtension) {
       await updateFile(
-        { fileId, fileName: data.fileName },
+        { fileId, fileName: data.fileName + "." + data.fileExtension },
         [fileSystemItemsCurrentTag],
         setLoading,
       );
@@ -83,9 +86,14 @@ export function FileUpdateModal({
           setLoading,
         );
       } else {
-        await deleteFilePermissions(fileId, setLoading);
+        await deleteFilePermissions(
+          fileId,
+          fileSystemItemsCurrentTag,
+          setLoading,
+        );
       }
     }
+
     setUpdateFileModalOpen(false);
     forceUpdate();
   }
@@ -107,7 +115,7 @@ export function FileUpdateModal({
       title="Edit file"
       setModalOpen={setUpdateFileModalOpen}
       width="60%"
-      height="65%"
+      height="auto"
     >
       <form
         className={styles.updateFile__form}
@@ -128,6 +136,26 @@ export function FileUpdateModal({
                 textColor="var(--secondary-font-color)"
                 labelTextColor="var(--main-page-font-color)"
                 error={errors.fileName?.message}
+                {...field}
+              />
+            )}
+          />
+        </div>
+        <div className={styles.updateFile__input}>
+          <Controller
+            name="fileExtension"
+            control={control}
+            render={({ field }) => (
+              <Input
+                text="File Extension"
+                placeholder="Enter file extension"
+                backgroundColor="var(--main-header-background-color)"
+                focusBackgroundColor="var(--main-header-background-color)"
+                focusBoxShadow="0 0 10px white"
+                border="none"
+                textColor="var(--secondary-font-color)"
+                labelTextColor="var(--main-page-font-color)"
+                error={errors.fileExtension?.message}
                 {...field}
               />
             )}

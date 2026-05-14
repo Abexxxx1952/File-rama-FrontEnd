@@ -87,6 +87,7 @@ export function DashboardModals({
           <FileUpdateModal
             fileId={currentFileSystemItem.id}
             fileName={currentFileSystemItem.fileName}
+            fileExtension={currentFileSystemItem.fileExtension}
             publicAccessRole={currentFileSystemItem.publicAccessRole}
             fileUrl={currentFileSystemItem.fileUrl}
             setUpdateFileModalOpen={setUpdateFileModalOpen}

@@ -10,9 +10,15 @@ import { Folder } from "../model/types/folder";
 
 export async function fetchCreateFolder(
   access_token: string,
-  addFolderData: FetchAddFolder,
-  fileSystemItemsCurrentTag: string,
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  {
+    addFolderData,
+    fileSystemItemsCurrentTag,
+    abortControllerRef,
+  }: {
+    addFolderData: FetchAddFolder;
+    fileSystemItemsCurrentTag: string;
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  },
 ): Promise<Folder | ErrorData | null> {
   const url: string = `${process.env.CREATE_FOLDER_URL}`;
 

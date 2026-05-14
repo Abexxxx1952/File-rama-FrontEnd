@@ -1,25 +1,3 @@
-.modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: var(--header-font-color);
-  opacity: 0.4;
-  z-index: 15;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-}
-
 .userDriveUpdate {
   display: flex;
   align-items: center;
@@ -70,7 +48,9 @@
   align-items: center;
   justify-content: flex-start;
   margin-top: 1.5rem;
-  width: 50%;
+  width: 70%;
+  padding: 1rem;
+  margin: 1.25rem auto 1.25rem;
 }
 
 .userDriveUpdate__input {
