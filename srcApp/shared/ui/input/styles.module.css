@@ -4,11 +4,11 @@
   --bg-color: transparent;
   --border: 1px solid var(--secondary-logo-color);
   --outline: none;
-  --focus-outline: 1px solid var(--secondary-logo-color);
+  --focus-outline: 2px solid var(--focus-ring-color);
   --focus-bg-color: var(--secondary-logo-color);
   --focus-text-color: var(--secondary-font-color);
   --focus-box-shadow: none;
-  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  --box-shadow: 0 0.35rem 1rem rgba(16, 20, 28, 0.1);
   --placeholder-color: rgba(0, 0, 0, 0.5);
   --placeholder-padding-left: calc(0.8 * var(--variableUnitsSize));
   --placeholder-font-size: 0.8rem;
@@ -27,6 +27,11 @@
   padding: 0 calc(0.8 * var(--variableUnitsSize));
   padding-left: var(--placeholder-padding-left);
   box-shadow: var(--box-shadow);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    outline-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .input:hover,
 .input:focus-visible {

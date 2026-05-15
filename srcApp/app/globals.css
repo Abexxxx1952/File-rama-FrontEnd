@@ -1,11 +1,12 @@
 :root {
   --variableUnitsSize: max(1vh, 1vw);
   --main-padding-size: 1rem;
-  --main-header-background-color: rgb(250, 250, 247);
-  --primary-logo-color: rgb(124, 91, 243);
-  --secondary-logo-color: rgb(89, 237, 247);
-  --header-font-color: rgb(92, 95, 110);
-  --secondary-font-color: rgb(0, 0, 0);
+  --main-header-background-color: rgb(252, 252, 249);
+  --primary-logo-color: rgb(111, 86, 224);
+  --secondary-logo-color: rgb(75, 220, 232);
+  --header-font-color: rgb(75, 80, 96);
+  --primary-font-color: rgb(43, 48, 61);
+  --secondary-font-color: rgb(16, 20, 28);
   --main-header-height: clamp(2.5rem, 15vh, 3.75rem);
   --main-page-font-color: rgb(255, 255, 255);
   --main-footer-height: clamp(3rem, 20vh, 5rem);
@@ -14,17 +15,17 @@
   --auth-button-background-secondary-color: rgba(255, 255, 255, 0.2);
   --dashboard-button-background-color: rgba(116, 181, 227, 0.5);
   --link-color: rgb(14, 118, 183);
-  --dashboard-color: rgb(94, 190, 196);
+  --dashboard-color: rgb(83, 181, 190);
   --dashboard-nav-width: 10rem;
   --dashboardMini-nav-width: 5rem;
-  --dashboard-background-color: rgb(240, 240, 240);
-  --dashboard-background-hover-color: rgb(220, 220, 220);
+  --dashboard-background-color: rgb(244, 246, 248);
+  --dashboard-background-hover-color: rgb(230, 236, 240);
   --dashboard-item-height: 3rem;
   --dashboard-background-item-color: rgb(255, 255, 255);
-  --dashboard-background-item-selected-color: rgb(139, 170, 199);
-  --dashboard-background-item-dragOver-color: rgb(185, 223, 231);
-  --dashboard-background-item-hover-color: rgb(246, 246, 246);
-  --dashboard-table-background-color: rgb(250, 250, 244);
+  --dashboard-background-item-selected-color: rgb(209, 235, 239);
+  --dashboard-background-item-dragOver-color: rgb(188, 230, 237);
+  --dashboard-background-item-hover-color: rgb(249, 251, 252);
+  --dashboard-table-background-color: rgb(252, 252, 248);
   --dashboard-table-column-name-width: 55%;
   --dashboard-table-column-name-width-maxwidth768: 53%;
   --dashboard-table-column-name-width-maxwidth576: 49%;
@@ -38,7 +39,7 @@
   --dashboard-table-column-buttons-width-maxwidth1200: 7%;
   --dashboard-table-column-buttons-width-maxwidth768: 6%;
   --dashboard-table-column-buttons-width-maxwidth576: 5%;
-  --modal-bg-color: rgb(125, 127, 136);
+  --modal-bg-color: rgb(92, 96, 110);
   --update-icon-bg-color: transparent;
   --update-icon-color: rgb(0, 0, 0);
   --delete-icon-bg-color: transparent;
@@ -48,6 +49,10 @@
   --switch-true-bg-color: rgb(89, 237, 247);
   --modal-header-color: rgba(200, 240, 255, 0.7);
   --input-disabled-color: rgb(190, 190, 190);
+  --surface-border-color: rgba(75, 80, 96, 0.16);
+  --surface-shadow-soft: 0 0.5rem 1.5rem rgba(16, 20, 28, 0.08);
+  --surface-shadow-medium: 0 1rem 2.5rem rgba(16, 20, 28, 0.16);
+  --focus-ring-color: rgba(75, 220, 232, 0.55);
 }
 
 *,
@@ -66,19 +71,31 @@
 a {
   text-decoration: none;
 }
+
+body {
+  background-color: var(--main-header-background-color);
+  color: var(--primary-font-color);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
 *:visited {
   color: inherit;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1200px) {
   html {
-    font-size: 50%;
-  }
-}
-
-@media (max-width: 768px) {
-  html {
-    font-size: 65%;
+    font-size: 90%;
   }
 }
 
@@ -88,8 +105,14 @@ a {
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 768px) {
   html {
-    font-size: 90%;
+    font-size: 65%;
+  }
+}
+
+@media (max-width: 576px) {
+  html {
+    font-size: 58%;
   }
 }

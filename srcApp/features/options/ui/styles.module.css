@@ -4,14 +4,15 @@
   display: flex;
   align-items: center;
   margin-top: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: var(--dashboard-background-color);
+  border-radius: 0.625rem;
+  background-color: rgba(255, 255, 255, 0.86);
   position: sticky;
   top: 0;
   z-index: 3;
   caret-color: transparent;
-  border: 1px solid var(--secondary-logo-color);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(75, 220, 232, 0.45);
+  box-shadow: var(--surface-shadow-soft);
+  backdrop-filter: blur(10px);
 }
 
 .options__backBtn {
@@ -20,17 +21,20 @@
   justify-content: center;
   width: 3rem;
   height: 2rem;
-  border-radius: 0.25rem;
+  border-radius: 0.55rem;
   border: none;
   background-color: var(--modal-header-color);
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.3s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .options__backBtn:hover,
 .options__backBtn:focus-visible {
   background-color: var(--secondary-logo-color);
+  transform: translateY(-1px);
 }
 
 .options__backBtn_disabled {
@@ -53,6 +57,10 @@
   margin-left: 1rem;
   display: flex;
   align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .options__pathLoading {
@@ -81,7 +89,7 @@
   height: 2rem;
   padding: 0.25rem;
   cursor: pointer;
-  transition: all 0.1s ease-in-out;
+  transition: transform 0.2s ease;
 }
 
 .options__deleteBtn:hover,

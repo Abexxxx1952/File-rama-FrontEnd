@@ -2,21 +2,26 @@
   width: 100%;
   height: 100%;
   background: #fff;
+  color: var(--primary-font-color);
 }
 
 .uploader__header {
   display: flex;
-  padding: 1.2rem;
-  background: var(--modal-header-color);
+  padding: 1.2rem 1.5rem;
+  background:
+    linear-gradient(90deg, rgba(75, 220, 232, 0.28), rgba(111, 86, 224, 0.12)),
+    var(--modal-header-color);
   align-items: center;
-  border-radius: 5px 5px 0 0;
+  border-radius: 1.25rem 1.25rem 0 0;
   justify-content: space-between;
+  border-bottom: 1px solid var(--surface-border-color);
 }
 
 .uploader__title {
   font-size: 1.25rem;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .uploader__fileCompletedStatus {
@@ -32,7 +37,7 @@
   padding-bottom: 10px;
   max-height: 380px;
   overflow-y: auto;
-  scrollbar-color: #999 transparent;
+  scrollbar-color: var(--secondary-logo-color) transparent;
   scrollbar-width: thin;
 }
 
@@ -44,6 +49,10 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  border-radius: 0.85rem;
+  background-color: rgba(244, 246, 248, 0.75);
+  border: 1px solid var(--surface-border-color);
 }
 
 .file:last-child {
@@ -58,7 +67,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
-  background: var(--primary-logo-color);
+  background: linear-gradient(135deg, var(--primary-logo-color), var(--secondary-logo-color));
+  box-shadow: 0 0.4rem 1rem rgba(111, 86, 224, 0.22);
 }
 
 .file__container {
@@ -116,33 +126,38 @@
 
 .file__progressBarContainer {
   width: 100%;
-  height: 3px;
+  height: 4px;
   margin-top: 10px;
   border-radius: 30px;
-  background: #d9d9d9;
+  background: rgb(225, 229, 234);
 }
 
 .file__progressBar {
   width: 5%;
   height: inherit;
   border-radius: inherit;
-  background: var(--primary-logo-color);
+  background: linear-gradient(90deg, var(--primary-logo-color), var(--secondary-logo-color));
 }
 
 .fileUploadBox {
   margin: 0.75rem 1.25rem 1.25rem 1.25rem;
-  border-radius: 5px;
+  border-radius: 0.95rem;
   min-height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px dashed #b1add4;
-  transition: all 0.2s ease;
+  border: 2px dashed rgba(111, 86, 224, 0.38);
+  background-color: rgba(244, 246, 248, 0.52);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .fileUploadBox.active {
   border: 2px solid var(--primary-logo-color);
-  background: #f3f6ff;
+  background: rgba(75, 220, 232, 0.12);
+  transform: scale(0.99);
 }
 
 .fileUploadBox__title {
@@ -165,16 +180,35 @@
 }
 
 @media screen and (max-width: 768px) {
-  .uploader__header {
-    padding: 1rem;
+  .uploader {
+    margin: -2rem;
+    width: calc(100% + 4rem);
+    height: calc(100% + 4rem);
   }
+
+  .uploader__header {
+    min-height: 5.5rem;
+    padding: 1.25rem 4rem 1.25rem 1.5rem;
+    border-radius: 0;
+  }
+
   .uploader__fileCompletedStatus {
     font-size: 0.9rem;
-    margin-right: 1.75rem;
+    margin-right: 0;
   }
+
   .uploader__title {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
   }
+
+  .fileList {
+    max-height: calc(100vh - 18rem);
+  }
+
+  .fileUploadBox {
+    margin: 1rem 1.5rem 1.5rem;
+  }
+
   .file {
     gap: 0.9rem;
     margin-bottom: 1.3rem;
@@ -204,16 +238,37 @@
 }
 
 @media screen and (max-width: 576px) {
-  .uploader__header {
-    padding: 0.8rem;
+  .uploader {
+    margin: -1.5rem;
+    width: calc(100% + 3rem);
+    height: calc(100% + 3rem);
   }
+
+  .uploader__header {
+    min-height: 6rem;
+    padding: 1.25rem 3.5rem 1.25rem 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
   .uploader__fileCompletedStatus {
     font-size: 0.8rem;
-    margin-right: 1.5rem;
+    margin-right: 0;
   }
+
   .uploader__title {
-    font-size: 1rem;
+    font-size: 1.15rem;
   }
+
+  .fileUploadBox {
+    margin: 1rem 1.25rem 1.25rem;
+    min-height: 12rem;
+    padding: 1rem;
+    text-align: center;
+  }
+
   .file {
     gap: 0.8rem;
     margin-bottom: 1.1rem;

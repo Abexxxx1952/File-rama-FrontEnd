@@ -8,6 +8,10 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  border-radius: 0.85rem;
+  background-color: rgba(244, 246, 248, 0.75);
+  border: 1px solid var(--surface-border-color);
 }
 
 .file:last-child {
@@ -22,7 +26,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 1rem;
-  background: var(--primary-logo-color);
+  background: linear-gradient(135deg, var(--primary-logo-color), var(--secondary-logo-color));
+  box-shadow: 0 0.4rem 1rem rgba(111, 86, 224, 0.22);
 }
 
 .file__container {
@@ -43,6 +48,9 @@
 .file__name {
   font-size: 1rem;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .file__info {
@@ -111,17 +119,17 @@
 
 .file__progressBarContainer {
   width: 100%;
-  height: 3px;
+  height: 4px;
   margin-top: 10px;
   border-radius: 30px;
-  background: #d9d9d9;
+  background: rgb(225, 229, 234);
 }
 
 .file__progressBar {
   width: var(--progress-bar-size);
   height: inherit;
   border-radius: inherit;
-  background: var(--primary-logo-color);
+  background: linear-gradient(90deg, var(--primary-logo-color), var(--secondary-logo-color));
 }
 
 @media screen and (max-width: 768px) {

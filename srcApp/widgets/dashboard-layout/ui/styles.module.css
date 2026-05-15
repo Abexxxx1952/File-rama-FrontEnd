@@ -5,7 +5,9 @@
   width: 100%;
   height: 100vh;
   padding: var(--main-padding-size);
-  background-color: var(--main-header-background-color);
+  background:
+    radial-gradient(circle at top left, rgba(75, 220, 232, 0.18), transparent 28rem),
+    var(--main-header-background-color);
 }
 
 .dashboard__container {
@@ -14,9 +16,10 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  border-radius: 1.5rem;
-  border: 1px solid var(--dashboard-color);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(83, 181, 190, 0.38);
   overflow: hidden;
+  box-shadow: var(--surface-shadow-medium);
 }
 
 .dashboard__bar {
@@ -25,7 +28,9 @@
   width: var(--dashboard-nav-width);
   height: 100%;
   transition: all 0.5s ease-in-out;
-  background-color: var(--dashboard-color);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 35%),
+    var(--dashboard-color);
 }
 
 .dashboard__content {
@@ -55,21 +60,13 @@
 
 .dashboard__profile {
   width: 100%;
-  height: 20%;
+  min-height: 8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: calc(
-    50% -
-      (
-        (
-            var(--dashboard-profile-icon-height) +
-              var(--dashboard-profile-name-font-size) + 0.5rem
-          ) /
-          2
-      )
-  );
+  justify-content: center;
+  padding: 1.25rem 0.5rem 1rem;
+  flex-shrink: 0;
 }
 
 .dashboard__profileIcon {
@@ -96,7 +93,7 @@
   flex-direction: column;
   padding-top: 2rem;
   width: 100%;
-  height: calc(80% - 10rem);
+  flex: 1;
   position: relative;
 }
 
@@ -111,10 +108,23 @@
   transition: all 0.3s ease-in-out;
 }
 
+.dashboard__navItem:focus-within,
 .dashboard__navItem:focus-visible,
 .dashboard__navItem:hover {
   --dashboard-nav-icon-color: black;
   background-color: var(--secondary-logo-color);
+}
+
+.dashboard__navItem:hover .dashboard__navLink,
+.dashboard__navItem:focus-within .dashboard__navLink {
+  color: var(--secondary-font-color);
+  background-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.dashboard__navLink:focus-visible {
+  outline-offset: -2px;
 }
 
 .dashboard__navItemIcon {
@@ -138,6 +148,15 @@
   .dashboard__profileIcon {
     --dashboard-profile-icon-width: 36px;
     --dashboard-profile-icon-height: 36px;
+  }
+
+  .dashboard__profile {
+    min-height: 6rem;
+    padding: 1rem 0.25rem 0.75rem;
+  }
+
+  .dashboard__name {
+    font-size: 0.75rem;
   }
 
   .dashboard__navItem {

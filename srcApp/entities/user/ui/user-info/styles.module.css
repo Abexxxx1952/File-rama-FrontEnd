@@ -2,26 +2,30 @@
   width: calc(100% - 2rem);
   max-width: 75rem;
   padding: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 0.75rem;
   color: var(--secondary-font-color);
-  background-color: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--surface-border-color);
+  border-radius: 0.875rem;
+  box-shadow: var(--surface-shadow-soft);
 }
 
 .userInfo__title {
   font-size: 1.25rem;
-  text-align: center;
+  text-align: left;
 }
 
 .userInfo__row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-top: 1px solid rgba(75, 80, 96, 0.09);
 }
 
 .userInfo__rowTitle,
@@ -32,14 +36,27 @@
   min-width: max-content;
 }
 
+.userInfo__rowTitle {
+  color: var(--header-font-color);
+  font-weight: 600;
+}
+
+.userInfo__rowValue {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+
 @media screen and (max-width: 768px) {
   .userInfo__title {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .userInfo {
     width: calc(100% - 1.5rem);
     margin-top: 0.75rem;
+    margin-bottom: 0;
     padding: 0.75rem;
     gap: 0.75rem;
   }
@@ -54,7 +71,7 @@
 
 @media screen and (max-width: 576px) {
   .userInfo__title {
-    font-size: 0.75rem;
+    font-size: 1rem;
   }
 
   .userInfo__row {
@@ -70,5 +87,6 @@
 
   .userInfo__rowValue {
     align-self: flex-end;
+    width: 100%;
   }
 }

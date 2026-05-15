@@ -10,22 +10,33 @@
   border-radius: 0.5rem;
   background-color: var(--dashboard-background-item-color);
   cursor: grab;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition:
+    background-color 0.18s ease,
+    outline-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .tableItem:hover,
 .tableItem:focus-visible {
   background-color: var(--dashboard-background-item-hover-color);
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.15);
+  outline-color: var(--surface-border-color);
+  box-shadow: 0 0.35rem 1rem rgba(16, 20, 28, 0.08);
+  transform: translateY(-1px);
 }
 
 .tableItem.tableItem__selected {
   border-radius: 0.5rem;
   background-color: var(--dashboard-background-item-selected-color);
+  outline-color: rgba(83, 181, 190, 0.45);
 }
 
 .tableItem.tableItem__dragEnter {
   border-radius: 0.5rem;
   background-color: var(--dashboard-background-item-dragOver-color);
+  outline-color: var(--dashboard-color);
 }
 
 .tableItem__dragStart {
@@ -45,7 +56,7 @@
   background-color: white;
   border-radius: 1rem;
   border: 1px solid var(--dashboard-background-item-dragOver-color);
-  box-shadow: 2px 2px 6px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--surface-shadow-medium);
   animation: shrinkWidth 0.3s forwards;
 }
 
@@ -107,6 +118,7 @@
   color: white;
   background-color: var(--primary-logo-color);
   border-radius: 50%;
+  box-shadow: 0 0.25rem 0.75rem rgba(16, 20, 28, 0.18);
 }
 
 .tableItem__row {
@@ -119,6 +131,7 @@
   gap: 0.5rem;
   white-space: nowrap;
   text-overflow: ellipsis;
+  color: var(--primary-font-color);
 }
 
 .tableItem__name {

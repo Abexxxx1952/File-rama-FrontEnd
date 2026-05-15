@@ -5,5 +5,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--dashboard-background-item-color);
-  cursor: pointer;
+  color: var(--header-font-color);
+  border-radius: 0.5rem;
+  border: 1px dashed var(--surface-border-color);
 }

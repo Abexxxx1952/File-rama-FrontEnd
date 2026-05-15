@@ -38,9 +38,12 @@
 }
 
 .description__title {
-  font-size: 3rem;
+  max-width: 40rem;
+  margin: 0;
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
   font-weight: 800;
   text-align: center;
+  line-height: 1.08;
 }
 
 .accented {
@@ -49,35 +52,39 @@
 }
 
 .description__text {
-  font-size: 1.5rem;
+  max-width: 34rem;
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 1.75rem;
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.45;
 }
 
 .description__buttons {
   display: flex;
   justify-content: center;
-  gap: clamp(2rem, 5vw, 4rem);
-  margin-top: 3rem;
+  gap: clamp(1rem, 3vw, 2rem);
+  margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
 .description__buttonContainer {
-  width: clamp(8rem, 15vw, 20rem);
+  width: clamp(9rem, 14vw, 13rem);
   height: 3.5rem;
-  border-radius: 1rem;
+  border-radius: 0.875rem;
   font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .description__buttonContainer:hover {
-  background-color: var(--main-page-button-hover-color);
-  color: var(--main-page-font-color);
+  color: inherit;
 }
 
 .description__button {
-  color: var(--secondary-logo-color);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  border-radius: 0.875rem;
+  box-shadow: 0 0.75rem 1.75rem rgba(16, 20, 28, 0.2);
+  backdrop-filter: blur(12px);
 }
 
 .representative {
@@ -95,6 +102,7 @@
   aspect-ratio: 1/1;
   margin: 3rem auto 3rem auto;
   flex-shrink: 1;
+  filter: drop-shadow(0 1.5rem 2rem rgba(16, 20, 28, 0.22));
 }
 
 .representative__image::after {
@@ -122,14 +130,20 @@
   }
 
   .description__title {
-    font-size: 1.5rem;
+    font-size: clamp(1.5rem, 7vw, 2.4rem);
     text-align: center;
     margin-top: 3rem;
   }
 
   .description__text {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     text-align: center;
+    margin-top: 1.25rem;
+  }
+
+  .description__buttons {
+    gap: 1rem;
+    margin-top: 1.5rem;
   }
 
   .representative__image {

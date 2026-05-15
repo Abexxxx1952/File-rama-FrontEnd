@@ -1,90 +1,290 @@
-.stats__title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 1rem;
+.stats {
+  width: min(100%, 78rem);
+  padding: 1rem;
+  color: var(--primary-font-color);
 }
 
-.stats__general {
-  width: 100%;
-  min-height: 65%;
+.header {
+  width: calc(100% - 2rem);
+  max-width: 75rem;
+  margin: 0.75rem auto 1rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--surface-border-color);
+  background:
+    linear-gradient(135deg, rgba(75, 220, 232, 0.18), rgba(111, 86, 224, 0.08)),
+    rgba(255, 255, 255, 0.78);
+  box-shadow: var(--surface-shadow-soft);
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--dashboard-color);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stats__title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.description {
+  max-width: 42rem;
+  margin-top: 0.75rem;
+  color: var(--header-font-color);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.overview {
+  width: calc(100% - 2rem);
+  max-width: 75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.85fr);
+  gap: 1rem;
+  margin: 0 auto 1rem;
+}
+
+.chartCard,
+.metricCard,
+.driveSection {
+  border: 1px solid var(--surface-border-color);
+  border-radius: 0.875rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--surface-shadow-soft);
+}
+
+.chartCard {
+  min-height: 32rem;
   display: flex;
   flex-direction: column;
+  padding: 1rem;
+}
+
+.chartCard__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cardLabel {
+  display: block;
+  color: var(--header-font-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.cardValue {
+  display: block;
+  margin: 0.35rem 0 0;
+  color: var(--primary-font-color);
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.usageBadge,
+.driveCount,
+.driveErrorCount {
+  display: inline-flex;
   align-items: center;
-  margin-top: 1rem;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  color: var(--secondary-font-color);
+  background-color: rgba(75, 220, 232, 0.22);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.driveStatusGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.driveErrorCount {
+  background-color: rgba(228, 14, 14, 0.12);
+  color: rgb(167, 21, 21);
 }
 
 .pieChart {
+  flex: 1;
   width: 100%;
-  height: 90%;
+  min-height: 24rem;
 }
 
-.stats__fileSystemStats {
-  width: 100%;
-  height: 10%;
-  font-size: 1.25rem;
+.metricGrid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.metricCard {
+  min-height: 7rem;
+  padding: 1rem;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.stats__folderStats,
-.stats__fileStats {
-  display: block;
-  width: 50%;
-  height: 100%;
-  text-align: center;
+.driveSection {
+  width: calc(100% - 2rem);
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.2;
 }
 
 .stats__driveInfo {
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  padding: 1rem;
 }
 
 .stats__driveInfoItem {
   width: 100%;
-  height: 8rem;
+  min-height: 8rem;
   font-size: 1.25rem;
 }
 
 @media screen and (max-width: 768px) {
-  .stats__general {
-    min-height: 50%;
-    margin-top: 0.75rem;
+  .stats {
+    padding: 0.75rem;
   }
-  .stats__fileSystemStats {
-    font-size: 1.125rem;
+
+  .header,
+  .overview,
+  .driveSection {
+    width: calc(100% - 1.5rem);
   }
+
+  .header {
+    padding: 1.25rem;
+  }
+
+  .stats__title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+  }
+
+  .overview {
+    grid-template-columns: 1fr;
+  }
+
+  .chartCard {
+    min-height: 28rem;
+  }
+
+  .metricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .stats__driveInfo {
-    gap: 0.8rem;
-    padding: 0.8rem;
+    grid-template-columns: 1fr;
   }
+
   .stats__driveInfoItem {
-    height: 6.5rem;
+    min-height: 6.5rem;
     font-size: 1rem;
   }
 }
 
 @media screen and (max-width: 576px) {
-  .stats__general {
-    min-height: 45%;
-    margin-top: 0.5rem;
+  .stats {
+    padding: 0.5rem;
   }
-  .stats__fileSystemStats {
-    font-size: 1rem;
+
+  .header,
+  .overview,
+  .driveSection {
+    width: calc(100% - 1rem);
   }
-  .stats__driveInfo {
-    gap: 0.65rem;
-    padding: 0.65rem;
+
+  .header {
+    padding: 1rem;
+    border-radius: 0.875rem;
   }
+
+  .eyebrow {
+    font-size: 0.7rem;
+  }
+
+  .stats__title {
+    font-size: 1.25rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
+
+  .chartCard {
+    min-height: 24rem;
+    padding: 0.75rem;
+  }
+
+  .chartCard__header,
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cardValue {
+    font-size: 1.25rem;
+  }
+
+  .metricGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metricCard {
+    min-height: 5.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.1rem;
+  }
+
   .stats__driveInfoItem {
-    height: 5rem;
+    min-height: 5rem;
     font-size: 0.75rem;
   }
 }
 
 @media screen and (max-width: 420px) {
   .stats__driveInfoItem {
-    height: 6rem;
+    min-height: 6rem;
   }
 }

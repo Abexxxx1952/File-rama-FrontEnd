@@ -78,9 +78,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
                     href={item.path}
                     onClick={onClickHandler}
                     text={item.value}
+                    className={styles.dashboard__navLink}
                     boxShadow="none"
                     border="none"
-                    focusBackgroundColor="none"
+                    focusBackgroundColor="transparent"
                   />
                 </div>
               );

@@ -6,10 +6,12 @@
   z-index: 100;
   width: 220px;
   background-color: var(--dashboard-background-item-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 0.75rem;
+  border: 1px solid var(--surface-border-color);
+  box-shadow: var(--surface-shadow-medium);
   font-size: 14px;
   padding: 6px 0;
+  overflow: hidden;
 }
 
 .contextMenu__list {
@@ -25,10 +27,13 @@
   height: var(--context-menu-item-height);
   padding: 10px 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
-.list__item:hover {
+.list__item:hover,
+.list__item:focus-visible {
   background-color: var(--dashboard-background-color);
 }
 .contextButton__open,

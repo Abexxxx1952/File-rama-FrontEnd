@@ -7,14 +7,12 @@ export const metadata: Metadata = {
   icons: "/meta-icon.svg",
 };
 
-export default async function Page({
-  params,
-}: {
+type DashboardRouteProps = {
   params: Promise<{ ids: string[] }>;
-}) {
-  const resolvedParams = await params;
-  let { ids } = resolvedParams;
-  ids = ids ?? ["null"];
+};
+
+export default async function Page(props: DashboardRouteProps) {
+  const { ids = ["null"] } = await props.params;
 
   return <DashboardPage ids={ids} />;
 }

@@ -9,12 +9,21 @@
   border-radius: 0.5rem;
   background-color: var(--dashboard-background-item-color);
   user-select: none;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition:
+    background-color 0.18s ease,
+    outline-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .backItem:hover,
 .backItem:focus-visible {
   background-color: var(--dashboard-background-item-hover-color);
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.15);
+  outline-color: var(--surface-border-color);
+  box-shadow: 0 0.35rem 1rem rgba(16, 20, 28, 0.08);
+  transform: translateY(-1px);
 }
 
 .backItem__icon {

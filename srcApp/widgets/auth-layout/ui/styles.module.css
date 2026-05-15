@@ -21,6 +21,7 @@
   border-radius: 1.5rem;
   backdrop-filter: blur(20px);
   overflow: hidden;
+  box-shadow: var(--surface-shadow-medium);
 }
 
 .auth__col1 {
@@ -125,7 +126,7 @@
 }
 
 .form__button {
-  background-color: var(--auth-button-background-secondary-colo);
+  background-color: var(--auth-button-background-secondary-color);
 }
 
 .form__button a {

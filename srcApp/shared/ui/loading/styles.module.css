@@ -8,6 +8,7 @@
   width: 100%;
   height: 100%;
   background-color: var(--loading-bg-color);
+  backdrop-filter: blur(3px);
 }
 
 .loading__icon {

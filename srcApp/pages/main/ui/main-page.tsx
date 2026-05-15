@@ -9,28 +9,38 @@ export function MainPage() {
     <>
       <MainHeader />
       <main className={styles.main}>
-        <section className={styles.description}>
+        <section className={styles.description} aria-labelledby="main-title">
           <div className={styles.description__container}>
-            <h1 className={styles.description__title}>
-              Storage and share your files on
+            <h1 className={styles.description__title} id="main-title">
+              Store and share your files on
               <strong className={styles.accented}> File-rama</strong>
             </h1>
-            <span className={styles.description__text}>
-              Forgot where something is? Collect files on File-rama. Assemble
-              rama
-            </span>
+            <p className={styles.description__text}>
+              Keep documents, folders and connected drives in one place, so the
+              file you need is easy to find and ready to share.
+            </p>
             <div className={styles.description__buttons}>
               <div className={styles.description__buttonContainer}>
                 <ButtonLink
                   href="/register"
-                  text="Getting Started"
+                  text="Get started"
+                  textColor="var(--secondary-font-color)"
+                  backgroundColor="var(--secondary-logo-color)"
+                  border="1px solid var(--secondary-logo-color)"
+                  focusTextColor="var(--secondary-font-color)"
+                  focusBackgroundColor="var(--main-page-font-color)"
                   className={styles.description__button}
                 />
               </div>
               <div className={styles.description__buttonContainer}>
                 <ButtonLink
                   href="/description"
-                  text="Descriptions"
+                  text="Learn more"
+                  textColor="var(--main-page-font-color)"
+                  backgroundColor="rgba(255, 255, 255, 0.08)"
+                  border="1px solid rgba(255, 255, 255, 0.4)"
+                  focusTextColor="var(--main-page-font-color)"
+                  focusBackgroundColor="rgba(255, 255, 255, 0.16)"
                   className={styles.description__button}
                 />
               </div>
