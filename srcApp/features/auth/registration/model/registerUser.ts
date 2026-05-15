@@ -22,6 +22,7 @@ export async function registerUser(
         isError: true,
         responseResult: data,
       });
+      return;
     }
 
     if (data === null) {
@@ -29,6 +30,7 @@ export async function registerUser(
         isError: true,
         responseResult: null,
       });
+      return;
     }
     notifyResponse({
       isError: false,

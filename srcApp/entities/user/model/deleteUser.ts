@@ -24,6 +24,15 @@ export async function deleteUser(
           isError: true,
           responseResult: data,
         });
+        return;
+      }
+
+      if (data === null) {
+        notifyResponse({
+          isError: true,
+          responseResult: null,
+        });
+        return;
       }
 
       notifyResponse({
