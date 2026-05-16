@@ -1,18 +1,26 @@
-import { DashboardItemProps } from "../ui/dashboard-item";
+import { type DashboardItemProps } from "../ui/dashboard-item";
 import { isFile } from "./isFile";
 import { isFolder } from "./isFolder";
 
 export function areDashboardItemEqual(
   prevProps: DashboardItemProps,
-  nextProps: DashboardItemProps,
+  nextProps: DashboardItemProps
 ) {
   const prevItem = prevProps.item;
   const nextItem = nextProps.item;
 
-  if (prevProps.isSelected !== nextProps.isSelected) return false;
-  if (prevProps.isDraggable !== nextProps.isDraggable) return false;
-  if (prevItem.id !== nextItem.id) return false;
-  if (prevProps.index !== nextProps.index) return false;
+  if (prevProps.isSelected !== nextProps.isSelected) {
+    return false;
+  }
+  if (prevProps.isDraggable !== nextProps.isDraggable) {
+    return false;
+  }
+  if (prevItem.id !== nextItem.id) {
+    return false;
+  }
+  if (prevProps.index !== nextProps.index) {
+    return false;
+  }
 
   if (isFile(prevItem) && isFile(nextItem)) {
     return (

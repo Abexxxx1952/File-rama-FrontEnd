@@ -1,10 +1,11 @@
 import { debounce } from "@/srcApp/shared/model/debounce";
-import { FileSystemItem } from "./types/fileSystemItem";
+
+import { type FileSystemItem } from "./types/fileSystemItem";
 
 function setSearchFileSystemItems(
   items: FileSystemItem[] | null | undefined,
   query: string,
-  setItems: React.Dispatch<React.SetStateAction<FileSystemItem[]>>,
+  setItems: React.Dispatch<React.SetStateAction<FileSystemItem[]>>
 ): void {
   if (!items) {
     return;
@@ -24,5 +25,5 @@ function setSearchFileSystemItems(
 
 export const debouncedSetSearchFileSystemItems = debounce(
   setSearchFileSystemItems,
-  1000,
+  1000
 );

@@ -1,23 +1,23 @@
 import {
   FilesSortKey,
   FolderSortKey,
-  MappedFileSortKey,
-  MappedFolderSortKey,
-  MappedSortFileRule,
-  MappedSortFolderRule,
-  SortFileSystemRules,
-  SortRules,
-  sortFilesRules,
-  sortFoldersRules,
+  type MappedFileSortKey,
+  type MappedFolderSortKey,
+  type MappedSortFileRule,
+  type MappedSortFolderRule,
+  type SortFileSystemRules,
+  type SortRules,
+  type sortFilesRules,
+  type sortFoldersRules,
 } from "@/srcApp/pages/dashboard/model/types/sort";
 
 export function splitSortRules(sort: SortRules[]): SortFileSystemRules {
   const folderKeys = new Set<keyof typeof FolderSortKey>(
-    Object.keys(FolderSortKey) as (keyof typeof FolderSortKey)[],
+    Object.keys(FolderSortKey) as (keyof typeof FolderSortKey)[]
   );
 
   const fileKeys = new Set<keyof typeof FilesSortKey>(
-    Object.keys(FilesSortKey) as (keyof typeof FilesSortKey)[],
+    Object.keys(FilesSortKey) as (keyof typeof FilesSortKey)[]
   );
 
   const sortFolderRules: MappedSortFolderRule[] = [];

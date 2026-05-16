@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import { Button } from "@/srcApp/shared/ui/button";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
+
 import { loginUser } from "../model/loginUser";
-import { UserLoginFormData } from "../model/types/userLoginFormData";
+import { type UserLoginFormData } from "../model/types/userLoginFormData";
 import styles from "./styles.module.css";
 
 export function Login() {

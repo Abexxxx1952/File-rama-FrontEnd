@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { User } from "@/srcApp/entities/user";
+
 import {
+  type User,
   UserDelete,
   UserDriveUpdate,
   UserInfo,
@@ -12,6 +13,7 @@ import { getUser } from "@/srcApp/entities/user/model/getUser";
 import { EmailConfirmation } from "@/srcApp/features/auth/email-confirmation/ui";
 import { TwoFactorAuth } from "@/srcApp/features/auth/two-factor/ui";
 import { Loading } from "@/srcApp/shared/ui/loading";
+
 import styles from "./styles.module.css";
 
 export function SettingsPage() {
@@ -25,7 +27,9 @@ export function SettingsPage() {
     })();
   }, []);
 
-  if (!user) return <Loading />;
+  if (!user) {
+    return <Loading />;
+  }
 
   return (
     <section className={styles.settings} aria-labelledby="settings-title">
@@ -43,10 +47,7 @@ export function SettingsPage() {
       <div className={styles.content}>
         <UserInfo user={user} />
         <UserUpdate user={user} setUser={setUser} />
-        <section
-          className={styles.securityGrid}
-          aria-label="Security settings"
-        >
+        <section className={styles.securityGrid} aria-label="Security settings">
           <EmailConfirmation />
           <TwoFactorAuth
             isTwoFactorEnabled={user.isTwoFactorEnabled}

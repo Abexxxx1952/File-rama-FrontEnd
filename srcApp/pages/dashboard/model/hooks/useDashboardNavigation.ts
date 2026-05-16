@@ -1,13 +1,15 @@
 import { useCallback, useMemo } from "react";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import { getFileSystemCacheTags } from "../getFileSystemCacheTags";
 import { getFolderPathCacheTags } from "../getFolderPathCacheTags";
 import { splitSortRules } from "../splitSortRules";
 import {
   FileSystemSortKey,
   SORT_ORDER,
-  SortOrder,
-  SortRules,
+  type SortOrder,
+  type SortRules,
 } from "../types/sort";
 
 const path = "/dashboard";
@@ -40,7 +42,7 @@ export function useDashboardNavigation(ids: string[]) {
 
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [searchParams.toString(), router, pathname],
+    [searchParams.toString(), router, pathname]
   );
 
   const upsertSortRule = useCallback(
@@ -49,7 +51,7 @@ export function useDashboardNavigation(ids: string[]) {
       const filtered = current.filter((r) => r.key !== newRule.key);
       setSortToPath([newRule, ...filtered]);
     },
-    [setSortToPath],
+    [setSortToPath]
   );
 
   function getSortFromPath(): SortRules[] {
@@ -68,7 +70,9 @@ export function useDashboardNavigation(ids: string[]) {
       const rawKey = sortParams[i];
       const rawOrder = orderParams[i];
 
-      if (!rawKey || !rawOrder) continue;
+      if (!rawKey || !rawOrder) {
+        continue;
+      }
 
       if (
         VALID_SORT_KEYS.includes(rawKey as any) &&
@@ -99,13 +103,13 @@ export function useDashboardNavigation(ids: string[]) {
     (param: string) => {
       router.push(`${path}/${[...ids, param].join("/")}`);
     },
-    [ids, router],
+    [ids, router]
   );
 
   const routerBack = useCallback(() => {
     const nextIds = ids.slice(0, -1);
     router.push(
-      nextIds.length > 1 ? `${path}/${nextIds.join("/")}` : `${path}/null`,
+      nextIds.length > 1 ? `${path}/${nextIds.join("/")}` : `${path}/null`
     );
   }, [ids, router]);
 

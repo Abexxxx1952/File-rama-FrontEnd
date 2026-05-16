@@ -8,85 +8,74 @@
   --focus-bg-color: var(--secondary-logo-color);
   --focus-text-color: var(--secondary-font-color);
   --focus-box-shadow: none;
-  --box-shadow: 0 0.35rem 1rem rgba(16, 20, 28, 0.1);
-  --placeholder-color: rgba(0, 0, 0, 0.5);
-  --placeholder-padding-left: calc(0.8 * var(--variableUnitsSize));
+  --box-shadow: 0 0.35rem 1rem rgb(16 20 28 / 10%);
+  --placeholder-color: rgb(0 0 0 / 50%);
+  --placeholder-padding-left: calc(0.8 * var(--variable-units-size));
   --placeholder-font-size: 0.8rem;
   display: flex;
-  align-items: center;
   justify-content: flex-start;
+  align-items: center;
   width: 100%;
   height: 100%;
+  padding: 0 calc(0.8 * var(--variable-units-size));
+  padding-left: var(--placeholder-padding-left);
+  font-size: var(--text-size);
   color: var(--text-color);
   background-color: var(--bg-color);
-  backdrop-filter: inherit;
-  border-radius: 0.5rem;
   border: var(--border);
-  outline: var(--outline);
-  font-size: var(--text-size);
-  padding: 0 calc(0.8 * var(--variableUnitsSize));
-  padding-left: var(--placeholder-padding-left);
+  border-radius: 0.5rem;
   box-shadow: var(--box-shadow);
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
     outline-color 0.2s ease,
     box-shadow 0.2s ease;
+  backdrop-filter: inherit;
+  outline: var(--outline);
 }
+
 .input:hover,
 .input:focus-visible {
-  outline: var(--focus-outline);
-  background-color: var(--focus-bg-color);
   color: var(--focus-text-color);
+  background-color: var(--focus-bg-color);
   box-shadow: var(--focus-box-shadow);
+  outline: var(--focus-outline);
 }
 
 .input::placeholder {
-  color: var(--placeholder-color);
   font-size: var(--placeholder-font-size);
-  opacity: 0.5;
-}
-
-.input::-webkit-input-placeholder {
   color: var(--placeholder-color);
-  font-size: var(--placeholder-font-size);
-  opacity: 0.5;
-}
-
-.input:-moz-placeholder {
-  color: var(--placeholder-color);
-  font-size: var(--placeholder-font-size);
   opacity: 0.5;
 }
 
 .text {
   --label-text-color: var(--main-page-font-color);
   --label-text-size: 0.8rem;
+  position: relative;
+  top: -12%;
+  left: 2%;
   font-size: var(--label-text-size);
   color: var(--label-text-color);
   opacity: 0.8;
-  position: relative;
-  left: 2%;
-  top: -12%;
 }
 
 .svgIcon {
   --icon-svg-width: 24px;
   --icon-svg-height: 24px;
-  width: var(--icon-svg-width);
-  height: var(--icon-svg-height);
   position: relative;
   top: -50%;
   left: 0;
+  width: var(--icon-svg-width);
+  height: var(--icon-svg-height);
   transform: translate(25%, -50%);
 }
 
 .error {
   display: flex;
-  color: red;
-  font-size: 0.7rem;
   margin-top: 0.1rem;
   margin-left: 0.5rem;
+  font-size: 0.7rem;
+  color: red;
 }
 
 .input[readonly] {

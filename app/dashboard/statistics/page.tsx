@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { StatisticPage } from "@/srcApp/pages/statistic";
 
 export const metadata: Metadata = {

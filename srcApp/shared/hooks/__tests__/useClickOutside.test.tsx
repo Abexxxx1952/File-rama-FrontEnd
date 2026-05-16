@@ -1,6 +1,8 @@
-import { RefObject } from "react";
+import { type RefObject } from "react";
+
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+
 import { useClickOutside } from ".././useClickOutside";
 
 describe("useClickOutside", () => {
@@ -18,7 +20,7 @@ describe("useClickOutside", () => {
       document.dispatchEvent(
         new MouseEvent("mousedown", {
           bubbles: true,
-        }),
+        })
       );
 
       // Then
@@ -42,7 +44,7 @@ describe("useClickOutside", () => {
       child.dispatchEvent(
         new MouseEvent("mousedown", {
           bubbles: true,
-        }),
+        })
       );
 
       // Then

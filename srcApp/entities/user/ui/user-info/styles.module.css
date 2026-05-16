@@ -1,14 +1,14 @@
 .userInfo {
-  width: calc(100% - 2rem);
-  max-width: 75rem;
-  padding: 1rem;
-  margin-bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 0.75rem;
+  width: calc(100% - 2rem);
+  max-width: 75rem;
+  margin-bottom: 0;
+  padding: 1rem;
   color: var(--secondary-font-color);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgb(255 255 255 / 90%);
   border: 1px solid var(--surface-border-color);
   border-radius: 0.875rem;
   box-shadow: var(--surface-shadow-soft);
@@ -25,27 +25,27 @@
   align-items: center;
   gap: 1rem;
   padding: 0.65rem 0;
-  border-top: 1px solid rgba(75, 80, 96, 0.09);
+  border-top: 1px solid rgb(75 80 96 / 9%);
 }
 
 .userInfo__rowTitle,
 .userInfo__rowValue {
-  font-size: 1.25rem;
-  align-self: center;
   width: 50%;
   min-width: max-content;
+  font-size: 1.25rem;
+  align-self: center;
 }
 
 .userInfo__rowTitle {
-  color: var(--header-font-color);
   font-weight: 600;
+  color: var(--header-font-color);
 }
 
 .userInfo__rowValue {
   min-width: 0;
   overflow: hidden;
-  text-overflow: ellipsis;
   text-align: right;
+  text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 768px) {
@@ -54,17 +54,17 @@
   }
 
   .userInfo {
+    gap: 0.75rem;
     width: calc(100% - 1.5rem);
     margin-top: 0.75rem;
     margin-bottom: 0;
     padding: 0.75rem;
-    gap: 0.75rem;
   }
 
   .userInfo__rowTitle,
   .userInfo__rowValue {
-    font-size: 1rem;
     overflow: hidden;
+    font-size: 1rem;
     text-overflow: ellipsis;
   }
 }
@@ -86,7 +86,7 @@
   }
 
   .userInfo__rowValue {
-    align-self: flex-end;
     width: 100%;
+    align-self: flex-end;
   }
 }

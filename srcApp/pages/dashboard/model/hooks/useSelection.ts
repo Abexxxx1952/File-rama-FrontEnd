@@ -1,12 +1,13 @@
 import { useCallback, useState } from "react";
-import { SelectedMap } from "../types/selectedMap";
+
+import { type SelectedMap } from "../types/selectedMap";
 
 export function useSelection() {
   const [selected, setSelected] = useState<SelectedMap>(new Map());
 
   const isSelected = useCallback(
     (id?: string) => (id ? selected.has(id) : selected.size > 0),
-    [selected],
+    [selected]
   );
 
   const toggle = useCallback((id: string, isFile: boolean, index: number) => {

@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchUpdateUser } from "../../api/fetchUpdateUser";
 import { updateUserSubmitHandler } from ".././updateUserSubmitHandler";
 
@@ -54,7 +56,7 @@ describe("updateUserSubmitHandler", () => {
       const result = await updateUserSubmitHandler(
         { name: "Ada", password: "secret" },
         setLoading,
-        setUser,
+        setUser
       );
 
       // Then
@@ -91,7 +93,7 @@ describe("updateUserSubmitHandler", () => {
       const result = await updateUserSubmitHandler(
         { password: "weak" },
         vi.fn(),
-        vi.fn(),
+        vi.fn()
       );
 
       // Then
@@ -121,7 +123,7 @@ describe("updateUserSubmitHandler", () => {
       const result = await updateUserSubmitHandler(
         { name: "Ada" },
         vi.fn(),
-        vi.fn(),
+        vi.fn()
       );
 
       // Then

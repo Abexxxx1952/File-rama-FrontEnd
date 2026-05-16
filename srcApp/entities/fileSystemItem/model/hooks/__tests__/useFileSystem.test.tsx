@@ -1,8 +1,10 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+
 import { SORT_ORDER } from "@/srcApp/pages/dashboard/model/types/sort";
+
 import { getFileSystemItems } from "../../getFileSystemItems";
-import { FileSystemItem } from "../../types/fileSystemItem";
+import { type FileSystemItem } from "../../types/fileSystemItem";
 import { useFileSystem } from ".././useFileSystem";
 
 vi.mock("../../getFileSystemItems", () => ({
@@ -36,7 +38,7 @@ describe("useFileSystem", () => {
           sortRules,
           version: 1,
           fileSystemItemsCurrentTag: "files-current",
-        }),
+        })
       );
 
       // Then
@@ -45,7 +47,7 @@ describe("useFileSystem", () => {
         "parent-1",
         sortRules,
         "files-current",
-        expect.any(Function),
+        expect.any(Function)
       );
       expect(result.current[1]).toBe(false);
     });
@@ -67,7 +69,7 @@ describe("useFileSystem", () => {
           initialProps: {
             version: 1,
           },
-        },
+        }
       );
 
       await waitFor(() => expect(getFileSystemItems).toHaveBeenCalledTimes(1));

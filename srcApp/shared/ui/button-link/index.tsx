@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
 import { Icon } from "../icon";
 import styles from "./styles.module.css";
 
@@ -21,7 +22,7 @@ type ButtonLinkProps = {
   className?: string;
   classNameSvg?: string;
   onClick?: (
-    e: React.SyntheticEvent<HTMLAnchorElement>,
+    e: React.SyntheticEvent<HTMLAnchorElement>
   ) => void | Promise<void>;
 };
 
@@ -69,7 +70,7 @@ export function ButtonLink({
       {loading ? (
         <div className={styles.spinner} aria-hidden="true">
           <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="10" />
           </svg>
         </div>
       ) : (

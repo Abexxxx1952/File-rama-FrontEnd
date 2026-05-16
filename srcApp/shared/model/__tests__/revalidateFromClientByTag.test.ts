@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { revalidateFromClientByTag } from ".././revalidateFromClientByTag";
 
 describe("revalidateFromClientByTag", () => {
@@ -14,7 +15,7 @@ describe("revalidateFromClientByTag", () => {
         "fetch",
         vi.fn().mockResolvedValue({
           json: vi.fn().mockResolvedValue({ revalidated: true }),
-        }),
+        })
       );
 
       // When
@@ -37,7 +38,7 @@ describe("revalidateFromClientByTag", () => {
         "fetch",
         vi.fn().mockResolvedValue({
           json: vi.fn().mockResolvedValue({ revalidated: false }),
-        }),
+        })
       );
 
       // When

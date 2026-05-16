@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchGetFolderPath } from ".././api/fetchFolderPath";
 import { getFolderPath } from ".././getFolderPath";
 
@@ -51,13 +53,17 @@ describe("getFolderPath", () => {
       vi.mocked(fetchGetFolderPath).mockResolvedValue(":/Documents");
 
       // When
-      const result = await getFolderPath("folder-1", "folder-path-tag", setLoading);
+      const result = await getFolderPath(
+        "folder-1",
+        "folder-path-tag",
+        setLoading
+      );
 
       // Then
       expect(fetchGetFolderPath).toHaveBeenCalledWith(
         "access-token",
         "folder-1",
-        "folder-path-tag",
+        "folder-path-tag"
       );
       expect(setLoading).toHaveBeenNthCalledWith(1, true);
       expect(setLoading).toHaveBeenLastCalledWith(false);
@@ -80,7 +86,11 @@ describe("getFolderPath", () => {
       vi.mocked(fetchGetFolderPath).mockResolvedValue(error);
 
       // When
-      const result = await getFolderPath("folder-1", "folder-path-tag", vi.fn());
+      const result = await getFolderPath(
+        "folder-1",
+        "folder-path-tag",
+        vi.fn()
+      );
 
       // Then
       expect(notifyResponse).toHaveBeenCalledWith({
@@ -106,14 +116,18 @@ describe("getFolderPath", () => {
       vi.mocked(fetchGetFolderPath).mockResolvedValue(":/Documents");
 
       // When
-      const result = await getFolderPath("folder-1", "folder-path-tag", vi.fn());
+      const result = await getFolderPath(
+        "folder-1",
+        "folder-path-tag",
+        vi.fn()
+      );
 
       // Then
       expect(refreshTokens).toHaveBeenCalledWith("refresh-token");
       expect(fetchGetFolderPath).toHaveBeenCalledWith(
         "new-access-token",
         "folder-1",
-        "folder-path-tag",
+        "folder-path-tag"
       );
       expect(result).toBe(":/Documents");
     });

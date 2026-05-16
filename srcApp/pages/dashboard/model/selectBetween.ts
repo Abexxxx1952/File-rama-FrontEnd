@@ -1,12 +1,13 @@
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { type FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+
 import { getElementsBetween } from "./getElementsBetween";
 import { getLastAndSecondLastFromMap } from "./getLastAndSecondLastFromMap";
-import { SelectedMap } from "./types/selectedMap";
+import { type SelectedMap } from "./types/selectedMap";
 
 export function selectBetween(
   selected: SelectedMap,
   fileSystemItems: FileSystemItem[] | null,
-  setSelected: React.Dispatch<React.SetStateAction<SelectedMap>>,
+  setSelected: React.Dispatch<React.SetStateAction<SelectedMap>>
 ): void {
   const result = getLastAndSecondLastFromMap(selected);
 
@@ -16,7 +17,7 @@ export function selectBetween(
     const selectedEntries = getElementsBetween(
       fileSystemItems!,
       secondLast,
-      last,
+      last
     );
 
     setSelected(new Map([...selectedEntries]));

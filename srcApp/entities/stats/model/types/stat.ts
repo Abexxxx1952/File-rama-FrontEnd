@@ -1,6 +1,7 @@
-import { UUID } from "crypto";
-import { DriveInfoErrorResult } from "./driveInfoErrorResult";
-import { DriveInfoSuccessResult } from "./driveInfoSuccessResult";
+import { type UUID } from "crypto";
+
+import { type DriveInfoErrorResult } from "./driveInfoErrorResult";
+import { type DriveInfoSuccessResult } from "./driveInfoSuccessResult";
 
 export type Stat = {
   id: UUID;

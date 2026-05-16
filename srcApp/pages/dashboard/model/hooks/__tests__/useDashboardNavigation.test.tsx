@@ -1,10 +1,13 @@
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import {
   FileSystemSortKey,
   SORT_ORDER,
 } from "@/srcApp/pages/dashboard/model/types/sort";
+
 import { useDashboardNavigation } from ".././useDashboardNavigation";
 
 vi.mock("next/navigation", () => ({
@@ -35,7 +38,7 @@ describe("useDashboardNavigation", () => {
     it("should expose current and grand parent ids with default sort", () => {
       // Given
       const { result } = renderHook(() =>
-        useDashboardNavigation(["folder-1", "folder-2"]),
+        useDashboardNavigation(["folder-1", "folder-2"])
       );
 
       // When
@@ -85,7 +88,7 @@ describe("useDashboardNavigation", () => {
     it("should push parent folder path", () => {
       // Given
       const { result } = renderHook(() =>
-        useDashboardNavigation(["folder-1", "folder-2", "folder-3"]),
+        useDashboardNavigation(["folder-1", "folder-2", "folder-3"])
       );
 
       // When
@@ -115,7 +118,7 @@ describe("useDashboardNavigation", () => {
       // Then
       expect(router.replace).toHaveBeenCalledWith(
         "/dashboard/folder-1?page=2&sort=size&order=desc&sort=name&order=asc",
-        { scroll: false },
+        { scroll: false }
       );
     });
   });

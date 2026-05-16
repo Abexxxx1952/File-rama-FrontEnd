@@ -1,6 +1,8 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+
+import jwt from "jsonwebtoken";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { COOKIES_NAME } from "../../constant/cookies-name";
 import { setCookies } from ".././setCookies";
 
@@ -75,14 +77,14 @@ describe("setCookies", () => {
           name: COOKIES_NAME.AUTHENTICATION_ACCESS_TOKEN,
           secure: true,
           expires: 1000,
-        }),
+        })
       );
       expect(set).toHaveBeenCalledWith(
         expect.objectContaining({
           name: COOKIES_NAME.AUTHENTICATION_REFRESH_TOKEN,
           secure: true,
           expires: 2000,
-        }),
+        })
       );
     });
   });

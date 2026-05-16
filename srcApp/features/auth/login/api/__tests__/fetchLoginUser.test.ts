@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
 import { apiClient } from "@/srcApp/shared/model/apiClient";
+
 import { fetchLoginUser } from ".././fetchLoginUser";
 
 vi.mock("@/srcApp/shared/model/apiClient", () => ({

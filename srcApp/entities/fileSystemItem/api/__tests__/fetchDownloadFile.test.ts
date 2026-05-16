@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { fetchDownloadFile } from ".././fetchDownloadFile";
 
 describe("fetchDownloadFile", () => {
@@ -32,10 +33,12 @@ describe("fetchDownloadFile", () => {
         vi.fn().mockResolvedValue({
           ok: true,
           headers: {
-            get: vi.fn().mockReturnValue('attachment; filename="Report%202026.pdf"'),
+            get: vi
+              .fn()
+              .mockReturnValue('attachment; filename="Report%202026.pdf"'),
           },
           blob: vi.fn().mockResolvedValue(fileBlob),
-        }),
+        })
       );
 
       // When
@@ -44,12 +47,15 @@ describe("fetchDownloadFile", () => {
       });
 
       // Then
-      expect(fetch).toHaveBeenCalledWith("https://api.example.com/download/file-1", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer access-token",
-        },
-      });
+      expect(fetch).toHaveBeenCalledWith(
+        "https://api.example.com/download/file-1",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer access-token",
+          },
+        }
+      );
       expect(createObjectURL).toHaveBeenCalledWith(fileBlob);
       expect(click).toHaveBeenCalled();
       expect(result).toEqual({
@@ -72,7 +78,7 @@ describe("fetchDownloadFile", () => {
         vi.fn().mockResolvedValue({
           ok: false,
           json: vi.fn().mockResolvedValue(error),
-        }),
+        })
       );
 
       // When

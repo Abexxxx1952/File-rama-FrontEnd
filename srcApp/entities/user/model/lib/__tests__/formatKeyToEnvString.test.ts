@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { formatKeyToEnvString } from ".././formatKeyToEnvString";
 
 describe("formatKeyToEnvString", () => {
@@ -17,7 +18,7 @@ describe("formatKeyToEnvString", () => {
 
       // Then
       expect(result).toBe(
-        "-----BEGIN PRIVATE KEY-----\\nabc\\ndef\\n-----END PRIVATE KEY-----",
+        "-----BEGIN PRIVATE KEY-----\\nabc\\ndef\\n-----END PRIVATE KEY-----"
       );
     });
   });
@@ -32,7 +33,7 @@ describe("formatKeyToEnvString", () => {
 
       // Then
       expect(result).toBe(
-        "-----BEGIN PRIVATE KEY-----\\nabc\\ndef\\n-----END PRIVATE KEY-----",
+        "-----BEGIN PRIVATE KEY-----\\nabc\\ndef\\n-----END PRIVATE KEY-----"
       );
     });
   });

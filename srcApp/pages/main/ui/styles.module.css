@@ -1,23 +1,23 @@
 .main {
-  margin-top: var(--main-header-height);
+  display: flex;
   width: 100%;
   height: clamp(
-    calc(50 * var(--variableUnitsSize)),
+    calc(50 * var(--variable-units-size)),
     100vh,
-    calc(90 * var(--variableUnitsSize))
+    calc(90 * var(--variable-units-size))
   );
+  margin-top: var(--main-header-height);
   background-image: url("/img/main/main_background.png");
   background-position: center;
   background-size: cover;
-  display: flex;
 }
 
 .description,
 .representative {
-  width: 50%;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  width: 50%;
+  height: 100%;
 }
 
 .description {
@@ -27,14 +27,14 @@
 .description__container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: flex-start;
+  align-items: center;
   width: 100%;
   margin-top: 3rem;
-  flex-shrink: 1;
   padding-top: 8rem;
-  padding-left: clamp(2rem, 5vw, 8rem);
   padding-right: clamp(2rem, 5vw, 8rem);
+  padding-left: clamp(2rem, 5vw, 8rem);
+  flex-shrink: 1;
 }
 
 .description__title {
@@ -42,8 +42,8 @@
   margin: 0;
   font-size: clamp(2.25rem, 4vw, 3.5rem);
   font-weight: 800;
-  text-align: center;
   line-height: 1.08;
+  text-align: center;
 }
 
 .accented {
@@ -53,28 +53,28 @@
 
 .description__text {
   max-width: 34rem;
-  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
-  text-align: center;
   margin-top: 1.75rem;
-  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
   line-height: 1.45;
+  text-align: center;
+  color: rgb(255 255 255 / 86%);
 }
 
 .description__buttons {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: clamp(1rem, 3vw, 2rem);
   margin-top: 2rem;
-  flex-wrap: wrap;
 }
 
 .description__buttonContainer {
   width: clamp(9rem, 14vw, 13rem);
   height: 3.5rem;
-  border-radius: 0.875rem;
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0;
+  border-radius: 0.875rem;
 }
 
 .description__buttonContainer:hover {
@@ -83,7 +83,7 @@
 
 .description__button {
   border-radius: 0.875rem;
-  box-shadow: 0 0.75rem 1.75rem rgba(16, 20, 28, 0.2);
+  box-shadow: 0 0.75rem 1.75rem rgb(16 20 28 / 20%);
   backdrop-filter: blur(12px);
 }
 
@@ -99,17 +99,17 @@
 .representative__image {
   position: relative;
   width: 80%;
+  margin: 3rem auto;
   aspect-ratio: 1/1;
-  margin: 3rem auto 3rem auto;
   flex-shrink: 1;
-  filter: drop-shadow(0 1.5rem 2rem rgba(16, 20, 28, 0.22));
+  filter: drop-shadow(0 1.5rem 2rem rgb(16 20 28 / 22%));
 }
 
 .representative__image::after {
-  content: "";
   display: flex;
   width: 100%;
   height: 100%;
+  content: "";
   flex-shrink: 2;
 }
 
@@ -126,19 +126,19 @@
   }
 
   .description__container {
-    padding-top: 0rem;
+    padding-top: 0;
   }
 
   .description__title {
+    margin-top: 3rem;
     font-size: clamp(1.5rem, 7vw, 2.4rem);
     text-align: center;
-    margin-top: 3rem;
   }
 
   .description__text {
+    margin-top: 1.25rem;
     font-size: 1.1rem;
     text-align: center;
-    margin-top: 1.25rem;
   }
 
   .description__buttons {
@@ -149,8 +149,8 @@
   .representative__image {
     width: 80%;
     height: 100%;
-    margin-top: 10rem;
     margin: auto;
+    margin-top: 10rem;
   }
 }
 

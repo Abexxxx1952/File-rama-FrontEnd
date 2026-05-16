@@ -1,15 +1,16 @@
 "use client";
 
+import { createPortal } from "react-dom";
+
 import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
 import { isFolder } from "@/srcApp/entities/fileSystemItem/model/isFolder";
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { type FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 import {
   FileCreateModal,
   FileUpdateModal,
   FolderCreateModal,
   FolderUpdateModal,
 } from "@/srcApp/entities/fileSystemItem/ui";
-import { createPortal } from "react-dom";
 
 interface DashboardModalsProps {
   portalRef: React.RefObject<HTMLElement | null>;
@@ -42,7 +43,9 @@ export function DashboardModals({
   setUpdateFileModalOpen,
   fileSystemItemsCurrentTag,
 }: DashboardModalsProps) {
-  if (!portalRef) return null;
+  if (!portalRef) {
+    return null;
+  }
   return (
     <>
       {portalRef.current &&
@@ -54,7 +57,7 @@ export function DashboardModals({
             fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
             parentFolderId={currentParentFolderId}
           />,
-          portalRef.current,
+          portalRef.current
         )}
       {portalRef.current &&
         addFileModalOpen &&
@@ -65,7 +68,7 @@ export function DashboardModals({
             forceUpdate={forceUpdate}
             fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
           />,
-          portalRef.current,
+          portalRef.current
         )}
       {portalRef.current &&
         updateFolderModalOpen &&
@@ -78,7 +81,7 @@ export function DashboardModals({
             forceUpdate={forceUpdate}
             fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
           />,
-          portalRef.current,
+          portalRef.current
         )}
       {portalRef.current &&
         updateFileModalOpen &&
@@ -94,7 +97,7 @@ export function DashboardModals({
             forceUpdate={forceUpdate}
             fileSystemItemsCurrentTag={fileSystemItemsCurrentTag}
           />,
-          portalRef.current,
+          portalRef.current
         )}
     </>
   );

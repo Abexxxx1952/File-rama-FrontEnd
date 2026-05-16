@@ -9,37 +9,37 @@
   max-width: 75rem;
   margin: 0.75rem auto 1rem;
   padding: 1.5rem;
-  border-radius: 1rem;
-  border: 1px solid var(--surface-border-color);
   background:
-    linear-gradient(135deg, rgba(75, 220, 232, 0.18), rgba(111, 86, 224, 0.08)),
-    rgba(255, 255, 255, 0.78);
+    linear-gradient(135deg, rgb(75 220 232 / 18%), rgb(111 86 224 / 8%)),
+    rgb(255 255 255 / 78%);
+  border: 1px solid var(--surface-border-color);
+  border-radius: 1rem;
   box-shadow: var(--surface-shadow-soft);
 }
 
 .eyebrow {
   display: block;
   margin-bottom: 0.35rem;
-  color: var(--dashboard-color);
   font-size: 0.8rem;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dashboard-color);
 }
 
 .title {
+  margin: 0;
   font-size: 2rem;
   font-weight: 700;
-  margin: 0;
   line-height: 1.15;
 }
 
 .description {
   max-width: 42rem;
   margin-top: 0.75rem;
-  color: var(--header-font-color);
   font-size: 1rem;
   line-height: 1.5;
+  color: var(--header-font-color);
 }
 
 .content {
@@ -50,11 +50,11 @@
 }
 
 .securityGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   width: calc(100% - 2rem);
   max-width: 75rem;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
 }
 
 @media screen and (max-width: 768px) {
@@ -76,8 +76,8 @@
   }
 
   .securityGrid {
-    width: calc(100% - 1.5rem);
     grid-template-columns: 1fr;
+    width: calc(100% - 1.5rem);
   }
 }
 

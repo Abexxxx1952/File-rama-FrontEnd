@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { File } from "@/srcApp/entities/fileSystemItem/model/types/file";
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
-import { Folder } from "@/srcApp/entities/fileSystemItem/model/types/folder";
+
+import { type File } from "@/srcApp/entities/fileSystemItem/model/types/file";
+import { type FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { type Folder } from "@/srcApp/entities/fileSystemItem/model/types/folder";
+
 import { getElementsBetween } from ".././getElementsBetween";
 
 const folder: Folder = {

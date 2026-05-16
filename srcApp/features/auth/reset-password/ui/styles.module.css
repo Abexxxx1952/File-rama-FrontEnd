@@ -1,8 +1,8 @@
 .resetPasswordForm {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
   margin-top: 2rem;
   transition: all 0.3s ease-in-out;
@@ -18,52 +18,53 @@
   0% {
     transform: translateX(110%);
   }
+
   100% {
     transform: translateX(0);
   }
 }
 
 .resetPasswordForm__title {
-  color: var(--main-page-font-color);
   font-size: 1.75rem;
   font-weight: bold;
+  color: var(--main-page-font-color);
 }
 
 .resetPasswordForm__inputs {
-  width: 100%;
-  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
+  width: 100%;
+  margin-top: 1.5rem;
 }
 
 .resetPasswordForm__input {
+  position: relative;
   width: 100%;
+  max-width: 500px;
   height: 3rem;
   backdrop-filter: blur(20px);
-  position: relative;
-  max-width: 500px;
 }
 
 .logo__icon,
 .logo__submitIcon {
-  width: 24px;
-  height: 24px;
   position: absolute;
   top: 50%;
   right: 0;
+  width: 24px;
+  height: 24px;
   transform: translate(-50%, -50%);
 }
 
 .resetPasswordForm__submit {
   --login-icon-color: var(--main-page-font-color);
   width: 100%;
-  height: 3rem;
-  backdrop-filter: blur(20px);
   max-width: 500px;
+  height: 3rem;
   margin-top: 1rem;
+  backdrop-filter: blur(20px);
 }
 
 .resetPasswordForm__submit:hover,

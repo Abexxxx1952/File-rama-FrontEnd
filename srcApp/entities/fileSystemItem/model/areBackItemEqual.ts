@@ -1,8 +1,8 @@
-import { BackItemProps } from "../ui";
+import { type BackItemProps } from "../ui";
 
 export function areBackItemEqual(
   prevProps: BackItemProps,
-  nextProps: BackItemProps,
+  nextProps: BackItemProps
 ) {
   if (
     prevProps.grandParentId === nextProps.grandParentId &&

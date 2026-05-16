@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { RegistrationPage } from "@/srcApp/pages/registration";
 
 export const metadata: Metadata = {

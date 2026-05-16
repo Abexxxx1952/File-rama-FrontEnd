@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { fetchEntity } from "@/srcApp/shared/model/fetchEntity";
+
 import { fetchUser } from ".././fetchUser";
 
 vi.mock("@/srcApp/shared/model/fetchEntity", () => ({
@@ -37,7 +39,7 @@ describe("fetchUser", () => {
       expect(fetchEntity).toHaveBeenCalledWith(
         "https://api.example.com/user",
         "access-token",
-        [CACHE_TAG.USER],
+        [CACHE_TAG.USER]
       );
       expect(result).toEqual(user);
     });

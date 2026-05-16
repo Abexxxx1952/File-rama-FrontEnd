@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+
 import { getLastAndSecondLastFromMap } from ".././getLastAndSecondLastFromMap";
-import { SelectedMap } from ".././types/selectedMap";
+import { type SelectedMap } from ".././types/selectedMap";
 
 describe("getLastAndSecondLastFromMap", () => {
   describe("when map has fewer than two selected items", () => {

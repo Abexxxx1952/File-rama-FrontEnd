@@ -1,7 +1,10 @@
 import { memo, useState } from "react";
+
 import Image from "next/image";
+
 import { areBackItemEqual } from "@/srcApp/entities/fileSystemItem/model/areBackItemEqual";
-import { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
+import { type Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
+
 import styles from "./styles.module.css";
 
 export type BackItemProps = {
@@ -11,7 +14,7 @@ export type BackItemProps = {
   routerBack: () => void;
 };
 
-export const BackItem = memo(function ({
+export const BackItem = memo(function BackItem({
   grandParentId,
   dndRef,
   routerBack,
@@ -29,7 +32,9 @@ export const BackItem = memo(function ({
   function handleDragLeave(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.preventDefault();
 
-    if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+    if (e.currentTarget.contains(e.relatedTarget as Node)) {
+      return;
+    }
 
     setDragEnter(false);
   }
@@ -55,7 +60,7 @@ export const BackItem = memo(function ({
         <Image
           src="/img/storage/open_folder.png"
           fill={true}
-          alt={`Folder up image`}
+          alt="Folder up image"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </span>

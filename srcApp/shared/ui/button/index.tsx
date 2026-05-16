@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+
 import { Icon } from "../icon";
 import styles from "./styles.module.css";
 
@@ -70,7 +71,7 @@ export function Button({
       {loading ? (
         <div className={styles.spinner} aria-hidden="true">
           <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="10" />
           </svg>
         </div>
       ) : (

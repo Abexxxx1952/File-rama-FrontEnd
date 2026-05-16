@@ -1,5 +1,7 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { cookies } from "next/headers";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { COOKIES_NAME } from "../../constant/cookies-name";
 import { clearCookies } from ".././clearCookies";
 
@@ -52,7 +54,7 @@ describe("clearCookies", () => {
       await expect(clearCookies()).rejects.toThrow(error);
       expect(console.error).toHaveBeenCalledWith(
         "Failed to clear cookies:",
-        error,
+        error
       );
     });
   });

@@ -4,40 +4,40 @@
   --border: 1px solid var(--secondary-logo-color);
   --focus-bg-color: var(--secondary-logo-color);
   --focus-text-color: var(--secondary-font-color);
-  --box-shadow: 0 0.35rem 1rem rgba(16, 20, 28, 0.12);
+  --box-shadow: 0 0.35rem 1rem rgb(16 20 28 / 12%);
   --padding: 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
-  color: var(--text-color);
-  background-color: var(--bg-color);
-  border-radius: 0.5rem;
-  border: var(--border);
-  box-shadow: var(--box-shadow);
   padding: var(--padding);
   font-size: inherit;
   font-weight: inherit;
   line-height: inherit;
   letter-spacing: inherit;
-  backdrop-filter: inherit;
-  cursor: pointer;
-  user-select: none;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--box-shadow);
   transition:
     color 0.2s ease,
     background-color 0.2s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  backdrop-filter: inherit;
 }
 
 .link:hover,
 .link:focus-visible {
   color: var(--focus-text-color);
   background-color: var(--focus-bg-color);
-  box-shadow: 0 0.5rem 1.25rem rgba(16, 20, 28, 0.16);
+  box-shadow: 0 0.5rem 1.25rem rgb(16 20 28 / 16%);
   transform: translateY(-1px);
 }
 
@@ -45,6 +45,7 @@
   width: 10%;
   height: 60%;
 }
+
 .svgIcon {
   --icon-svg-width: 24px;
   --icon-svg-height: 24px;
@@ -53,12 +54,12 @@
   --icon-svg-left: 0;
   --icon-svg-right: none;
   --icon-svg-transform: translate(25%, -50%);
-  width: var(--icon-svg-width);
-  height: var(--icon-svg-height);
   position: absolute;
   top: var(--icon-svg-top);
-  left: var(--icon-svg-left);
   right: var(--icon-svg-right);
+  left: var(--icon-svg-left);
+  width: var(--icon-svg-width);
+  height: var(--icon-svg-height);
   transform: var(--icon-svg-transform);
 }
 
@@ -75,11 +76,11 @@
 }
 
 .spinner svg circle {
+  animation: spin 2s linear infinite;
   fill: none;
   stroke-width: 2px;
-  stroke: #ffffff;
+  stroke: #fff;
   stroke-linecap: round;
-  animation: spin 2s linear infinite;
 }
 
 @keyframes spin {
@@ -87,10 +88,12 @@
     stroke-dasharray: 150;
     stroke-dashoffset: 150;
   }
+
   50% {
     stroke-dasharray: 150;
     stroke-dashoffset: 0;
   }
+
   100% {
     stroke-dasharray: 150;
     stroke-dashoffset: -150;

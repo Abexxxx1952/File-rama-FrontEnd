@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchStat } from "../../api/fetchStat";
 import { getStat } from ".././getStat";
 

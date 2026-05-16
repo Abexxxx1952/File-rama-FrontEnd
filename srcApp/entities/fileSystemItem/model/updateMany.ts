@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
+
 import { fetchUpdateMany } from "../api/fetchUpdateMany";
 import type { FileSystemItemChangeResult } from "./types/FileSystemItemChangeResult";
 import type { FetchUpdateMany } from "./types/fetchUpdateMany";
@@ -8,7 +9,7 @@ import type { FetchUpdateMany } from "./types/fetchUpdateMany";
 export async function updateMany(
   updateMany: FetchUpdateMany,
   fileSystemItemsCurrentTags: string[],
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<FileSystemItemChangeResult[] | null> {
   function getSuccessMessage(data: FileSystemItemChangeResult[]): string {
     let successFiles: number = 0;
@@ -43,7 +44,7 @@ export async function updateMany(
       parts.push(`${successFolders} folder${successFolders !== 1 ? "s" : ""}.`);
     }
 
-    const deletedParts = parts.length > 0 ? parts.join(" and ") + "." : "";
+    const deletedParts = parts.length > 0 ? `${parts.join(" and ")}.` : "";
 
     const errorMessage =
       errorFiles + errorFolders > 0
@@ -63,6 +64,6 @@ export async function updateMany(
     fetchUpdateMany,
     { updateMany, fileSystemItemsCurrentTags },
     getSuccessMessage,
-    setLoading,
+    setLoading
   );
 }

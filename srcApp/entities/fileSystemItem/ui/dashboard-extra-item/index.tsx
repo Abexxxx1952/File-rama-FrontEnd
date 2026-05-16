@@ -1,7 +1,9 @@
 import { memo } from "react";
+
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
+
 import { areDashboardExtraItemEqual } from "../../model/areDashboardExtraItemEqual";
 import styles from "./styles.module.css";
 
@@ -12,7 +14,7 @@ export type DashboardExtraIItemProps = {
   setAddFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const DashboardExtraItem = memo(function ({
+export const DashboardExtraItem = memo(function DashboardExtraItem({
   usedSize,
   totalSize,
   setAddFileModalOpen,
@@ -44,8 +46,8 @@ export const DashboardExtraItem = memo(function ({
           <span className={styles.dashboard__usageSizeTitle}>My Storage</span>
         </div>
         <div className={styles.dashboard__usageSizeValue}>
-          <span className={styles.dashboard__totalValue}></span>
-          <span className={styles.dashboard__usageValue}></span>
+          <span className={styles.dashboard__totalValue} />
+          <span className={styles.dashboard__usageValue} />
         </div>
         <span className={styles.dashboard__usageSizeText}>
           Used {formatBytes(usedSize)} out of {formatBytes(totalSize)}.

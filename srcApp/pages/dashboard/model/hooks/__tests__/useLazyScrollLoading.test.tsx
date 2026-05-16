@@ -1,5 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { useLazyScrollLoading } from ".././useLazyScrollLoading";
 
 let observerCallback: IntersectionObserverCallback;
@@ -27,15 +28,13 @@ describe("useLazyScrollLoading", () => {
       vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
       const element = document.createElement("div");
       const ref = { current: element };
-      const { result } = renderHook(() =>
-        useLazyScrollLoading(10, 25, 5, ref),
-      );
+      const { result } = renderHook(() => useLazyScrollLoading(10, 25, 5, ref));
 
       // When
       act(() => {
         observerCallback(
           [{ isIntersecting: true } as IntersectionObserverEntry],
-          {} as IntersectionObserver,
+          {} as IntersectionObserver
         );
       });
 
@@ -56,7 +55,7 @@ describe("useLazyScrollLoading", () => {
       act(() => {
         observerCallback(
           [{ isIntersecting: true } as IntersectionObserverEntry],
-          {} as IntersectionObserver,
+          {} as IntersectionObserver
         );
       });
 
@@ -70,7 +69,9 @@ describe("useLazyScrollLoading", () => {
       // Given
       vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
       const ref = { current: document.createElement("div") };
-      const { unmount } = renderHook(() => useLazyScrollLoading(10, 25, 5, ref));
+      const { unmount } = renderHook(() =>
+        useLazyScrollLoading(10, 25, 5, ref)
+      );
 
       // When
       unmount();

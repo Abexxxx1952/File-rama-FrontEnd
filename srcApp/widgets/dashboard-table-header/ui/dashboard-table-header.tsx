@@ -1,9 +1,11 @@
 import { memo } from "react";
+
 import {
   FileSystemSortKey,
   SORT_ORDER,
-  SortRules,
+  type SortRules,
 } from "@/srcApp/pages/dashboard/model/types/sort";
+
 import { areDashboardTableHeaderEqual } from "../model/areDashboardTableHeaderEqual";
 import { buildSortMap } from "../model/buildSortMap";
 import { ArrowIcon } from "./arrow-icon/arrow-Icon";
@@ -13,7 +15,7 @@ export type DashboardTableHeaderProps = {
   sort: SortRules[];
   upsertSortRule: (newRule: SortRules) => void;
 };
-export const DashboardTableHeader = memo(function ({
+export const DashboardTableHeader = memo(function DashboardTableHeader({
   sort,
   upsertSortRule,
 }: DashboardTableHeaderProps) {
@@ -22,9 +24,14 @@ export const DashboardTableHeader = memo(function ({
   function columnClickHandler(columnName: SortRules["key"]) {
     const currentSortRule = sortMap.get(columnName);
     if (currentSortRule) {
-      currentSortRule.order === SORT_ORDER.ASC
-        ? upsertSortRule({ key: columnName, order: SORT_ORDER.DESC })
-        : upsertSortRule({ key: columnName, order: SORT_ORDER.ASC });
+      upsertSortRule({
+        key: columnName,
+        order:
+          currentSortRule.order === SORT_ORDER.ASC
+            ? SORT_ORDER.DESC
+            : SORT_ORDER.ASC,
+      });
+
       return;
     }
     upsertSortRule({ key: columnName, order: SORT_ORDER.ASC });

@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import { MainFooter } from "@/srcApp/widgets/main-footer";
 import { MainHeader } from "@/srcApp/widgets/main-header";
+
 import styles from "./styles.module.css";
 
 export function DescriptionPage() {

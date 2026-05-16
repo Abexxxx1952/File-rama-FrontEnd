@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
+
 import { refreshTokens } from ".././refreshTokens";
 
 vi.mock("@/srcApp/features/cookies/model/setCookies", () => ({
@@ -24,7 +26,7 @@ describe("refreshTokens", () => {
             access_token: "new-access-token",
             refresh_token: "new-refresh-token",
           }),
-        }),
+        })
       );
 
       // When
@@ -39,7 +41,7 @@ describe("refreshTokens", () => {
       });
       expect(setCookies).toHaveBeenCalledWith(
         "new-access-token",
-        "new-refresh-token",
+        "new-refresh-token"
       );
     });
   });
@@ -55,7 +57,7 @@ describe("refreshTokens", () => {
             access_token: "new-access-token",
             refresh_token: undefined,
           }),
-        }),
+        })
       );
 
       // When
@@ -79,7 +81,7 @@ describe("refreshTokens", () => {
             statusCode: 401,
             error: "Unauthorized",
           }),
-        }),
+        })
       );
 
       // When

@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
+
 import { splitSortRules } from "../splitSortRules";
 import {
   FileSystemSortKey,
   SORT_ORDER,
-  SortFileSystemRules,
-  SortRules,
+  type SortFileSystemRules,
+  type SortRules,
 } from "../types/sort";
 
 export function useSort() {

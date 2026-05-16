@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { SettingsPage } from "@/srcApp/pages/settings";
 
 export const metadata: Metadata = {

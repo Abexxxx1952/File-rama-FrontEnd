@@ -1,5 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
 import { useImperativeDisableScroll } from ".././useImperativeDisableScroll";
 
 describe("useImperativeDisableScroll", () => {
@@ -10,7 +11,7 @@ describe("useImperativeDisableScroll", () => {
 
       // When
       const { unmount } = renderHook(() =>
-        useImperativeDisableScroll(element, true),
+        useImperativeDisableScroll(element, true)
       );
 
       // Then

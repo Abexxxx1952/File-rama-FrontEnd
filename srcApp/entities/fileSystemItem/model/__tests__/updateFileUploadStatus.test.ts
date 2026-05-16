@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
+
+import { type FileWithOptions, UploadStatus } from ".././types/fileWithId";
 import { updateFileUploadStatus } from ".././updateFileUploadStatus";
-import { FileWithOptions, UploadStatus } from ".././types/fileWithId";
 
 const file = {} as File;
 
@@ -23,7 +24,7 @@ describe("updateFileUploadStatus", () => {
         createFiles(),
         "file-1",
         UploadStatus.completed,
-        setAvailableToUpload,
+        setAvailableToUpload
       );
 
       // Then
@@ -50,7 +51,7 @@ describe("updateFileUploadStatus", () => {
         files,
         "file-1",
         UploadStatus.error,
-        setAvailableToUpload,
+        setAvailableToUpload
       );
 
       // Then
@@ -76,7 +77,7 @@ describe("updateFileUploadStatus", () => {
         files,
         "file-1",
         UploadStatus.completed,
-        setAvailableToUpload,
+        setAvailableToUpload
       );
 
       // Then

@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { apiClient } from ".././apiClient";
 import { fetchEntity } from ".././fetchEntity";
 
@@ -18,14 +19,14 @@ describe("fetchEntity", () => {
       vi.mocked(apiClient).mockResolvedValue(
         new Response(JSON.stringify(data), {
           status: 200,
-        }),
+        })
       );
 
       // When
       const result = await fetchEntity<typeof data>(
         "https://api.example.com/user",
         "access-token",
-        ["user"],
+        ["user"]
       );
 
       // Then
@@ -52,13 +53,13 @@ describe("fetchEntity", () => {
       vi.mocked(apiClient).mockResolvedValue(
         new Response(JSON.stringify(error), {
           status: 401,
-        }),
+        })
       );
 
       // When
       const result = await fetchEntity(
         "https://api.example.com/user",
-        "access-token",
+        "access-token"
       );
 
       // Then
@@ -75,7 +76,7 @@ describe("fetchEntity", () => {
       // When
       const result = await fetchEntity(
         "https://api.example.com/user",
-        "access-token",
+        "access-token"
       );
 
       // Then

@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
-import { File } from "@/srcApp/entities/fileSystemItem/model/types/file";
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
-import { Folder } from "@/srcApp/entities/fileSystemItem/model/types/folder";
+
+import { type File } from "@/srcApp/entities/fileSystemItem/model/types/file";
+import { type FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { type Folder } from "@/srcApp/entities/fileSystemItem/model/types/folder";
+
 import { selectBetween } from ".././selectBetween";
-import { SelectedMap } from ".././types/selectedMap";
+import { type SelectedMap } from ".././types/selectedMap";
 
 const folder: Folder = {
   id: "folder-1",
@@ -75,7 +77,7 @@ describe("selectBetween", () => {
           ["folder-1", { index: 0, folderId: "folder-1" }],
           ["file-1", { index: 1, fileId: "file-1" }],
           ["folder-2", { index: 2, folderId: "folder-2" }],
-        ]),
+        ])
       );
     });
   });

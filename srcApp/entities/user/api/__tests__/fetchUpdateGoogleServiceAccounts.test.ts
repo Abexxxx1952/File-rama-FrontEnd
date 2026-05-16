@@ -1,7 +1,10 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { revalidateTag } from "next/cache";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { apiClient } from "@/srcApp/shared/model/apiClient";
+
 import { UpdateMode } from "../../model/types/user";
 import { fetchUpdateGoogleServiceAccounts } from ".././fetchUpdateGoogleServiceAccounts";
 
@@ -52,7 +55,7 @@ describe("fetchUpdateGoogleServiceAccounts", () => {
       // When
       const result = await fetchUpdateGoogleServiceAccounts(
         "access-token",
-        updateData,
+        updateData
       );
 
       // Then

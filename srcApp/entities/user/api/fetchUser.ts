@@ -2,11 +2,12 @@
 
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { fetchEntity } from "@/srcApp/shared/model/fetchEntity";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { User } from "../model/types/user";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
+import { type User } from "../model/types/user";
 
 export async function fetchUser(
-  access_token: string,
+  access_token: string
 ): Promise<User | ErrorData | null> {
   const url: string = `${process.env.GET_USER_URL}`;
 

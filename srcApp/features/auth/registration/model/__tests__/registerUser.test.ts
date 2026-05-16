@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchRegisterUser } from "../../api/fetchRegisterUser";
 import { registerUser } from ".././registerUser";
 

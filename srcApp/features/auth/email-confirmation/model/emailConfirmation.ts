@@ -1,15 +1,17 @@
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { User } from "../../../../entities/user/model/types/user";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
+import { type User } from "../../../../entities/user/model/types/user";
 import { fetchEmailConfirmation } from "../api/fetchEmailConfirmation";
 
 export async function emailConfirmation(
   setLoading: Dispatch<SetStateAction<boolean>>,
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  abortControllerRef?: React.RefObject<AbortController | null>
 ): Promise<User | null> {
   setLoading(true);
   try {

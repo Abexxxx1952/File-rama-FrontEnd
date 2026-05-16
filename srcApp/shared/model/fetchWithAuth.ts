@@ -1,20 +1,24 @@
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
+
 import { isErrorData } from "./isErrorData";
 import { notifyResponse } from "./notifyResponse";
-import { ErrorData } from "./types/errorData";
+import { type ErrorData } from "./types/errorData";
 
 export async function fetchWithAuth<ReturnData, Args extends object>(
   fn: (
     access_token: string,
-    args: Args,
+    args: Args
   ) => Promise<ReturnData | ErrorData | null>,
   args: Args,
   successMessage?: string | ((data: ReturnData) => string[] | string),
-  setLoading?: Dispatch<SetStateAction<boolean>>,
+  setLoading?: Dispatch<SetStateAction<boolean>>
 ): Promise<ReturnData | null> {
-  if (setLoading) setLoading(true);
+  if (setLoading) {
+    setLoading(true);
+  }
 
   try {
     const { access_token, refresh_token } = await getCookies();
@@ -45,7 +49,7 @@ export async function fetchWithAuth<ReturnData, Args extends object>(
             notifyResponse({
               isError: false,
               successMessage: msg,
-            }),
+            })
           );
         } else {
           notifyResponse({
@@ -62,7 +66,9 @@ export async function fetchWithAuth<ReturnData, Args extends object>(
         });
       }
 
-      if (setLoading) setLoading(false);
+      if (setLoading) {
+        setLoading(false);
+      }
       return data;
     }
 
@@ -72,7 +78,7 @@ export async function fetchWithAuth<ReturnData, Args extends object>(
         fn,
         args,
         successMessage,
-        setLoading,
+        setLoading
       );
     }
     return null;
@@ -80,6 +86,8 @@ export async function fetchWithAuth<ReturnData, Args extends object>(
     console.log("error", error);
     return null;
   } finally {
-    if (setLoading) setLoading(false);
+    if (setLoading) {
+      setLoading(false);
+    }
   }
 }

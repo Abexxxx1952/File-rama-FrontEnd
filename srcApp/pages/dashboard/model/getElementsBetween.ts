@@ -1,10 +1,10 @@
 import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { type FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
 
 export function getElementsBetween(
   arr: FileSystemItem[],
   startIndex: number,
-  endIndex: number,
+  endIndex: number
 ): [
   string,
   { index: number; folderId: string } | { index: number; fileId: string },

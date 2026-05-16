@@ -1,7 +1,7 @@
 "use client";
 
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
 
 export async function fetchOpenFile(
   access_token: string,
@@ -11,15 +11,14 @@ export async function fetchOpenFile(
   }: {
     fileDownloadId: string;
     abortControllerRef?: React.RefObject<AbortController | null>;
-  },
+  }
 ): Promise<{ fileUrl: string; fileName: string } | null | ErrorData> {
   let signal: AbortSignal | undefined;
   if (abortControllerRef?.current?.signal) {
     signal = abortControllerRef.current.signal;
   }
 
-  const url: string =
-    `${process.env.NEXT_PUBLIC_DOWNLOAD_FILE_URL}` + fileDownloadId;
+  const url: string = `${process.env.NEXT_PUBLIC_DOWNLOAD_FILE_URL}${fileDownloadId}`;
 
   try {
     const response = await fetch(url, {

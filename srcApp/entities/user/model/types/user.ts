@@ -1,7 +1,8 @@
-import { File } from "@/srcApp/entities/fileSystemItem/model/types/file";
-import { Folder } from "@/srcApp/entities/fileSystemItem/model/types/folder";
-import { Stat } from "@/srcApp/entities/stats/model/types/stat";
-import { UUID } from "crypto";
+import { type UUID } from "crypto";
+
+import { type File } from "@/srcApp/entities/fileSystemItem/model/types/file";
+import { type Folder } from "@/srcApp/entities/fileSystemItem/model/types/folder";
+import { type Stat } from "@/srcApp/entities/stats/model/types/stat";
 
 export type User = {
   id: UUID;

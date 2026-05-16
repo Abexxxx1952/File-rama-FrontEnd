@@ -1,6 +1,8 @@
 import Link from "next/link";
+
 import { Icon } from "../icon";
 import styles from "./styles.module.css";
+
 export function Logo() {
   return (
     <Link href="/" className={styles.logo} aria-label="Website Logo">

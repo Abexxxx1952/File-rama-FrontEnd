@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+
 import { Icon } from "../icon";
 import styles from "./styles.module.css";
 
@@ -63,7 +64,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       value,
       error,
     }: InputProps,
-    ref,
+    ref
   ) => {
     const inputStyle = {
       "--bg-color": backgroundColor,
@@ -131,7 +132,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </>
     );
-  },
+  }
 );
 Input.displayName = "Input";
 

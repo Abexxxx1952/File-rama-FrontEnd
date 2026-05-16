@@ -1,33 +1,38 @@
 .file {
   --file-extension-size: 3.125rem;
   --progress-bar-size: 5%;
-  --file-status-completed-color: rgb(8, 167, 34);
-  --file-status-canceled-color: rgb(224, 34, 34);
+  --file-status-completed-color: rgb(8 167 34);
+  --file-status-canceled-color: rgb(224 34 34);
   --cross-icon-size: 1.5rem;
   --refresh-icon-size: 1.8rem;
   display: flex;
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding: 0.75rem;
-  border-radius: 0.85rem;
-  background-color: rgba(244, 246, 248, 0.75);
+  background-color: rgb(244 246 248 / 75%);
   border: 1px solid var(--surface-border-color);
+  border-radius: 0.85rem;
 }
 
 .file:last-child {
   margin-bottom: 0;
 }
+
 .file__extension {
-  height: var(--file-extension-size);
-  width: var(--file-extension-size);
-  color: #fff;
   display: flex;
-  text-transform: uppercase;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  width: var(--file-extension-size);
+  height: var(--file-extension-size);
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--primary-logo-color),
+    var(--secondary-logo-color)
+  );
   border-radius: 1rem;
-  background: linear-gradient(135deg, var(--primary-logo-color), var(--secondary-logo-color));
-  box-shadow: 0 0.4rem 1rem rgba(111, 86, 224, 0.22);
+  box-shadow: 0 0.4rem 1rem rgb(111 86 224 / 22%);
 }
 
 .file__container {
@@ -37,8 +42,8 @@
 
 .file__wrapper {
   display: flex;
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
 }
 
 .file__details {
@@ -46,11 +51,11 @@
 }
 
 .file__name {
+  overflow: hidden;
   font-size: 1rem;
   font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .file__info {
@@ -59,11 +64,11 @@
 }
 
 .file__info small {
-  color: var(--header-font-color);
-  margin-top: 5px;
   display: block;
+  margin-top: 5px;
   font-size: 0.9rem;
   font-weight: 500;
+  color: var(--header-font-color);
 }
 
 .file__info > .file__statusUploading {
@@ -80,27 +85,27 @@
 
 .file__cancelButton {
   display: flex;
-  align-self: center;
   justify-content: center;
-  border: none;
-  outline: none;
-  background: none;
-  cursor: pointer;
-  margin-right: calc((var(--refresh-icon-size) - var(--cross-icon-size)) / 2);
   width: var(--cross-icon-size);
   height: var(--cross-icon-size);
+  margin-right: calc((var(--refresh-icon-size) - var(--cross-icon-size)) / 2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+  outline: none;
 }
 
 .file__refreshButton {
   display: flex;
-  align-self: center;
   justify-content: center;
-  border: none;
-  outline: none;
-  background: none;
-  cursor: pointer;
   width: var(--refresh-icon-size);
   height: var(--refresh-icon-size);
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+  outline: none;
 }
 
 .file__cancelButton:hover {
@@ -121,15 +126,19 @@
   width: 100%;
   height: 4px;
   margin-top: 10px;
+  background: rgb(225 229 234);
   border-radius: 30px;
-  background: rgb(225, 229, 234);
 }
 
 .file__progressBar {
   width: var(--progress-bar-size);
   height: inherit;
+  background: linear-gradient(
+    90deg,
+    var(--primary-logo-color),
+    var(--secondary-logo-color)
+  );
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--primary-logo-color), var(--secondary-logo-color));
 }
 
 @media screen and (max-width: 768px) {
@@ -143,17 +152,21 @@
     font-size: 0.9rem;
     font-weight: 400;
   }
+
   .file__info small {
     font-size: 0.8rem;
     font-weight: 400;
   }
+
   .file__cancelButton {
     width: 1.25rem;
     height: 1.25rem;
   }
+
   .file__crossIcon {
     --cross-icon-size: 20px;
   }
+
   .file__progressBarContainer {
     margin-top: 8px;
   }
@@ -169,20 +182,20 @@
   .file__name {
     font-size: 0.8rem;
   }
+
   .file__info small {
     font-size: 0.7rem;
   }
-  .file__cancelButton {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
+
   .file__cancelButton {
     width: 1rem;
     height: 1rem;
   }
+
   .file__crossIcon {
     --cross-icon-size: 16px;
   }
+
   .file__progressBarContainer {
     margin-top: 6px;
   }

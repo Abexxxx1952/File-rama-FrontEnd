@@ -1,0 +1,19 @@
+{
+  "*.{ts,tsx,js,jsx}": [
+    "bash -c 'echo \"🔍 Checking TypeScript/JavaScript files...\"'",
+    "eslint --fix",
+    "prettier --write",
+    "bash -c 'echo \"✅ TypeScript/JavaScript files processed\"'"
+  ],
+  "*.css": [
+    "bash -c 'echo \"🎨 Checking CSS files...\"'",
+    "stylelint --fix",
+    "prettier --write",
+    "bash -c 'echo \"✅ CSS files processed\"'"
+  ],
+  "*.{json,md}": [
+    "bash -c 'echo \"📝 Formatting JSON/Markdown files...\"'",
+    "prettier --write",
+    "bash -c 'echo \"✅ JSON/Markdown files processed\"'"
+  ]
+}

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { SORT_ORDER, SortRules } from ".././types/sort";
+
 import { splitSortRules } from ".././splitSortRules";
+import { SORT_ORDER, type SortRules } from ".././types/sort";
 
 describe("splitSortRules", () => {
   describe("when sort contains folder and file keys", () => {

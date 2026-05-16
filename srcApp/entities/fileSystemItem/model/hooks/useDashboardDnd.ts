@@ -1,6 +1,8 @@
 import { useRef } from "react";
+
 import type { Dnd } from "@/srcApp/pages/dashboard/model/types/dnd";
-import { SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
+import { type SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
+
 import { getAdditionalTag } from "../getAdditionalTag";
 import { updateFile } from "../updateFile";
 import { updateFolder } from "../updateFolder";
@@ -28,7 +30,9 @@ export function useDashboardDnd({
   const cursorPositionRef = useRef({ x: 0, y: 0 });
 
   const onDragStart = () => {
-    if (selected.size < 2) return;
+    if (selected.size < 2) {
+      return;
+    }
 
     for (const item of selected.values()) {
       if ("fileId" in item) {
@@ -63,7 +67,7 @@ export function useDashboardDnd({
           ...i,
           parentFolderId: dropId,
         })),
-        [fileSystemItemsCurrentTag, additionalTag],
+        [fileSystemItemsCurrentTag, additionalTag]
       );
       clear();
       return;
@@ -71,13 +75,15 @@ export function useDashboardDnd({
 
     const draggableItem = dndRef.current.draggable.values().next().value;
 
-    if (!draggableItem) return;
+    if (!draggableItem) {
+      return;
+    }
 
     if ("folderId" in draggableItem) {
       await updateFolder(
         { folderId: draggableItem.folderId, parentFolderId: dropId },
         [fileSystemItemsCurrentTag, additionalTag],
-        () => {},
+        () => {}
       );
       return;
     }
@@ -86,7 +92,7 @@ export function useDashboardDnd({
       await updateFile(
         { fileId: draggableItem.fileId, parentFolderId: dropId },
         [fileSystemItemsCurrentTag, additionalTag],
-        () => {},
+        () => {}
       );
       return;
     }

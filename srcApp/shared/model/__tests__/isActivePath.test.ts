@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
 import { isActivePath } from "../isActivePath";
 
 vi.mock("@/srcApp/shared/constants/header-list", () => ({
@@ -45,7 +46,7 @@ describe("isActivePath", () => {
   it("should handle nested paths", () => {
     expect(isActivePath("/dashboard/files/folder1", "/dashboard")).toBe(true);
     expect(isActivePath("/dashboard/files/folder1", "/dashboard/files")).toBe(
-      true,
+      true
     );
   });
 

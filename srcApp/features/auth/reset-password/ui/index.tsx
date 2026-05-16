@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+
 import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
+
 import styles from "./styles.module.css";
 
 export function ResetPassword() {

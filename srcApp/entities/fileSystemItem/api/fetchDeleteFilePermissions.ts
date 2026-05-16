@@ -1,9 +1,11 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
+
+import { apiClient, type apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import type { ErrorData } from "@/srcApp/shared/model/types/errorData";
+
 import type { File } from "../model/types/file";
 
 export async function fetchDeleteFilePermissions(
@@ -16,7 +18,7 @@ export async function fetchDeleteFilePermissions(
     fileId: string;
     fileSystemItemsCurrentTag: string;
     abortControllerRef?: React.RefObject<AbortController | null>;
-  },
+  }
 ): Promise<File | ErrorData | null> {
   const url: string = `${process.env.DELETE_FILE_PERMISSIONS_URL}/${fileId}`;
 

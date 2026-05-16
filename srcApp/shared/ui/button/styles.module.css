@@ -4,46 +4,46 @@
   --border: 1px solid var(--secondary-logo-color);
   --focus-bg-color: var(--secondary-logo-color);
   --focus-text-color: var(--secondary-font-color);
-  --box-shadow: 0 0.35rem 1rem rgba(16, 20, 28, 0.12);
+  --box-shadow: 0 0.35rem 1rem rgb(16 20 28 / 12%);
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
-  position: relative;
-  color: var(--text-color);
-  background-color: var(--bg-color);
-  border-radius: 0.5rem;
-  border: var(--border);
-  box-shadow: var(--box-shadow);
   font-size: inherit;
   font-weight: inherit;
-  backdrop-filter: inherit;
   line-height: inherit;
   letter-spacing: inherit;
-  cursor: pointer;
-  user-select: none;
-  caret-color: transparent;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--box-shadow);
   transition:
     color 0.2s ease,
     background-color 0.2s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  backdrop-filter: inherit;
+  caret-color: transparent;
 }
 
 .button:hover,
 .button:focus-visible {
   color: var(--focus-text-color);
   background-color: var(--focus-bg-color);
-  box-shadow: 0 0.5rem 1.25rem rgba(16, 20, 28, 0.16);
+  box-shadow: 0 0.5rem 1.25rem rgb(16 20 28 / 16%);
   transform: translateY(-1px);
 }
 
 .button:disabled {
   opacity: 0.5;
-  cursor: not-allowed;
   transform: none;
+  cursor: not-allowed;
 }
 
 .icon {
@@ -52,11 +52,11 @@
 }
 
 .svgIcon {
-  width: 24px;
-  height: 24px;
   position: absolute;
   top: 50%;
   left: 0;
+  width: 24px;
+  height: 24px;
   transform: translate(25%, -50%);
 }
 
@@ -73,11 +73,11 @@
 }
 
 .spinner svg circle {
+  animation: spin 2s linear infinite;
   fill: none;
   stroke-width: 2px;
-  stroke: #ffffff;
+  stroke: #fff;
   stroke-linecap: round;
-  animation: spin 2s linear infinite;
 }
 
 @keyframes spin {
@@ -85,10 +85,12 @@
     stroke-dasharray: 150;
     stroke-dashoffset: 150;
   }
+
   50% {
     stroke-dasharray: 150;
     stroke-dashoffset: 0;
   }
+
   100% {
     stroke-dasharray: 150;
     stroke-dashoffset: -150;

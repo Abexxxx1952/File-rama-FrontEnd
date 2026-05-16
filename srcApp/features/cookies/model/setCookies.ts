@@ -1,18 +1,20 @@
 "use server";
 
 import { cookies } from "next/headers";
+
 import jwt from "jsonwebtoken";
+
 import { COOKIES_NAME } from "../constant/cookies-name";
-import { JwtTokenData, JwtTokenType } from "./types/jwtToken";
+import { type JwtTokenData, type JwtTokenType } from "./types/jwtToken";
 
 export async function setCookies(
   access_token: string,
-  refresh_token: string,
+  refresh_token: string
 ): Promise<void> {
   function getDataFromToken(
     token: string,
     data: JwtTokenData,
-    flag: JwtTokenType,
+    flag: JwtTokenType
   ): number {
     try {
       const decoded = jwt.decode(token) as jwt.JwtPayload;
@@ -35,12 +37,12 @@ export async function setCookies(
     const accessTokenExpiry = getDataFromToken(
       access_token,
       "exp",
-      "access_token",
+      "access_token"
     );
     const refreshTokenExpiry = getDataFromToken(
       refresh_token,
       "exp",
-      "refresh_token",
+      "refresh_token"
     );
 
     const cookieStore = await cookies();

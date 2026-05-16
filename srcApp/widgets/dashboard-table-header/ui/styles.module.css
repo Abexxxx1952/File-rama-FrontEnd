@@ -1,33 +1,34 @@
 .tableHeader {
   position: sticky;
+
   /* top: calc(2rem + 3px); */
   z-index: 3;
-  width: 100%;
-  height: 2rem;
   display: flex;
   align-items: center;
   gap: 0;
+  width: 100%;
+  height: 2rem;
   margin-bottom: 0.3rem;
   overflow: hidden;
   border-radius: 0.625rem;
-  box-shadow: 0 0.25rem 0.75rem rgba(16, 20, 28, 0.06);
+  box-shadow: 0 0.25rem 0.75rem rgb(16 20 28 / 6%);
 }
 
 .tableHeader__column {
   display: flex;
-  align-items: center;
   justify-content: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1rem;
+  align-items: center;
   height: 100%;
-  background-color: rgb(236, 242, 244);
-  cursor: pointer;
-  caret-color: transparent;
-  color: var(--primary-font-color);
+  overflow: hidden;
+  font-size: 1rem;
   font-weight: 600;
+  white-space: nowrap;
+  color: var(--primary-font-color);
+  background-color: rgb(236 242 244);
   transition: background-color 0.2s ease;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  caret-color: transparent;
 }
 
 .tableHeader__column:not(:last-child) {
@@ -48,7 +49,7 @@
 }
 
 .tableHeader__uploadDate {
-  width: var(--dashboard-table-column-uploadDate-width);
+  width: var(--dashboard-table-column-upload-date-width);
 }
 
 .tableHeader__publicRead {
@@ -99,12 +100,15 @@
   .tableHeader__name {
     width: var(--dashboard-table-column-name-width-maxwidth768);
   }
+
   .tableHeader__publicRead {
     width: var(--dashboard-table-column-public-width-maxwidth768);
   }
+
   .tableHeader__publicWrite {
     width: var(--dashboard-table-column-public-width-maxwidth768);
   }
+
   .tableHeader__buttons {
     width: var(--dashboard-table-column-buttons-width-maxwidth768);
   }
@@ -122,12 +126,15 @@
   .tableHeader__name {
     width: var(--dashboard-table-column-name-width-maxwidth576);
   }
+
   .tableHeader__publicRead {
     width: var(--dashboard-table-column-public-width-maxwidth576);
   }
+
   .tableHeader__publicWrite {
     width: var(--dashboard-table-column-public-width-maxwidth576);
   }
+
   .tableHeader__buttons {
     width: var(--dashboard-table-column-buttons-width-maxwidth576);
   }

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+
 import { Login } from "..";
 import { loginUser } from "../../model/loginUser";
 
@@ -31,7 +32,10 @@ describe("Login", () => {
       render(<Login />);
 
       // When
-      await user.type(screen.getByPlaceholderText(/email/i), "user@example.com");
+      await user.type(
+        screen.getByPlaceholderText(/email/i),
+        "user@example.com"
+      );
       await user.type(screen.getByPlaceholderText(/password/i), "secret");
       await user.click(screen.getByRole("button", { name: /login/i }));
 
@@ -41,7 +45,7 @@ describe("Login", () => {
         "secret",
         expect.any(Function),
         expect.any(Function),
-        router,
+        router
       );
     });
   });

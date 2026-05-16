@@ -1,5 +1,6 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { toast } from "react-toastify";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { notifyResponse } from ".././notifyResponse";
 
 vi.mock("react-toastify", () => ({
@@ -29,7 +30,7 @@ describe("notifyResponse", () => {
       // Then
       expect(toast.error).toHaveBeenCalledWith(
         "Error:  Forbidden. Massage: Access denied",
-        { position: "top-right" },
+        { position: "top-right" }
       );
     });
   });

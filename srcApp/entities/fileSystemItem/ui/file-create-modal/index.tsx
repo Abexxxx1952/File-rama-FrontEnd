@@ -1,9 +1,11 @@
 "use client";
 
 import { memo, useRef, useState } from "react";
+
 import { getFilesWithOptions } from "@/srcApp/entities/fileSystemItem/model/getFilesWithId";
-import { FileWithOptions } from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
+import { type FileWithOptions } from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
 import { Modal } from "@/srcApp/shared/ui/modal";
+
 import { areFileCreateModalEqual } from "../../model/areFileCreateModalEqual";
 import { FileCreateModalItem } from "./file-create-modal-item";
 import styles from "./styles.module.css";
@@ -15,7 +17,7 @@ export type FileCreateModalProps = {
   fileSystemItemsCurrentTag: string;
 };
 
-export const FileCreateModal = memo(function ({
+export const FileCreateModal = memo(function FileCreateModal({
   parentFolderId,
   setAddFileModalOpen,
   forceUpdate,
@@ -23,7 +25,7 @@ export const FileCreateModal = memo(function ({
 }: FileCreateModalProps) {
   const [files, setFiles] = useState<FileWithOptions[]>([]);
   const [availableToUpload, setAvailableToUpload] = useState(
-    Number(process.env.NEXT_PUBLIC_AVAILABLE_TO_UPLOAD_FILE_COUNT) || 5,
+    Number(process.env.NEXT_PUBLIC_AVAILABLE_TO_UPLOAD_FILE_COUNT) || 5
   );
   const [completedFiles, setCompletedFiles] = useState(0);
   const [totalFiles, setTotalFiles] = useState(0);
@@ -53,12 +55,14 @@ export const FileCreateModal = memo(function ({
   }
 
   function handleSelectedFiles(filesList: FileList | null) {
-    if (filesList === null || filesList.length === 0) return;
+    if (filesList === null || filesList.length === 0) {
+      return;
+    }
     const filesArray: File[] = [...filesList];
     const filesWithOptions = getFilesWithOptions(
       filesArray,
       availableToUpload,
-      setAvailableToUpload,
+      setAvailableToUpload
     );
 
     setFiles((prev) => [...(prev || []), ...filesWithOptions]);
@@ -119,7 +123,7 @@ export const FileCreateModal = memo(function ({
             hidden
             ref={inputRef}
             onChange={(e) => handleSelectedFiles(e.target.files!)}
-          ></input>
+          />
         </div>
       </div>
     </Modal>

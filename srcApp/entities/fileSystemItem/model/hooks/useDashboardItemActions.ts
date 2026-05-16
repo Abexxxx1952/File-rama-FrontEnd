@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+
 import { deleteFile } from "@/srcApp/entities/fileSystemItem/model/deleteFile";
 import { deleteFolder } from "@/srcApp/entities/fileSystemItem/model/deleteFolder";
 import { downloadFile } from "@/srcApp/entities/fileSystemItem/model/downloadFile";
@@ -9,7 +10,7 @@ import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/type
 import type { OneClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/oneClickHandlerArgs";
 
 interface useDashboardItemActionsParams {
-  toggle: Function;
+  toggle: (id: string, isFile: boolean, index: number) => void;
   forceUpdate: () => void;
   routerForward: (param: string) => void;
   setCurrentFileSystemItem: (item: FileSystemItem) => void;
@@ -30,13 +31,13 @@ export function useDashboardItemActions({
   const oneClickHandler = useCallback(
     (
       e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-      { id, isFileItem, index }: OneClickMeta,
+      { id, isFileItem, index }: OneClickMeta
     ) => {
       if (e.ctrlKey || e.metaKey || e.shiftKey) {
         toggle(id, isFileItem, index);
       }
     },
-    [toggle],
+    [toggle]
   );
 
   const handleOpen = useCallback(
@@ -51,17 +52,17 @@ export function useDashboardItemActions({
         routerForward(id);
       }
     },
-    [],
+    []
   );
 
   const handleDownload = useCallback(
     async (
       id: string,
-      setLoadingDownload: React.Dispatch<React.SetStateAction<boolean>>,
+      setLoadingDownload: React.Dispatch<React.SetStateAction<boolean>>
     ): Promise<void> => {
       await downloadFile(id, setLoadingDownload);
     },
-    [],
+    []
   );
 
   const handleUpdate = useCallback(
@@ -69,7 +70,7 @@ export function useDashboardItemActions({
       setCurrentFileSystemItem(item);
       isFile ? setUpdateFileModalOpen(true) : setUpdateFolderModalOpen(true);
     },
-    [],
+    []
   );
 
   const handleDelete = useCallback(
@@ -83,7 +84,7 @@ export function useDashboardItemActions({
         : await deleteFolder(id, fileSystemItemsCurrentTag, setLoadingDelete);
       forceUpdate();
     },
-    [],
+    []
   );
 
   return {

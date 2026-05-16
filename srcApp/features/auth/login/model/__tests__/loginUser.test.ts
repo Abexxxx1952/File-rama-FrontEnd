@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchLoginUser } from "../../api/fetchLoginUser";
 import { loginUser } from ".././loginUser";
 
@@ -58,11 +60,14 @@ describe("loginUser", () => {
         "password",
         vi.fn(),
         setLoading,
-        router as any,
+        router as any
       );
 
       // Then
-      expect(fetchLoginUser).toHaveBeenCalledWith("ada@example.com", "password");
+      expect(fetchLoginUser).toHaveBeenCalledWith(
+        "ada@example.com",
+        "password"
+      );
       expect(notifyResponse).toHaveBeenCalledWith({
         isError: false,
         successMessage: "Successfully logged ada@example.com",
@@ -90,7 +95,7 @@ describe("loginUser", () => {
         "password",
         vi.fn(),
         vi.fn(),
-        router as any,
+        router as any
       );
 
       // Then

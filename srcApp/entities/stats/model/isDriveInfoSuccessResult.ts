@@ -1,7 +1,7 @@
-import { DriveInfoSuccessResult } from "./types/driveInfoSuccessResult";
+import { type DriveInfoSuccessResult } from "./types/driveInfoSuccessResult";
 
 export function isDriveInfoSuccessResult(
-  driveInfo: unknown,
+  driveInfo: unknown
 ): driveInfo is DriveInfoSuccessResult {
   return (
     typeof driveInfo === "object" &&

@@ -1,14 +1,15 @@
 "use client";
 
 import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
+
 import { fetchCreateFile } from "../api/fetchCreateFile";
-import { FileUploadResult, StatusUpload } from "./types/fileUploadResult";
+import { type FileUploadResult, StatusUpload } from "./types/fileUploadResult";
 
 export async function createFile(
   params: FormData,
   fileUploadId: string,
   fileSystemItemsCurrentTag: string,
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  abortControllerRef?: React.RefObject<AbortController | null>
 ): Promise<FileUploadResult | null> {
   return await fetchWithAuth<
     FileUploadResult,
@@ -24,6 +25,6 @@ export async function createFile(
     (data) =>
       data.status === StatusUpload.COMPLETED
         ? `File ${data.file.fileName} added successfully`
-        : `File ${data.fileName} upload failed`,
+        : `File ${data.fileName} upload failed`
   );
 }

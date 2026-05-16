@@ -1,18 +1,24 @@
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
 import { fetchUpdateGoogleServiceAccounts } from "../api/fetchUpdateGoogleServiceAccounts";
 import { formatKeyToEnvString } from "./lib/formatKeyToEnvString";
-import { GoogleServiceAccountsRequest, UpdateMode, User } from "./types/user";
+import {
+  type GoogleServiceAccountsRequest,
+  UpdateMode,
+  type User,
+} from "./types/user";
 
 export async function updateGoogleServiceAccount(
   data: GoogleServiceAccountsRequest,
   setLoading: Dispatch<SetStateAction<boolean>>,
   setUser: Dispatch<SetStateAction<User | null>>,
-  setUpdateModalOpen: Dispatch<SetStateAction<boolean>>,
+  setUpdateModalOpen: Dispatch<SetStateAction<boolean>>
 ): Promise<User | null> {
   setLoading(true);
 
@@ -65,7 +71,7 @@ export async function updateGoogleServiceAccount(
         googleServiceAccountsData,
         setLoading,
         setUser,
-        setUpdateModalOpen,
+        setUpdateModalOpen
       );
     }
     return null;

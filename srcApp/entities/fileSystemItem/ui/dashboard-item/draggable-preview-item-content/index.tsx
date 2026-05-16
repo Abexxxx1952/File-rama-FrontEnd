@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
 import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+
 import styles from "./styles.module.css";
 
 type DraggablePreviewItemContentProps = {
@@ -20,7 +22,7 @@ export function DraggablePreviewItemContent({
           <Image
             src={`/img/storage/${getFileIconUrl(item.fileExtension)}`}
             fill={true}
-            alt={`File image`}
+            alt="File image"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </span>
@@ -29,7 +31,7 @@ export function DraggablePreviewItemContent({
           <Image
             src="/img/storage/folder.png"
             fill={true}
-            alt={`Folder image`}
+            alt="Folder image"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </span>

@@ -1,14 +1,16 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
+
 import { fetchDeleteFolder } from "../api/fetchDeleteFolder";
-import { FileSystemItemChangeResult } from "./types/FileSystemItemChangeResult";
+import { type FileSystemItemChangeResult } from "./types/FileSystemItemChangeResult";
 
 export async function deleteFolder(
   id: string,
   fileSystemItemsCurrentTag: string,
-  setLoading: Dispatch<SetStateAction<boolean>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ): Promise<FileSystemItemChangeResult[] | null> {
   function getSuccessMessage(data: FileSystemItemChangeResult[]): string {
     let successFiles: number = 0;
@@ -43,7 +45,7 @@ export async function deleteFolder(
       parts.push(`${successFolders} folder${successFolders !== 1 ? "s" : ""}.`);
     }
 
-    const deletedParts = parts.length > 0 ? parts.join(" and ") + "." : "";
+    const deletedParts = parts.length > 0 ? `${parts.join(" and ")}.` : "";
 
     const errorMessage =
       errorFiles + errorFolders > 0
@@ -63,6 +65,6 @@ export async function deleteFolder(
     fetchDeleteFolder,
     { id, fileSystemItemsCurrentTag },
     getSuccessMessage,
-    setLoading,
+    setLoading
   );
 }

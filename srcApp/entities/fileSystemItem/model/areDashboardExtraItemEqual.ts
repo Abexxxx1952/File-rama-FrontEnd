@@ -1,8 +1,8 @@
-import { DashboardExtraIItemProps } from "../ui";
+import { type DashboardExtraIItemProps } from "../ui";
 
 export function areDashboardExtraItemEqual(
   prevProps: DashboardExtraIItemProps,
-  nextProps: DashboardExtraIItemProps,
+  nextProps: DashboardExtraIItemProps
 ) {
   if (
     prevProps.usedSize === nextProps.usedSize &&

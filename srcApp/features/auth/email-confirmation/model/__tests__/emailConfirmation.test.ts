@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchEmailConfirmation } from "../../api/fetchEmailConfirmation";
 import { emailConfirmation } from ".././emailConfirmation";
 
@@ -44,7 +46,7 @@ describe("emailConfirmation", () => {
       // Then
       expect(fetchEmailConfirmation).toHaveBeenCalledWith(
         "access-token",
-        undefined,
+        undefined
       );
       expect(notifyResponse).toHaveBeenCalledWith({
         isError: false,
@@ -104,7 +106,7 @@ describe("emailConfirmation", () => {
       expect(refreshTokens).toHaveBeenCalledWith("refresh-token");
       expect(fetchEmailConfirmation).toHaveBeenCalledWith(
         "new-access-token",
-        undefined,
+        undefined
       );
     });
   });

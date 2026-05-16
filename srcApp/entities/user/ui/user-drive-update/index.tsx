@@ -1,17 +1,26 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { Button } from "@/srcApp/shared/ui/button";
-import { Icon } from "@/srcApp/shared/ui/icon";
-import { Input } from "@/srcApp/shared/ui/input";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createPortal } from "react-dom";
 import { Controller, useForm } from "react-hook-form";
+
+import { Button } from "@/srcApp/shared/ui/button";
+import { Icon } from "@/srcApp/shared/ui/icon";
+import { Input } from "@/srcApp/shared/ui/input";
+
 import { addGoogleServiceAccount } from "../../model/addGoogleServiceAccounts";
 import { deleteGoogleServiceAccount } from "../../model/deleteGoogleServiceAccounts copy";
 import { googleServiceAccountsAddSchema } from "../../model/lib/schemas/googleServiceAccountsAddSchema";
 import {
-  GoogleServiceAccountsRequest,
-  GoogleServiceAccountsResponse,
-  User,
+  type GoogleServiceAccountsRequest,
+  type GoogleServiceAccountsResponse,
+  type User,
 } from "../../model/types/user";
 import { GoogleServiceAccountUpdateModal } from "../googleServiceAccount-update-modal";
 import styles from "./styles.module.css";
@@ -47,7 +56,7 @@ export function UserDriveUpdate({
   });
 
   function handleUpdateGoogleServiceAccount(
-    googleServiceAccount: GoogleServiceAccountsResponse,
+    googleServiceAccount: GoogleServiceAccountsResponse
   ) {
     setUpdateGoogleServiceAccountItem(googleServiceAccount);
     setUpdateModalOpen(true);
@@ -146,7 +155,7 @@ export function UserDriveUpdate({
                   deleteGoogleServiceAccount(
                     item.clientEmail,
                     setLoading,
-                    setUser,
+                    setUser
                   )
                 }
               />
@@ -162,7 +171,7 @@ export function UserDriveUpdate({
             updateGoogleServiceAccountItem={updateGoogleServiceAccountItem}
             setUser={setUser}
           />,
-          portalRef.current,
+          portalRef.current
         )}
     </div>
   );

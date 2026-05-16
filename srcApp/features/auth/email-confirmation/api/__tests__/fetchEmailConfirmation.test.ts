@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { apiClient } from "@/srcApp/shared/model/apiClient";
+
 import { fetchEmailConfirmation } from ".././fetchEmailConfirmation";
 
 vi.mock("@/srcApp/shared/model/apiClient", () => ({

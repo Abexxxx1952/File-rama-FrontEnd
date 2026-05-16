@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { LoginPage } from "@/srcApp/pages/login";
 
 export const metadata: Metadata = {

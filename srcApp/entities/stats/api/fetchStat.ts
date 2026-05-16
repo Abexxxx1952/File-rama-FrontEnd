@@ -2,11 +2,12 @@
 
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { fetchEntity } from "@/srcApp/shared/model/fetchEntity";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { Stat } from "../model/types/stat";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
+import { type Stat } from "../model/types/stat";
 
 export async function fetchStat(
-  access_token: string,
+  access_token: string
 ): Promise<Stat | ErrorData | null> {
   const url: string = `${process.env.GET_STAT_URL}`;
 

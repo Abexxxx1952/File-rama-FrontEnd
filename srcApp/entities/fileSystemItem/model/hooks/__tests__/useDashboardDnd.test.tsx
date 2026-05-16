@@ -1,6 +1,8 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
+
+import { type SelectedMap } from "@/srcApp/pages/dashboard/model/types/selectedMap";
+
 import { updateFile } from "../../updateFile";
 import { updateFolder } from "../../updateFolder";
 import { updateMany } from "../../updateMany";
@@ -22,7 +24,8 @@ function renderDnd(selected: SelectedMap) {
   const params = {
     selected,
     clear: vi.fn(),
-    fileSystemItemsCurrentTag: "fileSystemItem/root/[{\"key\":\"folderName\",\"order\":\"asc\"}]",
+    fileSystemItemsCurrentTag:
+      'fileSystemItem/root/[{"key":"folderName","order":"asc"}]',
     forceUpdate: vi.fn(),
   };
 
@@ -103,10 +106,10 @@ describe("useDashboardDnd", () => {
             { folderId: "folder-1", parentFolderId: "target-folder" },
           ],
           [
-            "fileSystemItem/root/[{\"key\":\"folderName\",\"order\":\"asc\"}]",
-            "fileSystemItem/target-folder/[{\"key\":\"folderName\",\"order\":\"asc\"}]",
-          ],
-        ),
+            'fileSystemItem/root/[{"key":"folderName","order":"asc"}]',
+            'fileSystemItem/target-folder/[{"key":"folderName","order":"asc"}]',
+          ]
+        )
       );
       expect(params.clear).toHaveBeenCalled();
     });
@@ -136,10 +139,10 @@ describe("useDashboardDnd", () => {
       expect(updateFolder).toHaveBeenCalledWith(
         { folderId: "folder-1", parentFolderId: "target-folder" },
         [
-          "fileSystemItem/root/[{\"key\":\"folderName\",\"order\":\"asc\"}]",
-          "fileSystemItem/target-folder/[{\"key\":\"folderName\",\"order\":\"asc\"}]",
+          'fileSystemItem/root/[{"key":"folderName","order":"asc"}]',
+          'fileSystemItem/target-folder/[{"key":"folderName","order":"asc"}]',
         ],
-        expect.any(Function),
+        expect.any(Function)
       );
     });
   });
@@ -168,10 +171,10 @@ describe("useDashboardDnd", () => {
       expect(updateFile).toHaveBeenCalledWith(
         { fileId: "file-1", parentFolderId: "target-folder" },
         [
-          "fileSystemItem/root/[{\"key\":\"folderName\",\"order\":\"asc\"}]",
-          "fileSystemItem/target-folder/[{\"key\":\"folderName\",\"order\":\"asc\"}]",
+          'fileSystemItem/root/[{"key":"folderName","order":"asc"}]',
+          'fileSystemItem/target-folder/[{"key":"folderName","order":"asc"}]',
         ],
-        expect.any(Function),
+        expect.any(Function)
       );
     });
   });

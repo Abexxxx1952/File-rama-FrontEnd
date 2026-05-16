@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import { HEADER_ITEMS } from "@/srcApp/shared/constants/header-list";
+
 import { isActivePath } from "../../../../shared/model/isActivePath";
 import styles from "./styles.module.css";
 
@@ -25,15 +28,15 @@ export function Menu() {
         <span
           className={`${menuOpen && styles.active} ${styles.burgerMenu__line}`}
           aria-hidden="true"
-        ></span>
+        />
         <span
           className={`${menuOpen && styles.active} ${styles.burgerMenu__line}`}
           aria-hidden="true"
-        ></span>
+        />
         <span
           className={`${menuOpen && styles.active} ${styles.burgerMenu__line}`}
           aria-hidden="true"
-        ></span>
+        />
       </button>
       {menuOpen && (
         <nav

@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import { emailConfirmation } from "@/srcApp/features/auth/email-confirmation/model/emailConfirmation";
 import { Button } from "@/srcApp/shared/ui/button";
+
 import styles from "./styles.module.css";
 
 export function EmailConfirmation() {

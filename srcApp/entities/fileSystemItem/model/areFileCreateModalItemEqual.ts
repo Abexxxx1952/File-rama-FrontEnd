@@ -1,8 +1,8 @@
-import { FileCreateModalItemProps } from "../ui/file-create-modal/file-create-modal-item";
+import { type FileCreateModalItemProps } from "../ui/file-create-modal/file-create-modal-item";
 
 export function areFileCreateModalItemEqual(
   prevProps: FileCreateModalItemProps,
-  nextProps: FileCreateModalItemProps,
+  nextProps: FileCreateModalItemProps
 ) {
   if (
     prevProps.fileWith.id === nextProps.fileWith.id &&

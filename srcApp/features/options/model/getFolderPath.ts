@@ -1,19 +1,23 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
 import { fetchGetFolderPath } from "./api/fetchFolderPath";
 
 export async function getFolderPath(
   folderID: string,
   folderPathTag: string,
-  setLoading: Dispatch<SetStateAction<boolean>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ): Promise<string> {
-  if (folderID === "null") return ":/";
+  if (folderID === "null") {
+    return ":/";
+  }
   setLoading(true);
 
   try {
@@ -23,7 +27,7 @@ export async function getFolderPath(
       const data: string | ErrorData | null = await fetchGetFolderPath(
         access_token,
         folderID,
-        folderPathTag,
+        folderPathTag
       );
       if (isErrorData(data)) {
         notifyResponse({
@@ -50,7 +54,7 @@ export async function getFolderPath(
     }
     return ":/";
   } catch (error: unknown) {
-    console.log("error", error);
+    console.warn("error", error);
     return ":/";
   } finally {
     setLoading(false);

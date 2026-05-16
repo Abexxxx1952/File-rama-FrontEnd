@@ -1,15 +1,17 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
+
 import { fetchDeleteMany } from "../api/fetchDeleteMany";
-import { FileSystemItemChangeResult } from "./types/FileSystemItemChangeResult";
-import { FetchDeleteMany } from "./types/fetchDeleteMany";
+import { type FileSystemItemChangeResult } from "./types/FileSystemItemChangeResult";
+import { type FetchDeleteMany } from "./types/fetchDeleteMany";
 
 export async function deleteMany(
   deleteMany: FetchDeleteMany,
   fileSystemItemsCurrentTag: string,
-  setLoading: Dispatch<SetStateAction<boolean>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ): Promise<FileSystemItemChangeResult[] | null> {
   function getSuccessMessage(data: FileSystemItemChangeResult[]): string {
     let successFiles: number = 0;
@@ -44,7 +46,7 @@ export async function deleteMany(
       parts.push(`${successFolders} folder${successFolders !== 1 ? "s" : ""}.`);
     }
 
-    const deletedParts = parts.length > 0 ? parts.join(" and ") + "." : "";
+    const deletedParts = parts.length > 0 ? `${parts.join(" and ")}.` : "";
 
     const errorMessage =
       errorFiles + errorFolders > 0
@@ -64,6 +66,6 @@ export async function deleteMany(
     fetchDeleteMany,
     { deleteMany, fileSystemItemsCurrentTag },
     getSuccessMessage,
-    setLoading,
+    setLoading
   );
 }

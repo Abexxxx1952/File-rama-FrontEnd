@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+
 import { googleServiceAccountsAddSchema } from "@/srcApp/entities/user/model/lib/schemas/googleServiceAccountsAddSchema";
 import type {
   GoogleServiceAccountsRequest,
@@ -13,8 +17,7 @@ import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+
 import styles from "./styles.module.css";
 
 type GoogleServiceAccountUpdateModalProps = {
@@ -36,7 +39,7 @@ export function GoogleServiceAccountUpdateModal({
   useKeyboardHandler(body, [["Escape", () => setUpdateModalOpen(false)]]);
 
   async function handleUpdateGoogleServiceAccount(
-    data: GoogleServiceAccountsRequest,
+    data: GoogleServiceAccountsRequest
   ) {
     updateGoogleServiceAccount(data, setLoading, setUser, setUpdateModalOpen);
   }

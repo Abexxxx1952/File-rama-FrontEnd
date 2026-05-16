@@ -1,14 +1,16 @@
 import { memo, useState } from "react";
+
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Logo } from "@/srcApp/shared/ui/logo";
+
 import styles from "./styles.module.css";
 
 export type SearchProps = {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const Search = memo(function ({ setSearch }: SearchProps) {
+export const Search = memo(function Search({ setSearch }: SearchProps) {
   const [searchValue, setSearchValue] = useState("");
 
   function handleSearch(value: string) {
@@ -41,6 +43,7 @@ export const Search = memo(function ({ setSearch }: SearchProps) {
           iconSvgWidth="17px"
           iconSvgHeight="16px"
         />
+
         {searchValue !== "" && (
           <div className={styles.storage__deleteButton}>
             <ButtonIcon

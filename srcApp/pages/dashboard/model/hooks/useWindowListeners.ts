@@ -1,9 +1,17 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
 import { deleteMany } from "@/srcApp/entities/fileSystemItem/model/deleteMany";
 import type { FetchDeleteMany } from "@/srcApp/entities/fileSystemItem/model/types/fetchDeleteMany";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+
 import { selectBetween } from "../selectBetween";
-import { SelectedMap } from "../types/selectedMap";
+import { type SelectedMap } from "../types/selectedMap";
 
 type useWindowListenersParams = {
   fileSystemItems: FileSystemItem[] | null;
@@ -51,10 +59,14 @@ export function useWindowListeners({
     };
 
     const onClick = (event: MouseEvent) => {
-      if (!event.shiftKey) return;
+      if (!event.shiftKey) {
+        return;
+      }
 
       const items = itemsRef.current;
-      if (!items) return;
+      if (!items) {
+        return;
+      }
 
       selectBetween(selectedRef.current, items, setSelected);
     };
@@ -79,12 +91,14 @@ export function useWindowListeners({
       mapped.push(id);
     });
 
-    if (mapped.length === 0) return;
+    if (mapped.length === 0) {
+      return;
+    }
 
     await deleteMany(
       mapped,
       fileSystemItemsCurrentTagRef.current,
-      setLoadingDelete,
+      setLoadingDelete
     );
     clear();
     forceUpdate();

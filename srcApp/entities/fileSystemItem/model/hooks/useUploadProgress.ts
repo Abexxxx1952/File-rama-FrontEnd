@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { FileUploadEvent } from "../types/fileUploadEvent";
+
+import { type FileUploadEvent } from "../types/fileUploadEvent";
 import { StatusUpload } from "../types/fileUploadResult";
 
 export function useUploadProgress(
   fileUploadId: string,
   onProgress: (data: FileUploadEvent) => void,
   onComplete?: (data: FileUploadEvent) => void,
-  onError?: (err: any) => void,
+  onError?: (err: any) => void
 ): void {
   const [attempt, setAttempt] = useState(0);
 
@@ -17,7 +19,7 @@ export function useUploadProgress(
 
     const init = async () => {
       try {
-        let { access_token, refresh_token } = await getCookies();
+        const { access_token, refresh_token } = await getCookies();
 
         if (!access_token && refresh_token) {
           try {
@@ -36,8 +38,7 @@ export function useUploadProgress(
           return;
         }
 
-        const url =
-          `${process.env.NEXT_PUBLIC_CREATE_FILE_STATUS_URL}` + fileUploadId;
+        const url = `${process.env.NEXT_PUBLIC_CREATE_FILE_STATUS_URL}${fileUploadId}`;
 
         eventSource = new EventSource(url, {
           withCredentials: true,
@@ -66,7 +67,9 @@ export function useUploadProgress(
         };
 
         eventSource.onerror = (err) => {
-          if (eventSource.readyState == 2) return;
+          if (eventSource.readyState === 2) {
+            return;
+          }
 
           console.error("SSE connection error", err);
           onError?.(err);

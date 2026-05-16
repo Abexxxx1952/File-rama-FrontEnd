@@ -1,8 +1,8 @@
-import { FileCreateModalProps } from "../ui/file-create-modal";
+import { type FileCreateModalProps } from "../ui/file-create-modal";
 
 export function areFileCreateModalEqual(
   prevProps: FileCreateModalProps,
-  nextProps: FileCreateModalProps,
+  nextProps: FileCreateModalProps
 ) {
   if (
     prevProps.parentFolderId === nextProps.parentFolderId &&

@@ -1,0 +1,132 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "order/properties-order": [
+      [
+        {
+          "groupName": "Positioning",
+          "properties": [
+            "position",
+            "top",
+            "right",
+            "bottom",
+            "left",
+            "z-index"
+          ]
+        },
+        {
+          "groupName": "Box Model",
+          "properties": [
+            "display",
+            "flex",
+            "flex-direction",
+            "flex-wrap",
+            "flex-flow",
+            "justify-content",
+            "align-items",
+            "align-content",
+            "gap",
+            "grid",
+            "grid-template",
+            "grid-template-columns",
+            "grid-template-rows",
+            "grid-gap",
+            "float",
+            "clear",
+            "width",
+            "min-width",
+            "max-width",
+            "height",
+            "min-height",
+            "max-height",
+            "margin",
+            "margin-top",
+            "margin-right",
+            "margin-bottom",
+            "margin-left",
+            "padding",
+            "padding-top",
+            "padding-right",
+            "padding-bottom",
+            "padding-left",
+            "overflow",
+            "overflow-x",
+            "overflow-y"
+          ]
+        },
+        {
+          "groupName": "Typography",
+          "properties": [
+            "font",
+            "font-family",
+            "font-size",
+            "font-weight",
+            "font-style",
+            "line-height",
+            "letter-spacing",
+            "text-align",
+            "text-decoration",
+            "text-transform",
+            "white-space",
+            "word-break",
+            "word-wrap"
+          ]
+        },
+        {
+          "groupName": "Visual",
+          "properties": [
+            "color",
+            "background",
+            "background-color",
+            "background-image",
+            "background-position",
+            "background-size",
+            "background-repeat",
+            "border",
+            "border-width",
+            "border-style",
+            "border-color",
+            "border-radius",
+            "box-shadow",
+            "opacity",
+            "visibility"
+          ]
+        },
+        {
+          "groupName": "Animation",
+          "properties": [
+            "transition",
+            "transition-property",
+            "transition-duration",
+            "transition-timing-function",
+            "animation",
+            "transform"
+          ]
+        },
+        {
+          "groupName": "Misc",
+          "properties": ["cursor", "pointer-events", "user-select", "content"]
+        }
+      ],
+      {
+        "unspecified": "bottom"
+      }
+    ],
+    "declaration-block-no-duplicate-properties": true,
+    "selector-class-pattern": null,
+    "declaration-empty-line-before": null,
+    "no-descending-specificity": null,
+    "nesting-selector-no-missing-scoping-root": null,
+    "selector-pseudo-element-colon-notation": "double",
+    "media-feature-range-notation": null,
+    "declaration-no-important": [true, { "severity": "warning" }],
+    "comment-whitespace-inside": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ]
+  }
+}

@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+
 import { createFolder } from "@/srcApp/entities/fileSystemItem/model/createFolder";
 import { folderAddSchema } from "@/srcApp/entities/fileSystemItem/model/lib/schemas/folderAddSchema";
 import type { FetchAddFolderForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchAddFolder";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+
 import styles from "./styles.module.css";
 
 type FolderCreateModalProps = {
@@ -43,7 +46,7 @@ export function FolderCreateModal({
         { ...data, parentFolderId },
         fileSystemItemsCurrentTag,
         setLoading,
-        setAddFolderModalOpen,
+        setAddFolderModalOpen
       );
 
       forceUpdate();

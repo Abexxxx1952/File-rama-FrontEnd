@@ -2,6 +2,7 @@
 
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { Icon } from "@/srcApp/shared/ui/icon";
+
 import { useImperativeDisableScroll } from "../../hooks/useImperativeDisableScroll";
 import styles from "./styles.module.css";
 
@@ -39,7 +40,7 @@ export function Modal({
 
   return (
     <div className={styles.modal}>
-      <div className={styles.overlay} onClick={() => setModalOpen(false)}></div>
+      <div className={styles.overlay} onClick={() => setModalOpen(false)} />
       <div
         className={styles.modal__content}
         style={contentStyle}

@@ -1,16 +1,19 @@
-import { Dispatch, SetStateAction } from "react";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { type Dispatch, type SetStateAction } from "react";
+
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
 import { fetchDeleteUser } from "../api/fetchDeleteUser";
-import { User } from "./types/user";
+import { type User } from "./types/user";
 
 export async function deleteUser(
   setLoading: Dispatch<SetStateAction<boolean>>,
-  router: AppRouterInstance,
+  router: AppRouterInstance
 ): Promise<void> {
   setLoading(true);
 

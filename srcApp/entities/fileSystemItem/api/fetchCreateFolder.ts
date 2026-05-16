@@ -1,12 +1,14 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
+
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
-import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
+import { apiClient, type apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { FetchAddFolder } from "../model/types/fetchAddFolder";
-import { Folder } from "../model/types/folder";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
+import { type FetchAddFolder } from "../model/types/fetchAddFolder";
+import { type Folder } from "../model/types/folder";
 
 export async function fetchCreateFolder(
   access_token: string,
@@ -18,7 +20,7 @@ export async function fetchCreateFolder(
     addFolderData: FetchAddFolder;
     fileSystemItemsCurrentTag: string;
     abortControllerRef?: React.RefObject<AbortController | null>;
-  },
+  }
 ): Promise<Folder | ErrorData | null> {
   const url: string = `${process.env.CREATE_FOLDER_URL}`;
 

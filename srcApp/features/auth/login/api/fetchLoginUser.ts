@@ -1,21 +1,21 @@
 "use server";
 
-import { User } from "@/srcApp/entities/user/model/types/user";
+import { type User } from "@/srcApp/entities/user/model/types/user";
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
-import { apiClient, apiClientArgs } from "@/srcApp/shared/model/apiClient";
+import { apiClient, type apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
 
 export async function fetchLoginUser(
   email: string,
   password: string,
-  abortControllerRef?: React.RefObject<AbortController | null>,
+  abortControllerRef?: React.RefObject<AbortController | null>
 ): Promise<User | ErrorData | null> {
   const url: string = process.env.LOGIN_URL || "";
 
   const requestBody = {
-    email: email,
-    password: password,
+    email,
+    password,
   };
 
   const apiClientParams: apiClientArgs = {

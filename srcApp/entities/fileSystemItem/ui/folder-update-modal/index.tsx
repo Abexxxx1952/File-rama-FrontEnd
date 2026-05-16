@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+
 import { folderUpdateSchema } from "@/srcApp/entities/fileSystemItem/model/lib/schemas/folderUpdateSchema";
-import { FetchUpdateFolderForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchUpdateFolder";
+import { type FetchUpdateFolderForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchUpdateFolder";
 import { updateFolder } from "@/srcApp/entities/fileSystemItem/model/updateFolder";
 import { Button } from "@/srcApp/shared/ui/button";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+
 import styles from "./styles.module.css";
 
 type FolderUpdateModalProps = {
@@ -28,7 +31,7 @@ export function FolderUpdateModal({
 }: FolderUpdateModalProps) {
   const [loading, setLoading] = useState(false);
 
-  const defaultValues = { folderName: folderName };
+  const defaultValues = { folderName };
 
   const {
     control,
@@ -45,7 +48,7 @@ export function FolderUpdateModal({
         await updateFolder(
           { folderId, folderName: data.folderName },
           [fileSystemItemsCurrentTag],
-          setLoading,
+          setLoading
         );
       })();
     }

@@ -1,7 +1,9 @@
 import Image from "next/image";
+
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { MainFooter } from "@/srcApp/widgets/main-footer";
 import { MainHeader } from "@/srcApp/widgets/main-header";
+
 import styles from "./styles.module.css";
 
 export function MainPage() {

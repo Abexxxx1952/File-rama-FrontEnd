@@ -1,16 +1,18 @@
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
 import { fetchUpdateUser } from "../api/fetchUpdateUser";
-import { User } from "./types/user";
+import { type User } from "./types/user";
 
 export async function updateTwoFactorAuthorization(
   isTwoFactorEnabled: boolean,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  setUser: Dispatch<SetStateAction<User | null>>,
+  setUser: Dispatch<SetStateAction<User | null>>
 ): Promise<User | null> {
   setLoading(true);
   const updateData = {
@@ -22,7 +24,7 @@ export async function updateTwoFactorAuthorization(
     if (access_token) {
       const data: User | ErrorData | null = await fetchUpdateUser(
         access_token,
-        updateData,
+        updateData
       );
 
       if (isErrorData(data)) {
@@ -54,7 +56,7 @@ export async function updateTwoFactorAuthorization(
       return updateTwoFactorAuthorization(
         isTwoFactorEnabled,
         setLoading,
-        setUser,
+        setUser
       );
     }
     return null;

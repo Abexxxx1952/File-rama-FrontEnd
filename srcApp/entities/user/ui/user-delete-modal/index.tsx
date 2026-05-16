@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
+
 import { useImperativeDisableScroll } from "@/srcApp/shared/hooks/useImperativeDisableScroll";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { Button } from "@/srcApp/shared/ui/button";
+
 import { deleteUser } from "../../model/deleteUser";
 import styles from "./styles.module.css";
 
@@ -26,7 +29,7 @@ export function UserDeleteModal({ setDeleteModalOpen }: UserDeleteModalProps) {
       <div
         className={styles.overlay}
         onClick={() => setDeleteModalOpen(false)}
-      ></div>
+      />
 
       <div className={styles.modal__content}>
         <h2 className={styles.modal__title}>

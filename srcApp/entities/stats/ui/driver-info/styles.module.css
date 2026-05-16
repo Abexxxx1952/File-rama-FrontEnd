@@ -1,59 +1,59 @@
 .driverInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  padding: 0.75rem;
+  font-size: inherit;
   color: var(--secondary-font-color);
   background-color: var(--dashboard-background-color);
   border: 1px solid var(--surface-border-color);
   border-radius: 0.75rem;
-  font-size: inherit;
-  padding: 0.75rem;
 }
 
 .driverInfo__email {
   max-width: 100%;
   margin: 0.25rem 0 0;
-  text-align: center;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .driverInfo__usageSizeValue {
+  position: relative;
   width: 100%;
   height: 1.25rem;
   margin-top: 0.75rem;
-  position: relative;
   text-align: center;
 }
 
 .driverInfo__usageValue {
   --usage-value-size: 50%;
-  display: block;
   position: absolute;
+  display: block;
   width: var(--usage-value-size);
-  border-radius: 2rem;
   height: 100%;
   background-color: var(--primary-logo-color);
+  border-radius: 2rem;
 }
 
 .driverInfo__totalValue {
-  display: block;
   position: absolute;
+  display: block;
   width: 100%;
-  border-radius: 2rem;
   height: 100%;
   background-color: var(--secondary-logo-color);
+  border-radius: 2rem;
 }
 
 .driverInfo__text {
   margin-top: 1rem;
   font-size: inherit;
-  color: var(--header-font-color);
   text-align: center;
+  color: var(--header-font-color);
 }
 
 @media (max-width: 768px) {

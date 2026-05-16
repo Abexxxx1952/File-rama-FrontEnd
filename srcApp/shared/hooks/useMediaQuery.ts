@@ -12,7 +12,7 @@ export const useMediaQuery = (query: string) => {
         matchMedia.removeEventListener("change", callback);
       };
     },
-    [query],
+    [query]
   );
 
   const getSnapshot = () => window.matchMedia(query).matches;

@@ -1,7 +1,9 @@
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
+
 import { StatusUpload } from "../../types/fileUploadResult";
 import { useUploadProgress } from ".././useUploadProgress";
 
@@ -27,7 +29,7 @@ class MockEventSource {
 
   constructor(
     public url: string,
-    public options?: EventSourceInit,
+    public options?: EventSourceInit
   ) {
     eventSources.push(this);
   }
@@ -62,7 +64,7 @@ describe("useUploadProgress", () => {
       // Then
       await waitFor(() => expect(eventSources).toHaveLength(1));
       expect(eventSources[0].url).toBe(
-        "https://api.example.com/upload-status/upload-1",
+        "https://api.example.com/upload-status/upload-1"
       );
       expect(eventSources[0].options).toEqual({ withCredentials: true });
     });
@@ -87,7 +89,9 @@ describe("useUploadProgress", () => {
 
       // When
       act(() => {
-        eventSources[0].onmessage?.({ data: JSON.stringify(event) } as MessageEvent);
+        eventSources[0].onmessage?.({
+          data: JSON.stringify(event),
+        } as MessageEvent);
       });
 
       // Then
@@ -104,7 +108,7 @@ describe("useUploadProgress", () => {
         refresh_token: undefined,
       });
       renderHook(() =>
-        useUploadProgress("upload-1", vi.fn(), onComplete, vi.fn()),
+        useUploadProgress("upload-1", vi.fn(), onComplete, vi.fn())
       );
       await waitFor(() => expect(eventSources).toHaveLength(1));
       const event = {
@@ -116,7 +120,9 @@ describe("useUploadProgress", () => {
 
       // When
       act(() => {
-        eventSources[0].onmessage?.({ data: JSON.stringify(event) } as MessageEvent);
+        eventSources[0].onmessage?.({
+          data: JSON.stringify(event),
+        } as MessageEvent);
       });
 
       // Then
@@ -133,7 +139,9 @@ describe("useUploadProgress", () => {
         access_token: "access-token",
         refresh_token: undefined,
       });
-      renderHook(() => useUploadProgress("upload-1", vi.fn(), vi.fn(), onError));
+      renderHook(() =>
+        useUploadProgress("upload-1", vi.fn(), vi.fn(), onError)
+      );
       await waitFor(() => expect(eventSources).toHaveLength(1));
       const event = {
         fileName: "report.pdf",
@@ -144,7 +152,9 @@ describe("useUploadProgress", () => {
 
       // When
       act(() => {
-        eventSources[0].onmessage?.({ data: JSON.stringify(event) } as MessageEvent);
+        eventSources[0].onmessage?.({
+          data: JSON.stringify(event),
+        } as MessageEvent);
       });
 
       // Then
@@ -170,7 +180,9 @@ describe("useUploadProgress", () => {
       renderHook(() => useUploadProgress("upload-1", vi.fn()));
 
       // Then
-      await waitFor(() => expect(refreshTokens).toHaveBeenCalledWith("refresh-token"));
+      await waitFor(() =>
+        expect(refreshTokens).toHaveBeenCalledWith("refresh-token")
+      );
       await waitFor(() => expect(eventSources).toHaveLength(1));
     });
   });
@@ -194,7 +206,7 @@ describe("useUploadProgress", () => {
       // Then
       expect(console.error).toHaveBeenCalledWith(
         "Failed to parse SSE event",
-        expect.any(SyntaxError),
+        expect.any(SyntaxError)
       );
     });
   });
@@ -209,7 +221,9 @@ describe("useUploadProgress", () => {
         access_token: "access-token",
         refresh_token: undefined,
       });
-      renderHook(() => useUploadProgress("upload-1", vi.fn(), vi.fn(), onError));
+      renderHook(() =>
+        useUploadProgress("upload-1", vi.fn(), vi.fn(), onError)
+      );
       await waitFor(() => expect(eventSources).toHaveLength(1));
 
       // When

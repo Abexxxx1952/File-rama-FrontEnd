@@ -1,9 +1,10 @@
 "use server";
 
-import { SortFileSystemRules } from "@/srcApp/pages/dashboard/model/types/sort";
+import { type SortFileSystemRules } from "@/srcApp/pages/dashboard/model/types/sort";
 import { fetchEntity } from "@/srcApp/shared/model/fetchEntity";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
-import { FileSystemItem } from "../model/types/fileSystemItem";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
+import { type FileSystemItem } from "../model/types/fileSystemItem";
 
 export async function fetchFileSystemItem(
   access_token: string,
@@ -15,7 +16,7 @@ export async function fetchFileSystemItem(
     parentFolderId: string | null;
     sort: SortFileSystemRules;
     fileSystemItemsCurrentTag: string;
-  },
+  }
 ): Promise<FileSystemItem[] | ErrorData | null> {
   const urlFromEnv: string = `${process.env.GET_FILE_SYSTEM_ITEM_URL}`;
   const url = new URL(urlFromEnv);
@@ -27,7 +28,7 @@ export async function fetchFileSystemItem(
   if (sort.sortFolderRules.length > 0) {
     url.searchParams.set(
       "orderFoldersBy",
-      JSON.stringify(sort.sortFolderRules),
+      JSON.stringify(sort.sortFolderRules)
     );
   }
 

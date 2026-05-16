@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ButtonLink } from "@/srcApp/shared/ui/button-link";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import { ButtonLink } from "@/srcApp/shared/ui/button-link";
+
 import styles from "./styles.module.css";
 
 export function AuthLayout({ children }: { children: React.ReactNode }) {
@@ -14,57 +17,57 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
           <div className={styles.auth__images}>
             <div className={`${styles.auth__image} ${styles.whiteOutline}`}>
               <Image
-                src={`/img/auth/white-outline.png`}
+                src="/img/auth/white-outline.png"
                 fill={true}
-                alt={`Auth images`}
+                alt="Auth images"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className={`${styles.auth__image} ${styles.dots}`}>
               <Image
-                src={`/img/auth/dots.png`}
+                src="/img/auth/dots.png"
                 fill={true}
-                alt={`Auth images`}
+                alt="Auth images"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className={`${styles.auth__image} ${styles.coin}`}>
               <Image
-                src={`/img/auth/coin.png`}
+                src="/img/auth/coin.png"
                 fill={true}
-                alt={`Auth images`}
+                alt="Auth images"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className={`${styles.auth__image} ${styles.spring}`}>
               <Image
-                src={`/img/auth/spring.png`}
+                src="/img/auth/spring.png"
                 fill={true}
-                alt={`Auth images`}
+                alt="Auth images"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className={`${styles.auth__image} ${styles.rocket}`}>
               <Image
-                src={`/img/auth/rocket.png`}
+                src="/img/auth/rocket.png"
                 fill={true}
-                alt={`Auth images`}
+                alt="Auth images"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className={`${styles.auth__image} ${styles.cloud}`}>
               <Image
-                src={`/img/auth/cloud.png`}
+                src="/img/auth/cloud.png"
                 fill={true}
-                alt={`Auth images`}
+                alt="Auth images"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <div className={`${styles.auth__image} ${styles.stars}`}>
               <Image
-                src={`/img/auth/stars.png`}
+                src="/img/auth/stars.png"
                 fill={true}
-                alt={`Auth images`}
+                alt="Auth images"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>

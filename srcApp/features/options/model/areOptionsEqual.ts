@@ -1,8 +1,8 @@
-import { OptionsProps } from "../ui";
+import { type OptionsProps } from "../ui";
 
 export function areOptionsEqual(
   prevProps: OptionsProps,
-  nextProps: OptionsProps,
+  nextProps: OptionsProps
 ) {
   if (
     prevProps.currentParentFolderId === nextProps.currentParentFolderId &&

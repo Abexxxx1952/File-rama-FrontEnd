@@ -1,8 +1,9 @@
 import {
   SORT_ORDER,
-  SortOrder,
+  type SortOrder,
 } from "@/srcApp/pages/dashboard/model/types/sort";
 import { Icon } from "@/srcApp/shared/ui/icon";
+
 import styles from "./styles.module.css";
 
 type ArrowIconProps = {
@@ -15,7 +16,9 @@ type ArrowIconProps = {
 };
 
 export function ArrowIcon({ sortItem }: ArrowIconProps) {
-  if (!sortItem) return null;
+  if (!sortItem) {
+    return null;
+  }
 
   const isDesc =
     sortItem?.order === SORT_ORDER.DESC ? SORT_ORDER.DESC : SORT_ORDER.ASC;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { DashboardPage } from "@/srcApp/pages/dashboard";
 
 export const metadata: Metadata = {

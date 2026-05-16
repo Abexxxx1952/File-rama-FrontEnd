@@ -1,12 +1,14 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchUpdateGoogleServiceAccounts } from "../../api/fetchUpdateGoogleServiceAccounts";
 import { addGoogleServiceAccount } from ".././addGoogleServiceAccounts";
 import { deleteGoogleServiceAccount } from ".././deleteGoogleServiceAccounts copy";
-import { updateGoogleServiceAccount } from ".././updateGoogleServiceAccounts";
 import { UpdateMode } from ".././types/user";
+import { updateGoogleServiceAccount } from ".././updateGoogleServiceAccounts";
 
 vi.mock("@/srcApp/features/cookies/model/getCookies", () => ({
   getCookies: vi.fn(),
@@ -61,7 +63,7 @@ describe("google service account actions", () => {
       const result = await addGoogleServiceAccount(
         serviceAccount,
         vi.fn(),
-        setUser,
+        setUser
       );
 
       // Then
@@ -71,7 +73,7 @@ describe("google service account actions", () => {
           googleServiceAccounts: [
             { ...serviceAccount, updateMode: UpdateMode.CREATE },
           ],
-        },
+        }
       );
       expect(notifyResponse).toHaveBeenCalledWith({
         isError: false,
@@ -99,7 +101,7 @@ describe("google service account actions", () => {
         serviceAccount,
         vi.fn(),
         setUser,
-        setUpdateModalOpen,
+        setUpdateModalOpen
       );
 
       // Then
@@ -114,7 +116,7 @@ describe("google service account actions", () => {
               updateMode: UpdateMode.UPDATE,
             },
           ],
-        },
+        }
       );
       expect(setUser).toHaveBeenCalledWith(user);
       expect(setUpdateModalOpen).toHaveBeenCalledWith(false);
@@ -135,7 +137,7 @@ describe("google service account actions", () => {
       const result = await deleteGoogleServiceAccount(
         "drive@example.com",
         vi.fn(),
-        vi.fn(),
+        vi.fn()
       );
 
       // Then
@@ -148,7 +150,7 @@ describe("google service account actions", () => {
               updateMode: UpdateMode.DELETE,
             },
           ],
-        },
+        }
       );
       expect(result).toEqual(user);
     });
@@ -172,7 +174,7 @@ describe("google service account actions", () => {
       const result = await addGoogleServiceAccount(
         serviceAccount,
         vi.fn(),
-        vi.fn(),
+        vi.fn()
       );
 
       // Then
@@ -183,7 +185,7 @@ describe("google service account actions", () => {
           googleServiceAccounts: [
             { ...serviceAccount, updateMode: UpdateMode.CREATE },
           ],
-        },
+        }
       );
       expect(result).toEqual(user);
     });
@@ -207,7 +209,7 @@ describe("google service account actions", () => {
       const result = await addGoogleServiceAccount(
         serviceAccount,
         vi.fn(),
-        vi.fn(),
+        vi.fn()
       );
 
       // Then

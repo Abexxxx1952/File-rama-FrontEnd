@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export function useImperativeDisableScroll(
   element: HTMLElement | null,
-  disabled: boolean,
+  disabled: boolean
 ) {
   useEffect(() => {
     if (!element) {

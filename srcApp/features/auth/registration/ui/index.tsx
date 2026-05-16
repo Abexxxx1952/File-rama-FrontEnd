@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+
 import { Button } from "@/srcApp/shared/ui/button";
 import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+
 import { userRegistrationSchema } from "../lib/userRegistrationSchema";
 import { registerUser } from "../model/registerUser";
-import { CreateUser } from "../model/types/createUser";
+import { type CreateUser } from "../model/types/createUser";
 import styles from "./styles.module.css";
 
 export function Registration() {

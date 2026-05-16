@@ -2,16 +2,16 @@
   --border: none;
   --border-radius: 0.5rem;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
-  border-radius: var(--border-radius);
   background-color: transparent;
   border: var(--border);
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
   user-select: none;
-  transition: all 0.2s ease-in-out;
 }
 
 .button:disabled {
@@ -19,16 +19,16 @@
   cursor: not-allowed;
 }
 
-.button__loading,
 .button__loading {
-  transform: scale(1.2);
   animation: spin 2s linear infinite;
+  transform: scale(1.2);
 }
 
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }

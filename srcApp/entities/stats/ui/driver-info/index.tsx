@@ -1,8 +1,9 @@
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
+
 import { isDriveInfoErrorResult } from "../../model/isDriveInfoErrorResult";
 import { isDriveInfoSuccessResult } from "../../model/isDriveInfoSuccessResult";
-import { DriveInfoErrorResult } from "../../model/types/driveInfoErrorResult";
-import { DriveInfoSuccessResult } from "../../model/types/driveInfoSuccessResult";
+import { type DriveInfoErrorResult } from "../../model/types/driveInfoErrorResult";
+import { type DriveInfoSuccessResult } from "../../model/types/driveInfoSuccessResult";
 import styles from "./styles.module.css";
 
 export function DriverInfo({
@@ -13,17 +14,17 @@ export function DriverInfo({
   if (isDriveInfoSuccessResult(drive)) {
     const { driveEmail: email, totalSpace, usedSpace } = drive;
     const usageValueStyle = {
-      "--usage-value-size": (usedSpace / totalSpace) * 100 + "%",
+      "--usage-value-size": `${(usedSpace / totalSpace) * 100}%`,
     } as React.CSSProperties;
     return (
       <div className={styles.driverInfo}>
         <span className={styles.driverInfo__email}>{email}</span>
         <div className={styles.driverInfo__usageSizeValue}>
-          <span className={styles.driverInfo__totalValue}></span>
+          <span className={styles.driverInfo__totalValue} />
           <span
             style={usageValueStyle}
             className={styles.driverInfo__usageValue}
-          ></span>
+          />
         </div>
         <span
           className={styles.driverInfo__text}

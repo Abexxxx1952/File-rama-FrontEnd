@@ -8,7 +8,7 @@ type KeyboardHandler = [
 
 export function useKeyboardHandler(
   element: HTMLElement | null,
-  handlers: KeyboardHandler[],
+  handlers: KeyboardHandler[]
 ) {
   useEffect(() => {
     if (!element) {

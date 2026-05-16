@@ -1,12 +1,14 @@
 "use client";
 
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+
 import {
   pieChartColorFirst,
   pieChartColorSecond,
 } from "@/srcApp/shared/constants/pie-chart-colors";
 import { useMediaQuery } from "@/srcApp/shared/hooks/useMediaQuery";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+
 import styles from "./styles.module.css";
 
 type PieChartGeneralProps = {

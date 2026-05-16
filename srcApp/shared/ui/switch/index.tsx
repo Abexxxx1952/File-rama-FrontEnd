@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+
 import { Icon } from "../icon";
 import styles from "./styles.module.css";
 
@@ -49,7 +50,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       value,
       error,
     }: SwitchProps,
-    ref,
+    ref
   ) => {
     const switchStyle = {
       "--bg-color-false": backgroundColorFalse,
@@ -91,7 +92,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
             aria-invalid={error ? "true" : "false"}
             aria-describedby={error ? `error-${text}` : undefined}
           />
-          <span className={styles.slider} style={switchStyle}></span>
+          <span className={styles.slider} style={switchStyle} />
           {iconSvg && (
             <Icon
               link={iconSvg}
@@ -107,7 +108,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
         )}
       </>
     );
-  },
+  }
 );
 Switch.displayName = "Switch";
 

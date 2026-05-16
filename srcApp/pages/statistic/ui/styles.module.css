@@ -9,114 +9,114 @@
   max-width: 75rem;
   margin: 0.75rem auto 1rem;
   padding: 1.5rem;
-  border-radius: 1rem;
-  border: 1px solid var(--surface-border-color);
   background:
-    linear-gradient(135deg, rgba(75, 220, 232, 0.18), rgba(111, 86, 224, 0.08)),
-    rgba(255, 255, 255, 0.78);
+    linear-gradient(135deg, rgb(75 220 232 / 18%), rgb(111 86 224 / 8%)),
+    rgb(255 255 255 / 78%);
+  border: 1px solid var(--surface-border-color);
+  border-radius: 1rem;
   box-shadow: var(--surface-shadow-soft);
 }
 
 .eyebrow {
   display: block;
   margin-bottom: 0.35rem;
-  color: var(--dashboard-color);
   font-size: 0.8rem;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dashboard-color);
 }
 
 .stats__title {
+  margin: 0;
   font-size: 2rem;
   font-weight: 700;
-  margin: 0;
   line-height: 1.15;
 }
 
 .description {
   max-width: 42rem;
   margin-top: 0.75rem;
-  color: var(--header-font-color);
   font-size: 1rem;
   line-height: 1.5;
+  color: var(--header-font-color);
 }
 
 .overview {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.85fr);
   width: calc(100% - 2rem);
   max-width: 75rem;
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.85fr);
-  gap: 1rem;
   margin: 0 auto 1rem;
 }
 
 .chartCard,
 .metricCard,
 .driveSection {
+  background-color: rgb(255 255 255 / 90%);
   border: 1px solid var(--surface-border-color);
   border-radius: 0.875rem;
-  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: var(--surface-shadow-soft);
 }
 
 .chartCard {
-  min-height: 32rem;
   display: flex;
   flex-direction: column;
+  min-height: 32rem;
   padding: 1rem;
 }
 
 .chartCard__header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 1rem;
 }
 
 .cardLabel {
   display: block;
-  color: var(--header-font-color);
   font-size: 0.85rem;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--header-font-color);
 }
 
 .cardValue {
   display: block;
   margin: 0.35rem 0 0;
-  color: var(--primary-font-color);
   font-size: 1.6rem;
   line-height: 1.1;
+  color: var(--primary-font-color);
 }
 
 .usageBadge,
 .driveCount,
 .driveErrorCount {
   display: inline-flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 2rem;
   padding: 0 0.75rem;
-  border-radius: 999px;
-  color: var(--secondary-font-color);
-  background-color: rgba(75, 220, 232, 0.22);
   font-size: 0.85rem;
   font-weight: 700;
   white-space: nowrap;
+  color: var(--secondary-font-color);
+  background-color: rgb(75 220 232 / 22%);
+  border-radius: 999px;
 }
 
 .driveStatusGroup {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
 .driveErrorCount {
-  background-color: rgba(228, 14, 14, 0.12);
-  color: rgb(167, 21, 21);
+  color: rgb(167 21 21);
+  background-color: rgb(228 14 14 / 12%);
 }
 
 .pieChart {
@@ -126,18 +126,18 @@
 }
 
 .metricGrid {
-  margin: 0;
   display: grid;
-  grid-template-columns: 1fr;
   gap: 1rem;
+  grid-template-columns: 1fr;
+  margin: 0;
 }
 
 .metricCard {
-  min-height: 7rem;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 7rem;
+  padding: 1rem;
 }
 
 .driveSection {
@@ -149,8 +149,8 @@
 
 .sectionHeader {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -162,13 +162,13 @@
 }
 
 .stats__driveInfo {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
 }
 
 .stats__driveInfoItem {

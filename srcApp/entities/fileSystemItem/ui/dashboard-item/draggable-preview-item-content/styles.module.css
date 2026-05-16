@@ -1,17 +1,17 @@
 .previewItem__name {
-  padding-left: 0.5rem;
   width: calc(100% - 0.5rem);
+  padding-left: 0.5rem;
   justify-items: center;
 }
 
 .tableItem__row {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   height: 1.5rem;
   padding: 0 0.25rem;
   font-size: 1rem;
-  gap: 0.5rem;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -25,6 +25,6 @@
 
 .tableItem__text {
   display: block;
-  overflow: hidden;
   width: calc(100% - 24px - 0.5rem);
+  overflow: hidden;
 }

@@ -1,5 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+
 import { useKeyboardHandler } from ".././useKeyboardHandler";
 
 describe("useKeyboardHandler", () => {
@@ -14,7 +15,7 @@ describe("useKeyboardHandler", () => {
         useKeyboardHandler(element, [
           ["Escape", onEscape],
           ["Enter", onEnter],
-        ]),
+        ])
       );
 
       // When

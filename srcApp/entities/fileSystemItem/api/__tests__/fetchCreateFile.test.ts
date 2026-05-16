@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { CACHE_TAG } from "@/srcApp/shared/constants/cacheTag";
 import { revalidateFromClientByTag } from "@/srcApp/shared/model/revalidateFromClientByTag";
+
 import { StatusUpload } from "../../model/types/fileUploadResult";
 import { fetchCreateFile } from ".././fetchCreateFile";
 
@@ -36,7 +38,8 @@ describe("fetchCreateFile", () => {
   describe("when file upload is successful", () => {
     it("should upload form data, revalidate tags, and return first upload result", async () => {
       // Given
-      process.env.NEXT_PUBLIC_CREATE_FILE_URL = "https://api.example.com/files/";
+      process.env.NEXT_PUBLIC_CREATE_FILE_URL =
+        "https://api.example.com/files/";
       const params = new FormData();
       params.append("file", new Blob(["content"]), "report.pdf");
       const uploadResult = {
@@ -49,7 +52,7 @@ describe("fetchCreateFile", () => {
         vi.fn().mockResolvedValue({
           ok: true,
           json: vi.fn().mockResolvedValue([uploadResult]),
-        }),
+        })
       );
 
       // When
@@ -60,13 +63,16 @@ describe("fetchCreateFile", () => {
       });
 
       // Then
-      expect(fetch).toHaveBeenCalledWith("https://api.example.com/files/upload-1", {
-        method: "POST",
-        body: params,
-        headers: {
-          Authorization: "Bearer access-token",
-        },
-      });
+      expect(fetch).toHaveBeenCalledWith(
+        "https://api.example.com/files/upload-1",
+        {
+          method: "POST",
+          body: params,
+          headers: {
+            Authorization: "Bearer access-token",
+          },
+        }
+      );
       expect(revalidateFromClientByTag).toHaveBeenCalledWith([
         "files-current",
         CACHE_TAG.STAT,
@@ -88,7 +94,7 @@ describe("fetchCreateFile", () => {
         vi.fn().mockResolvedValue({
           ok: false,
           json: vi.fn().mockResolvedValue(error),
-        }),
+        })
       );
 
       // When

@@ -1,7 +1,9 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { User } from "@/srcApp/entities/user/model/types/user";
+import { type Dispatch, type SetStateAction, useState } from "react";
+
+import { type User } from "@/srcApp/entities/user/model/types/user";
 import { updateTwoFactorAuthorization } from "@/srcApp/entities/user/model/updateTwoFactorAuthorization";
 import { Button } from "@/srcApp/shared/ui/button";
+
 import styles from "./styles.module.css";
 
 type TwoFactorAuthProps = {
@@ -34,7 +36,7 @@ export function TwoFactorAuth({
             updateTwoFactorAuthorization(
               isTwoFactorEnabled,
               setLoading,
-              setUser,
+              setUser
             );
           }}
         />

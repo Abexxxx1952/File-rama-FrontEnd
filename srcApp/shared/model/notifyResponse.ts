@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
+
 import { isErrorData } from "./isErrorData";
-import { NotifyParams } from "./types/notifyParams";
+import { type NotifyParams } from "./types/notifyParams";
 
 export function notifyResponse(params: NotifyParams, message?: string): void {
   if (params.isError) {
@@ -14,7 +15,7 @@ export function notifyResponse(params: NotifyParams, message?: string): void {
 
         {
           position: "top-right",
-        },
+        }
       );
       return;
     }

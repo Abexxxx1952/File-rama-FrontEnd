@@ -1,7 +1,9 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+
 import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
+
 import { fetchUpdateFolder } from "../api/fetchUpdateFolder";
 import type { FetchUpdateFolder } from "./types/fetchUpdateFolder";
 import type { Folder } from "./types/folder";
@@ -9,7 +11,7 @@ import type { Folder } from "./types/folder";
 export async function updateFolder(
   updateFolderData: FetchUpdateFolder,
   fileSystemItemsCurrentTags: string[],
-  setLoading: Dispatch<SetStateAction<boolean>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ): Promise<Folder | null> {
   return await fetchWithAuth<
     Folder,
@@ -21,6 +23,6 @@ export async function updateFolder(
     fetchUpdateFolder,
     { updateFolderData, fileSystemItemsCurrentTags },
     (data) => `Folder ${data.folderName} edited successfully`,
-    setLoading,
+    setLoading
   );
 }

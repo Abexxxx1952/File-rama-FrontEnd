@@ -1,6 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { revalidateTag } from "next/cache";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { apiClient } from "@/srcApp/shared/model/apiClient";
+
 import { fetchDeleteFilePermissions } from ".././fetchDeleteFilePermissions";
 
 vi.mock("next/cache", () => ({

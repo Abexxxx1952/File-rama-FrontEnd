@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef } from "react";
+
 import { useClickOutside } from "@/srcApp/shared/hooks/useClickOutside";
 import { Icon } from "@/srcApp/shared/ui/icon";
+
 import styles from "./styles.module.css";
 
 type DashboardItemContextMenuProps = {

@@ -1,20 +1,24 @@
 "use client";
 
 import { memo, useEffect, useRef, useState } from "react";
+
 import { createFile } from "@/srcApp/entities/fileSystemItem/model/createFile";
 import { useUploadProgress } from "@/srcApp/entities/fileSystemItem/model/hooks/useUploadProgress";
-import { FileUploadEvent } from "@/srcApp/entities/fileSystemItem/model/types/fileUploadEvent";
+import { type FileUploadEvent } from "@/srcApp/entities/fileSystemItem/model/types/fileUploadEvent";
 import { StatusUpload } from "@/srcApp/entities/fileSystemItem/model/types/fileUploadResult";
 import {
-  FileWithOptions,
+  type FileWithOptions,
   UploadStatus,
 } from "@/srcApp/entities/fileSystemItem/model/types/fileWithId";
-import type { UploadStatusViewType } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
-import { UploadStatusView } from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
+import {
+  UploadStatusView,
+  type UploadStatusViewType,
+} from "@/srcApp/entities/fileSystemItem/model/types/uploadStatus";
 import { updateFileUploadStatus } from "@/srcApp/entities/fileSystemItem/model/updateFileUploadStatus";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { Icon } from "@/srcApp/shared/ui/icon";
+
 import { areFileCreateModalItemEqual } from "../../../model/areFileCreateModalItemEqual";
 import styles from "./styles.module.css";
 
@@ -49,14 +53,14 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
   const { id, file, uploadStatus } = fileWith;
 
   const fileExtension = file.name.split(".").pop();
-  let progressBarStyle = {
-    "--progress-bar-size": (completedSize / file.size) * 100 + "%",
+  const progressBarStyle = {
+    "--progress-bar-size": `${(completedSize / file.size) * 100}%`,
   } as React.CSSProperties;
   useUploadProgress(
     id,
     handleUploadStatusChange,
     handleUploadComplete,
-    handleUploadError,
+    handleUploadError
   );
 
   function handleUploadStatusChange(data: FileUploadEvent) {
@@ -67,7 +71,9 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
   }
 
   function handleUploadComplete(data: FileUploadEvent) {
-    if (hasCompletedUploadRef.current === true) return;
+    if (hasCompletedUploadRef.current === true) {
+      return;
+    }
     setCompletedSize(data.progress);
     setUploadStatusView(UploadStatusView.completed);
     setCompletedFiles((prev) => prev + 1);
@@ -77,7 +83,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
         prevFiles,
         id,
         UploadStatus.completed,
-        setAvailableToUpload,
+        setAvailableToUpload
       );
     });
 
@@ -92,7 +98,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
           isError: true,
           responseResult: null,
         },
-        err.error,
+        err.error
       );
     }
 
@@ -102,7 +108,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
           isError: true,
           responseResult: null,
         },
-        err.message,
+        err.message
       );
     }
 
@@ -118,7 +124,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
         prevFiles,
         id,
         UploadStatus.error,
-        setAvailableToUpload,
+        setAvailableToUpload
       );
     });
 
@@ -134,7 +140,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
         prevFiles,
         id,
         UploadStatus.queued,
-        setAvailableToUpload,
+        setAvailableToUpload
       );
     });
 
@@ -148,15 +154,17 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
         prevFiles.map((item) =>
           item.id === id
             ? { ...item, uploadStatus: UploadStatus.uploading }
-            : item,
-        ),
+            : item
+        )
       );
       setVersion((v) => v + 1);
     }
   }
 
   useEffect(() => {
-    if (!(uploadStatus === UploadStatus.uploading)) return;
+    if (!(uploadStatus === UploadStatus.uploading)) {
+      return;
+    }
 
     const formData = new FormData();
     if (parentFolderId) {
@@ -169,7 +177,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
         formData,
         id,
         fileSystemItemsCurrentTag,
-        abortControllerRef,
+        abortControllerRef
       );
 
       if (result === null) {
@@ -220,7 +228,7 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
               onClick={handleCancelUpload}
             >
               <Icon
-                link={`/svg/settings-sprite.svg#cross`}
+                link="/svg/settings-sprite.svg#cross"
                 className={styles.file__crossIcon}
               />
             </button>
@@ -232,17 +240,14 @@ export const FileCreateModalItem = memo(function FileCreateModalItem({
               onClick={handleRefreshUpload}
             >
               <Icon
-                link={`/svg/settings-sprite.svg#refresh`}
+                link="/svg/settings-sprite.svg#refresh"
                 className={styles.file__refreshIcon}
               />
             </button>
           )}
         </div>
         <div className={styles.file__progressBarContainer}>
-          <div
-            className={styles.file__progressBar}
-            style={progressBarStyle}
-          ></div>
+          <div className={styles.file__progressBar} style={progressBarStyle} />
         </div>
       </div>
     </li>

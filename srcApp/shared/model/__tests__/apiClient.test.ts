@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { apiClient } from ".././apiClient";
 
 describe("apiClient", () => {
@@ -57,12 +58,12 @@ describe("apiClient", () => {
       const parsedUrl = new URL(url);
 
       expect(parsedUrl.origin + parsedUrl.pathname).toBe(
-        "https://api.example.com/files",
+        "https://api.example.com/files"
       );
       expect(
         JSON.parse(
-          decodeURIComponent(parsedUrl.searchParams.get("condition") || ""),
-        ),
+          decodeURIComponent(parsedUrl.searchParams.get("condition") || "")
+        )
       ).toEqual({
         parentFolderId: "folder-1",
       });
@@ -98,7 +99,7 @@ describe("apiClient", () => {
       expect(abortSpy).toHaveBeenCalledTimes(1);
       expect(abortControllerRef.current).not.toBe(previousController);
       expect(fetchMock.mock.calls[0][1].signal).toBe(
-        abortControllerRef.current.signal,
+        abortControllerRef.current.signal
       );
     });
   });

@@ -1,16 +1,19 @@
-import { Dispatch, SetStateAction } from "react";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { User } from "@/srcApp/entities/user/model/types/user";
+import { type Dispatch, type SetStateAction } from "react";
+
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
+import { type User } from "@/srcApp/entities/user/model/types/user";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
 import { fetchRegisterUser } from "../api/fetchRegisterUser";
-import { CreateUser } from "./types/createUser";
+import { type CreateUser } from "./types/createUser";
 
 export async function registerUser(
   registerData: CreateUser,
   setLoading: Dispatch<SetStateAction<boolean>>,
-  router: AppRouterInstance,
+  router: AppRouterInstance
 ): Promise<void> {
   setLoading(true);
 

@@ -6,13 +6,17 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import Image from "next/image";
+
 import { areDashboardItemEqual } from "@/srcApp/entities/fileSystemItem/model/areDashboardItemEqual";
 import { formatDate } from "@/srcApp/entities/fileSystemItem/model/formatDate";
 import { getFileIconUrl } from "@/srcApp/entities/fileSystemItem/model/getFileIconUrl";
 import { isFile } from "@/srcApp/entities/fileSystemItem/model/isFile";
-import type { AnimationStageValues } from "@/srcApp/entities/fileSystemItem/model/types/animationStage";
-import { AnimationStage } from "@/srcApp/entities/fileSystemItem/model/types/animationStage";
+import {
+  AnimationStage,
+  type AnimationStageValues,
+} from "@/srcApp/entities/fileSystemItem/model/types/animationStage";
 import type { DeleteHandlerArgs } from "@/srcApp/entities/fileSystemItem/model/types/deleteHandlerArgs";
 import type { DoubleClickMeta } from "@/srcApp/entities/fileSystemItem/model/types/doubleClickHandlerArgs";
 import type { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
@@ -23,6 +27,7 @@ import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
 import { Icon } from "@/srcApp/shared/ui/icon";
+
 import { DashboardItemContextMenu } from "./dashboardItem-context-menu";
 import { DraggablePreviewItemContent } from "./draggable-preview-item-content";
 import styles from "./styles.module.css";
@@ -34,12 +39,12 @@ export type DashboardItemProps = {
   isSelected: boolean;
   oneClickHandler: (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    meta: OneClickMeta,
+    meta: OneClickMeta
   ) => void;
   handleOpen: (meta: DoubleClickMeta) => void;
   handleDownload: (
     id: string,
-    setLoadingDownload: React.Dispatch<React.SetStateAction<boolean>>,
+    setLoadingDownload: React.Dispatch<React.SetStateAction<boolean>>
   ) => Promise<void>;
   handleUpdate: (isFile: boolean, item: FileSystemItem) => void;
   handleDelete: (deleteHandlerArgs: DeleteHandlerArgs) => Promise<void>;
@@ -52,7 +57,7 @@ export type DashboardItemProps = {
   draggableQuantity: number;
 };
 
-export const DashboardItem = memo(function ({
+export const DashboardItem = memo(function DashboardItem({
   item,
   index,
   forceUpdate,
@@ -75,7 +80,7 @@ export const DashboardItem = memo(function ({
     useState<boolean>(false);
   const [dragEnter, setDragEnter] = useState(false);
   const [stage, setStage] = useState<AnimationStageValues>(
-    AnimationStage.SHRINK,
+    AnimationStage.SHRINK
   );
   const [startPos, setStartPos] = useState({ x: 0, y: 0 });
 
@@ -94,11 +99,17 @@ export const DashboardItem = memo(function ({
 
       setStartPos({ x: rect.left, y: rect.top });
     }
-    if (!isDraggable) return;
+    if (!isDraggable) {
+      return;
+    }
 
     const timerId = setTimeout(() => {
-      if (stage === AnimationStage.SHRINK) setStage(AnimationStage.FLY);
-      if (stage === AnimationStage.FLY) setStage(AnimationStage.FOLLOW);
+      if (stage === AnimationStage.SHRINK) {
+        setStage(AnimationStage.FLY);
+      }
+      if (stage === AnimationStage.FLY) {
+        setStage(AnimationStage.FOLLOW);
+      }
     }, 300);
 
     return () => {
@@ -114,16 +125,20 @@ export const DashboardItem = memo(function ({
   }, [isDraggable]);
 
   useEffect(() => {
-    if (stage !== AnimationStage.FOLLOW) return;
+    if (stage !== AnimationStage.FOLLOW) {
+      return;
+    }
 
     const el = previewRef.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
 
     let animationFrameId: number;
 
     const updatePosition = () => {
-      el.style.left = cursorPosition.current.x - startPos.x + "px";
-      el.style.top = cursorPosition.current.y + "px";
+      el.style.left = `${cursorPosition.current.x - startPos.x}px`;
+      el.style.top = `${cursorPosition.current.y}px`;
       animationFrameId = requestAnimationFrame(updatePosition);
     };
 
@@ -150,7 +165,7 @@ export const DashboardItem = memo(function ({
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       oneClickHandler(e, { id: item.id, isFileItem, index });
     },
-    [oneClickHandler, item.id, isFileItem, index],
+    [oneClickHandler, item.id, isFileItem, index]
   );
 
   const doubleClickHandlerWrapper = useCallback(() => {
@@ -175,7 +190,7 @@ export const DashboardItem = memo(function ({
 
       forceUpdate();
     },
-    [isFileItem, item.id, dndRef, forceUpdate],
+    [isFileItem, item.id, dndRef, forceUpdate]
   );
 
   function handleDragOver(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -183,7 +198,9 @@ export const DashboardItem = memo(function ({
   }
 
   function handleDragEnter(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    if (isFileItem || isSelected) return;
+    if (isFileItem || isSelected) {
+      return;
+    }
     e.preventDefault();
     setDragEnter(true);
   }
@@ -191,21 +208,28 @@ export const DashboardItem = memo(function ({
   function handleDragLeave(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.preventDefault();
 
-    if (isFileItem || isSelected) return;
-    if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+    if (isFileItem || isSelected) {
+      return;
+    }
+    if (e.currentTarget.contains(e.relatedTarget as Node)) {
+      return;
+    }
 
     setDragEnter(false);
   }
 
   function handleDrop() {
-    if (isFileItem || isSelected) return;
+    if (isFileItem || isSelected) {
+      return;
+    }
     const draggableItem = dndRef.current.draggable.values().next().value;
     if (
       draggableItem &&
       "folderId" in draggableItem &&
       draggableItem.folderId === item.id
-    )
+    ) {
       return;
+    }
 
     dndRef.current.droppable = item.id;
     setDragEnter(false);
@@ -230,7 +254,7 @@ export const DashboardItem = memo(function ({
               <Image
                 src={`/img/storage/${getFileIconUrl(item.fileExtension)}`}
                 fill={true}
-                alt={`File image`}
+                alt="File image"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </span>
@@ -239,14 +263,14 @@ export const DashboardItem = memo(function ({
               <Image
                 src="/img/storage/folder.png"
                 fill={true}
-                alt={`Folder image`}
+                alt="Folder image"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </span>
           )}
           <span className={styles.tableItem__text}>
             {isFileItem
-              ? item.fileName + "." + item.fileExtension
+              ? `${item.fileName}.${item.fileExtension}`
               : item.folderName}
           </span>
         </span>
@@ -268,7 +292,7 @@ export const DashboardItem = memo(function ({
             (item.publicAccessRole === FileSystemItemPermissions.READER ||
               item.publicAccessRole === FileSystemItemPermissions.WRITER) && (
               <Icon
-                link={`/svg/isPublic-sprite.svg#reader`}
+                link="/svg/isPublic-sprite.svg#reader"
                 className={styles.tableItem__publicReadIcon}
               />
             )}
@@ -279,7 +303,7 @@ export const DashboardItem = memo(function ({
           {isFileItem &&
             item.publicAccessRole === FileSystemItemPermissions.WRITER && (
               <Icon
-                link={`/svg/isPublic-sprite.svg#writer`}
+                link="/svg/isPublic-sprite.svg#writer"
                 className={styles.tableItem__publicWriteIcon}
               />
             )}

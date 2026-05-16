@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+
 import { Registration } from "..";
 import { registerUser } from "../../model/registerUser";
 
@@ -31,9 +32,15 @@ describe("Registration", () => {
       render(<Registration />);
 
       // When
-      await user.type(screen.getByPlaceholderText(/email/i), "user@example.com");
+      await user.type(
+        screen.getByPlaceholderText(/email/i),
+        "user@example.com"
+      );
       await user.type(screen.getByPlaceholderText(/^password$/i), "secret");
-      await user.type(screen.getByPlaceholderText(/repeat password/i), "secret");
+      await user.type(
+        screen.getByPlaceholderText(/repeat password/i),
+        "secret"
+      );
       await user.click(screen.getByRole("button", { name: /registration/i }));
 
       // Then
@@ -45,8 +52,8 @@ describe("Registration", () => {
             passwordRepeat: "secret",
           },
           expect.any(Function),
-          router,
-        ),
+          router
+        )
       );
     });
   });
@@ -60,14 +67,20 @@ describe("Registration", () => {
       render(<Registration />);
 
       // When
-      await user.type(screen.getByPlaceholderText(/email/i), "user@example.com");
+      await user.type(
+        screen.getByPlaceholderText(/email/i),
+        "user@example.com"
+      );
       await user.type(screen.getByPlaceholderText(/^password$/i), "secret");
-      await user.type(screen.getByPlaceholderText(/repeat password/i), "another");
+      await user.type(
+        screen.getByPlaceholderText(/repeat password/i),
+        "another"
+      );
       await user.click(screen.getByRole("button", { name: /registration/i }));
 
       // Then
       expect(await screen.findByRole("alert")).toHaveTextContent(
-        "Passwords do not match",
+        "Passwords do not match"
       );
       expect(mockedRegisterUser).not.toHaveBeenCalled();
     });

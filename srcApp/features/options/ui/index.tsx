@@ -1,6 +1,8 @@
 import { memo, useEffect, useState } from "react";
+
 import { ButtonIcon } from "@/srcApp/shared/ui/button-icon";
 import { Icon } from "@/srcApp/shared/ui/icon";
+
 import { areOptionsEqual } from "../model/areOptionsEqual";
 import { getFolderPath } from "../model/getFolderPath";
 import styles from "./styles.module.css";
@@ -14,7 +16,7 @@ export type OptionsProps = {
   loadingDelete: boolean;
 };
 
-export const Options = memo(function ({
+export const Options = memo(function Options({
   currentParentFolderId,
   folderPathTag,
   routerBack,
@@ -34,9 +36,8 @@ export const Options = memo(function ({
       const pathResponse = await getFolderPath(
         currentParentFolderId,
         folderPathTag,
-        setLoadingGetPath,
+        setLoadingGetPath
       );
-      console.log(pathResponse);
 
       if (pathResponse === ":/") {
         return;
@@ -61,7 +62,7 @@ export const Options = memo(function ({
       {loadingGetPath ? (
         <div className={styles.options__pathLoading}>
           <Icon
-            link={"/svg/settings-sprite.svg#loading"}
+            link="/svg/settings-sprite.svg#loading"
             className={styles.options__loading}
           />
         </div>

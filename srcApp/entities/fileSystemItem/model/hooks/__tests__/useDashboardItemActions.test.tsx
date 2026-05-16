@@ -1,10 +1,12 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+
 import { deleteFile } from "@/srcApp/entities/fileSystemItem/model/deleteFile";
 import { deleteFolder } from "@/srcApp/entities/fileSystemItem/model/deleteFolder";
 import { downloadFile } from "@/srcApp/entities/fileSystemItem/model/downloadFile";
 import { openFile } from "@/srcApp/entities/fileSystemItem/model/openFile";
-import { FileSystemItem } from "../../types/fileSystemItem";
+
+import { type FileSystemItem } from "../../types/fileSystemItem";
 import { useDashboardItemActions } from ".././useDashboardItemActions";
 
 vi.mock("@/srcApp/entities/fileSystemItem/model/deleteFile", () => ({
@@ -59,7 +61,7 @@ describe("useDashboardItemActions", () => {
       act(() => {
         result.current.oneClickHandler(
           { ctrlKey: true, metaKey: false, shiftKey: false } as any,
-          { id: "file-1", isFileItem: true, index: 2 },
+          { id: "file-1", isFileItem: true, index: 2 }
         );
       });
 
@@ -163,8 +165,8 @@ describe("useDashboardItemActions", () => {
         expect(deleteFile).toHaveBeenCalledWith(
           "file-1",
           "files-current",
-          setLoadingDelete,
-        ),
+          setLoadingDelete
+        )
       );
       expect(params.forceUpdate).toHaveBeenCalled();
     });
@@ -191,8 +193,8 @@ describe("useDashboardItemActions", () => {
         expect(deleteFolder).toHaveBeenCalledWith(
           "folder-1",
           "files-current",
-          setLoadingDelete,
-        ),
+          setLoadingDelete
+        )
       );
       expect(params.forceUpdate).toHaveBeenCalled();
     });

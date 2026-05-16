@@ -4,7 +4,7 @@ export const useLazyScrollLoading = (
   initialMaxCount: number,
   productsLength: number,
   addStep: number,
-  lastElementRef: React.RefObject<HTMLElement | null>,
+  lastElementRef: React.RefObject<HTMLElement | null>
 ): number => {
   const [maxCount, setMaxCount] = useState<number>(initialMaxCount);
   const observer = useRef<IntersectionObserver | null>(null);

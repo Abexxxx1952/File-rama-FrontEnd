@@ -1,32 +1,33 @@
 .addFolder__form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  align-items: center;
   justify-content: flex-start;
-  margin-top: 1.5rem;
+  align-items: center;
+  gap: 1rem;
   width: 50%;
+  margin-top: 1.5rem;
 }
 
 .addFolder__input {
   width: 100%;
-  height: 2.5rem;
   max-width: 35rem;
+  height: 2.5rem;
   margin-bottom: 1.5rem;
 }
 
 .addFolder__buttonContainer {
   width: 100%;
-  height: 3rem;
   max-width: 20rem;
-  font-size: 1rem;
+  height: 3rem;
   margin-top: 1.25rem;
+  font-size: 1rem;
 }
 
 @media screen and (max-width: 768px) {
   .addFolder__form {
     width: 70%;
   }
+
   .addFolder__buttonContainer {
     height: 2.5rem;
     margin-top: 1rem;
@@ -38,6 +39,7 @@
   .addFolder__form {
     width: 85%;
   }
+
   .addFolder__buttonContainer {
     height: 2rem;
     margin-top: 0.75rem;

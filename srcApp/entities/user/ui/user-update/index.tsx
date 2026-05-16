@@ -1,13 +1,16 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
-import { UserUpdateFormData } from "@/srcApp/entities/user/model/types/userUpdateFormData";
-import { Button } from "@/srcApp/shared/ui/button";
-import { Input } from "@/srcApp/shared/ui/input";
+import { type Dispatch, type SetStateAction, useState } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+
+import { type UserUpdateFormData } from "@/srcApp/entities/user/model/types/userUpdateFormData";
+import { Button } from "@/srcApp/shared/ui/button";
+import { Input } from "@/srcApp/shared/ui/input";
+
 import { userUpdateSchema } from "../../model/lib/schemas/userUpdateSchema";
-import { User } from "../../model/types/user";
+import { type User } from "../../model/types/user";
 import { updateUserSubmitHandler } from "../../model/updateUserSubmitHandler";
 import styles from "./styles.module.css";
 

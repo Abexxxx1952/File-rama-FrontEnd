@@ -1,11 +1,15 @@
 import { v4 as uuidv4 } from "uuid";
-import type { UploadStatusType } from "./types/fileWithId";
-import { FileWithOptions, UploadStatus } from "./types/fileWithId";
+
+import {
+  type FileWithOptions,
+  UploadStatus,
+  type UploadStatusType,
+} from "./types/fileWithId";
 
 export function getFilesWithOptions(
   files: File[],
   availableToUpload: number,
-  setAvailableToUpload: React.Dispatch<React.SetStateAction<number>>,
+  setAvailableToUpload: React.Dispatch<React.SetStateAction<number>>
 ): FileWithOptions[] {
   const result = files.map((file) => {
     const status: UploadStatusType =

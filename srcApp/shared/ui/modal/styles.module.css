@@ -1,21 +1,21 @@
 .modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: fixed;
-  inset: 0;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
 }
 
 .overlay {
   position: fixed;
-  inset: 0;
-  background-color: rgba(16, 20, 28, 0.48);
-  backdrop-filter: blur(5px);
   z-index: 15;
-  cursor: pointer;
   width: 100%;
   height: 100%;
+  background-color: rgb(16 20 28 / 48%);
+  cursor: pointer;
+  inset: 0;
+  backdrop-filter: blur(5px);
 }
 
 .modal__content {
@@ -24,68 +24,69 @@
   --content-width: 85%;
   --content-height: 85%;
   --content-padding: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   position: fixed;
   top: 50%;
   left: 50%;
-  width: var(--content-width);
-  height: var(--content-height);
-  padding: var(--content-padding);
-  max-width: 60rem;
-  max-height: min(90vh, 40rem);
-  overflow-y: auto;
-  overflow-x: hidden;
-  transform: translate(-50%, -50%);
-  background-color: var(--content-bg-color);
-  border-radius: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.65);
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: var(--content-width);
+  max-width: 60rem;
+  height: var(--content-height);
+  max-height: min(90vh, 40rem);
+  padding: var(--content-padding);
+  overflow: hidden auto;
+  background-color: var(--content-bg-color);
+  border: 1px solid rgb(255 255 255 / 65%);
+  border-radius: 1.25rem;
   box-shadow: var(--surface-shadow-medium);
+  transform: translate(-50%, -50%);
 }
 
 .modal__close {
-  width: 1.75rem;
-  height: 1.75rem;
-  cursor: pointer;
   position: absolute;
   top: 1rem;
   right: 1rem;
+  width: 1.75rem;
+  height: 1.75rem;
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
+
 .modal__close:hover,
 .modal__close:focus-visible {
-  --delete-icon-bg-color: rgb(228, 14, 14);
+  --delete-icon-bg-color: rgb(228 14 14);
   --delete-icon-color: transparent;
   transform: scale(1.08);
 }
 
 .modal__title {
-  color: var(--content-text-color);
   font-size: 1.5rem;
-  margin-inline: 1rem;
   text-align: center;
+  color: var(--content-text-color);
+  margin-inline: 1rem;
+
   /*  margin-top: 3%; */
 }
 
 @media screen and (max-width: 768px) {
   .modal__content {
     width: 100%;
-    height: 100%;
     max-width: none;
+    height: 100%;
     max-height: none;
-    border-radius: 0;
-    border: none;
     padding: 2rem;
+    border: none;
+    border-radius: 0;
   }
 
   .modal__close {
-    width: 2.25rem;
-    height: 2.25rem;
     top: 1.25rem;
     right: 1.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   .modal__title {
@@ -99,11 +100,12 @@
   }
 
   .modal__close {
-    width: 2rem;
-    height: 2rem;
     top: 1rem;
     right: 1rem;
+    width: 2rem;
+    height: 2rem;
   }
+
   .modal__title {
     font-size: 1rem;
   }

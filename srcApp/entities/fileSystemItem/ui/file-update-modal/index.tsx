@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+
 import { fileUpdateSchema } from "@/srcApp/entities/fileSystemItem/model/lib/schemas/fileUpdateSchema";
-import { FetchUpdateFileForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchUpdateFile";
+import { type FetchUpdateFileForm } from "@/srcApp/entities/fileSystemItem/model/types/fetchUpdateFile";
 import { updateFile } from "@/srcApp/entities/fileSystemItem/model/updateFile";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
 import { Button } from "@/srcApp/shared/ui/button";
@@ -10,12 +14,11 @@ import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
 import { Modal } from "@/srcApp/shared/ui/modal";
 import { Switch } from "@/srcApp/shared/ui/switch";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+
 import { createFilePermissions } from "../../model/createFilePermissions";
 import { deleteFilePermissions } from "../../model/deleteFilePermissions";
 import { FileSystemItemPermissions } from "../../model/types/fileSystemItemPermissions";
-import { publicAccessRole } from "../../model/types/publicAccessRole";
+import { type publicAccessRole } from "../../model/types/publicAccessRole";
 import styles from "./styles.module.css";
 
 type FileUpdateModalProps = {
@@ -46,8 +49,7 @@ export function FileUpdateModal({
     publicAccessRole === FileSystemItemPermissions.WRITER;
   const canRewritten = publicAccessRole === FileSystemItemPermissions.WRITER;
 
-  const fileStaticUrl: string =
-    `${process.env.NEXT_PUBLIC_DOWNLOAD_FILE_URL}` + fileId;
+  const fileStaticUrl: string = `${process.env.NEXT_PUBLIC_DOWNLOAD_FILE_URL}${fileId}`;
 
   const defaultValues = {
     fileName,
@@ -73,9 +75,9 @@ export function FileUpdateModal({
   async function handleUpdateFile(data: FetchUpdateFileForm) {
     if (data.fileName !== fileName || data.fileExtension !== fileExtension) {
       await updateFile(
-        { fileId, fileName: data.fileName + "." + data.fileExtension },
+        { fileId, fileName: `${data.fileName}.${data.fileExtension}` },
         [fileSystemItemsCurrentTag],
-        setLoading,
+        setLoading
       );
     }
     if (data.isPublic !== isPublic || data.canRewritten !== canRewritten) {
@@ -83,13 +85,13 @@ export function FileUpdateModal({
         await createFilePermissions(
           { fileId, role: data.canRewritten ? "writer" : "reader" },
           fileSystemItemsCurrentTag,
-          setLoading,
+          setLoading
         );
       } else {
         await deleteFilePermissions(
           fileId,
           fileSystemItemsCurrentTag,
-          setLoading,
+          setLoading
         );
       }
     }
@@ -99,7 +101,9 @@ export function FileUpdateModal({
   }
 
   async function copyToClipboard(value: string, isStaticUrl: boolean) {
-    if (!value) return;
+    if (!value) {
+      return;
+    }
     const notifyText = isStaticUrl
       ? "File static URL"
       : "File Google Drive URL";
@@ -201,8 +205,8 @@ export function FileUpdateModal({
               render={({ field }) => (
                 <Input
                   text="File Google Drive URL"
-                  backgroundColor={"var(--input-disabled-color)"}
-                  focusBackgroundColor={"var(--input-disabled-color)"}
+                  backgroundColor="var(--input-disabled-color)"
+                  focusBackgroundColor="var(--input-disabled-color)"
                   focusBoxShadow="0 0 10px white"
                   border="none"
                   textColor="var(--secondary-font-color)"
@@ -214,7 +218,7 @@ export function FileUpdateModal({
               )}
             />
             <Icon
-              link={`/svg/isPublic-sprite.svg#copyToClipboard`}
+              link="/svg/isPublic-sprite.svg#copyToClipboard"
               className={styles.updateFile__copyToClipboard}
               onClick={() => copyToClipboard(fileUrl, false)}
             />
@@ -228,8 +232,8 @@ export function FileUpdateModal({
               render={({ field }) => (
                 <Input
                   text="File Static URL"
-                  backgroundColor={"var(--input-disabled-color)"}
-                  focusBackgroundColor={"var(--input-disabled-color)"}
+                  backgroundColor="var(--input-disabled-color)"
+                  focusBackgroundColor="var(--input-disabled-color)"
                   focusBoxShadow="0 0 10px white"
                   border="none"
                   textColor="var(--secondary-font-color)"
@@ -241,7 +245,7 @@ export function FileUpdateModal({
               )}
             />
             <Icon
-              link={`/svg/isPublic-sprite.svg#copyToClipboard`}
+              link="/svg/isPublic-sprite.svg#copyToClipboard"
               className={styles.updateFile__copyToClipboard}
               onClick={() => copyToClipboard(fileStaticUrl, true)}
             />

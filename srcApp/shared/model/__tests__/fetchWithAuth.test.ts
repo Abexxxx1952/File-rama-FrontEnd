@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { notifyResponse } from ".././notifyResponse";
+
 import { fetchWithAuth } from ".././fetchWithAuth";
+import { notifyResponse } from ".././notifyResponse";
 
 vi.mock("@/srcApp/features/cookies/model/getCookies", () => ({
   getCookies: vi.fn(),
@@ -87,7 +89,7 @@ describe("fetchWithAuth", () => {
       const result = await fetchWithAuth(
         request,
         args,
-        (savedData) => `${savedData.name} saved`,
+        (savedData) => `${savedData.name} saved`
       );
 
       // Then

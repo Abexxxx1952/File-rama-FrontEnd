@@ -1,15 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 import { useRouter } from "next/navigation";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { getUser } from "@/srcApp/entities/user/model/getUser";
-import { User } from "@/srcApp/entities/user/model/types/user";
+import { type User } from "@/srcApp/entities/user/model/types/user";
 import { clearCookies } from "@/srcApp/features/cookies/model/clearCookies";
 import { DASHBOARD_ITEMS } from "@/srcApp/shared/constants/dashboard-nav-list";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
 import { Icon } from "@/srcApp/shared/ui/icon";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import styles from "./styles.module.css";
 
 interface DashboardLayoutProps {

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Sofia_Sans } from "next/font/google";
+
 import { App } from "@/srcApp/app";
+
 import "./globals.css";
 
 const font = Sofia_Sans({

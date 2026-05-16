@@ -2,9 +2,10 @@ import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refre
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+
 import { fetchStat } from "../api/fetchStat";
-import { Stat } from "./types/stat";
+import { type Stat } from "./types/stat";
 
 export async function getStat(): Promise<Stat | null> {
   try {

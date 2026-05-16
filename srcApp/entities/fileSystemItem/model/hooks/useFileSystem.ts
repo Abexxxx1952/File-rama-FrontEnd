@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+
 import { getFileSystemItems } from "@/srcApp/entities/fileSystemItem/model/getFileSystemItems";
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
-import { SortFileSystemRules } from "@/srcApp/pages/dashboard/model/types/sort";
+import { type FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+import { type SortFileSystemRules } from "@/srcApp/pages/dashboard/model/types/sort";
 
 type useFileSystemParams = {
   currentParentFolderId: string | null;
@@ -28,8 +29,8 @@ export function useFileSystem({
           currentParentFolderId,
           sortRules,
           fileSystemItemsCurrentTag,
-          setLoading,
-        ),
+          setLoading
+        )
       );
     })();
   }, [sortRules, version]);

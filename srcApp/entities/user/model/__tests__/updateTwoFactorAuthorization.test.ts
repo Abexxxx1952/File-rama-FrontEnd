@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
 import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+
 import { fetchUpdateUser } from "../../api/fetchUpdateUser";
 import { updateTwoFactorAuthorization } from ".././updateTwoFactorAuthorization";
 
@@ -69,7 +71,11 @@ describe("updateTwoFactorAuthorization", () => {
       vi.mocked(fetchUpdateUser).mockResolvedValue(null);
 
       // When
-      const result = await updateTwoFactorAuthorization(false, vi.fn(), vi.fn());
+      const result = await updateTwoFactorAuthorization(
+        false,
+        vi.fn(),
+        vi.fn()
+      );
 
       // Then
       expect(notifyResponse).toHaveBeenCalledWith({

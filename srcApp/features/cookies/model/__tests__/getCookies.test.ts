@@ -1,5 +1,7 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { cookies } from "next/headers";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { COOKIES_NAME } from "../../constant/cookies-name";
 import { getCookies } from ".././getCookies";
 

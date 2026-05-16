@@ -1,6 +1,8 @@
 import Link from "next/link";
+
 import { HEADER_ITEMS } from "@/srcApp/shared/constants/header-list";
 import { Logo } from "@/srcApp/shared/ui/logo";
+
 import { AuthSection } from "./auth-section";
 import { Menu } from "./menu";
 import styles from "./styles.module.css";

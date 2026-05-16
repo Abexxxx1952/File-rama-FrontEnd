@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/srcApp/shared/ui/button";
+
 import { createPortal } from "react-dom";
+
+import { Button } from "@/srcApp/shared/ui/button";
+
 import { UserDeleteModal } from "../user-delete-modal";
 import styles from "./styles.module.css";
 
@@ -29,7 +32,7 @@ export function UserDelete() {
         deleteModalOpen &&
         createPortal(
           <UserDeleteModal setDeleteModalOpen={setDeleteModalOpen} />,
-          portalRef.current,
+          portalRef.current
         )}
     </div>
   );

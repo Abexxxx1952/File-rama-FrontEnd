@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+
 import { useRouter } from "next/navigation";
+
 import { getUser } from "@/srcApp/entities/user/model/getUser";
-import { User } from "@/srcApp/entities/user/model/types/user";
+import { type User } from "@/srcApp/entities/user/model/types/user";
 import { ButtonLink } from "@/srcApp/shared/ui/button-link";
+
 import styles from "./styles.module.css";
 
 export function AuthSection() {

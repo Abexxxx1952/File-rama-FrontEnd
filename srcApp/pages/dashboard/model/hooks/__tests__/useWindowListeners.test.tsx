@@ -1,8 +1,10 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+
 import { deleteMany } from "@/srcApp/entities/fileSystemItem/model/deleteMany";
-import { FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
-import { SelectedMap } from "../../types/selectedMap";
+import { type FileSystemItem } from "@/srcApp/entities/fileSystemItem/model/types/fileSystemItem";
+
+import { type SelectedMap } from "../../types/selectedMap";
 import { useWindowListeners } from ".././useWindowListeners";
 
 vi.mock("@/srcApp/entities/fileSystemItem/model/deleteMany", () => ({
@@ -50,7 +52,7 @@ describe("useWindowListeners", () => {
           clear,
           setSelected: vi.fn(),
           forceUpdate: vi.fn(),
-        }),
+        })
       );
 
       // When
@@ -81,7 +83,7 @@ describe("useWindowListeners", () => {
           clear,
           setSelected: vi.fn(),
           forceUpdate,
-        }),
+        })
       );
 
       // When
@@ -94,8 +96,8 @@ describe("useWindowListeners", () => {
         expect(deleteMany).toHaveBeenCalledWith(
           [{ fileId: "file-1" }, { folderId: "folder-1" }],
           "files-current",
-          expect.any(Function),
-        ),
+          expect.any(Function)
+        )
       );
       expect(clear).toHaveBeenCalled();
       expect(forceUpdate).toHaveBeenCalled();
@@ -118,7 +120,7 @@ describe("useWindowListeners", () => {
           clear: vi.fn(),
           setSelected,
           forceUpdate: vi.fn(),
-        }),
+        })
       );
 
       // When

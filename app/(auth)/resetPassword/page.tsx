@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { ResetPasswordPage } from "@/srcApp/pages/reset-password";
 
 export const metadata: Metadata = {

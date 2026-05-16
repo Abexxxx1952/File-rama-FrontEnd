@@ -1,13 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+
 import { Input } from "..";
 
 describe("Input", () => {
   describe("when input has a label", () => {
     it("should render accessible input by label", () => {
       // Given
-      render(<Input text="Email" value="user@example.com" onChange={vi.fn()} />);
+      render(
+        <Input text="Email" value="user@example.com" onChange={vi.fn()} />
+      );
 
       // When
       const input = screen.getByLabelText(/email/i);
@@ -44,7 +47,7 @@ describe("Input", () => {
       // Then
       expect(input).toHaveAttribute("aria-invalid", "true");
       expect(screen.getByRole("alert")).toHaveTextContent(
-        "Invalid email address",
+        "Invalid email address"
       );
     });
   });

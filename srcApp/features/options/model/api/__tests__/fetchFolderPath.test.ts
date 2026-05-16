@@ -1,6 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
 import { revalidateTag } from "next/cache";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { apiClient } from "@/srcApp/shared/model/apiClient";
+
 import { fetchGetFolderPath } from ".././fetchFolderPath";
 
 vi.mock("next/cache", () => ({
@@ -29,7 +32,7 @@ describe("fetchGetFolderPath", () => {
       const result = await fetchGetFolderPath(
         "access-token",
         "folder-1",
-        "folder-path-tag",
+        "folder-path-tag"
       );
 
       // Then
@@ -62,7 +65,7 @@ describe("fetchGetFolderPath", () => {
       const result = await fetchGetFolderPath(
         "access-token",
         "folder-1",
-        "folder-path-tag",
+        "folder-path-tag"
       );
 
       // Then

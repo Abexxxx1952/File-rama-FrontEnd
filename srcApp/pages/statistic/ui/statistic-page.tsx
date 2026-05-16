@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import { DriverInfo, PieChartGeneral } from "@/srcApp/entities/stats/";
 import { getStat } from "@/srcApp/entities/stats/model/getStat";
 import { isDriveInfoErrorResult } from "@/srcApp/entities/stats/model/isDriveInfoErrorResult";
 import { isDriveInfoSuccessResult } from "@/srcApp/entities/stats/model/isDriveInfoSuccessResult";
-import { Stat } from "@/srcApp/entities/stats/model/types/stat";
+import { type Stat } from "@/srcApp/entities/stats/model/types/stat";
 import { formatBytes } from "@/srcApp/shared/model/formatBytes";
 import { Loading } from "@/srcApp/shared/ui/loading";
+
 import styles from "./styles.module.css";
 
 export function StatisticPage() {
@@ -21,17 +23,19 @@ export function StatisticPage() {
     })();
   }, []);
 
-  if (!stat) return <Loading />;
+  if (!stat) {
+    return <Loading />;
+  }
 
   const availableSize = stat.totalSize - stat.usedSize;
   const usagePercent = stat.totalSize
     ? Math.round((stat.usedSize / stat.totalSize) * 100)
     : 0;
   const connectedDriveCount = stat.driveInfoResult.filter(
-    isDriveInfoSuccessResult,
+    isDriveInfoSuccessResult
   ).length;
   const driveErrorCount = stat.driveInfoResult.filter(
-    isDriveInfoErrorResult,
+    isDriveInfoErrorResult
   ).length;
 
   return (
@@ -71,15 +75,11 @@ export function StatisticPage() {
         <dl className={styles.metricGrid}>
           <div className={styles.metricCard}>
             <dt className={styles.cardLabel}>Used space</dt>
-            <dd className={styles.cardValue}>
-              {formatBytes(stat.usedSize)}
-            </dd>
+            <dd className={styles.cardValue}>{formatBytes(stat.usedSize)}</dd>
           </div>
           <div className={styles.metricCard}>
             <dt className={styles.cardLabel}>Available space</dt>
-            <dd className={styles.cardValue}>
-              {formatBytes(availableSize)}
-            </dd>
+            <dd className={styles.cardValue}>{formatBytes(availableSize)}</dd>
           </div>
           <div className={styles.metricCard}>
             <dt className={styles.cardLabel}>Folders</dt>

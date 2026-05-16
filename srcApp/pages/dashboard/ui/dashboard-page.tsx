@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+
 import { useDashboardDnd } from "@/srcApp/entities/fileSystemItem/model/hooks/useDashboardDnd";
 import { useDashboardItemActions } from "@/srcApp/entities/fileSystemItem/model/hooks/useDashboardItemActions";
 import { useFileSystem } from "@/srcApp/entities/fileSystemItem/model/hooks/useFileSystem";
@@ -18,6 +19,7 @@ import { Search } from "@/srcApp/features/search/ui";
 import { Loading } from "@/srcApp/shared/ui/loading";
 import { DashboardModals } from "@/srcApp/widgets/dashboard-modals";
 import { DashboardTableHeader } from "@/srcApp/widgets/dashboard-table-header";
+
 import { useDashboardNavigation } from "../model/hooks/useDashboardNavigation";
 import { useLazyScrollLoading } from "../model/hooks/useLazyScrollLoading";
 import { useSearch } from "../model/hooks/useSearch";
@@ -112,7 +114,7 @@ export function DashboardPage({ ids }: { ids: string[] }) {
     INITIAL_MAX_COUNT,
     filteredFileSystemItems.length || 0,
     ADD_STEP,
-    sentinelRef,
+    sentinelRef
   );
 
   useEffect(() => {
@@ -125,7 +127,7 @@ export function DashboardPage({ ids }: { ids: string[] }) {
 
   useEffect(() => {
     setFilteredFileSystemItemsSliced(
-      filteredFileSystemItems.slice(0, maxCount),
+      filteredFileSystemItems.slice(0, maxCount)
     );
   }, [maxCount, filteredFileSystemItems]);
 
