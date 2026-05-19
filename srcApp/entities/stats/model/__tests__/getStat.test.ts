@@ -1,26 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
-import { fetchStat } from "../../api/fetchStat";
 import { getStat } from ".././getStat";
 
-vi.mock("@/srcApp/features/cookies/model/getCookies", () => ({
-  getCookies: vi.fn(),
-}));
-
-vi.mock("@/srcApp/features/auth/refresh-tokens/model/refreshTokens", () => ({
-  refreshTokens: vi.fn(),
-}));
-
-vi.mock("@/srcApp/shared/model/notifyResponse", () => ({
-  notifyResponse: vi.fn(),
-}));
-
-vi.mock("../../api/fetchStat", () => ({
-  fetchStat: vi.fn(),
+vi.mock("@/srcApp/shared/model/fetchWithAuth", () => ({
+  fetchWithAuth: vi.fn(),
 }));
 
 const stat = {
@@ -38,87 +23,30 @@ describe("getStat", () => {
     vi.restoreAllMocks();
   });
 
-  describe("when access token is available", () => {
+  describe("when stat is fetched successfully", () => {
     it("should return fetched stat", async () => {
       // Given
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: "refresh-token",
-      });
-      vi.mocked(fetchStat).mockResolvedValue(stat);
+      vi.mocked(fetchWithAuth).mockResolvedValue(stat);
 
       // When
       const result = await getStat();
 
       // Then
-      expect(fetchStat).toHaveBeenCalledWith("access-token");
+      expect(fetchWithAuth).toHaveBeenCalledWith(expect.any(Function));
       expect(result).toEqual(stat);
     });
   });
 
-  describe("when stat response contains error data", () => {
-    it("should notify error and return null", async () => {
+  describe("when fetch fails", () => {
+    it("should return null", async () => {
       // Given
-      const error = {
-        message: "Forbidden",
-        statusCode: 403,
-        error: "Forbidden",
-      };
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: undefined,
-      });
-      vi.mocked(fetchStat).mockResolvedValue(error);
+      vi.mocked(fetchWithAuth).mockResolvedValue(null);
 
       // When
       const result = await getStat();
 
       // Then
-      expect(notifyResponse).toHaveBeenCalledWith({
-        isError: true,
-        responseResult: error,
-      });
-      expect(result).toBeNull();
-    });
-  });
-
-  describe("when only refresh token is available", () => {
-    it("should refresh tokens and retry stat request", async () => {
-      // Given
-      vi.mocked(getCookies)
-        .mockResolvedValueOnce({
-          access_token: undefined,
-          refresh_token: "refresh-token",
-        })
-        .mockResolvedValueOnce({
-          access_token: "new-access-token",
-          refresh_token: "new-refresh-token",
-        });
-      vi.mocked(fetchStat).mockResolvedValue(stat);
-
-      // When
-      const result = await getStat();
-
-      // Then
-      expect(refreshTokens).toHaveBeenCalledWith("refresh-token");
-      expect(fetchStat).toHaveBeenCalledWith("new-access-token");
-      expect(result).toEqual(stat);
-    });
-  });
-
-  describe("when no tokens are available", () => {
-    it("should return null without fetching stat", async () => {
-      // Given
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: undefined,
-        refresh_token: undefined,
-      });
-
-      // When
-      const result = await getStat();
-
-      // Then
-      expect(fetchStat).not.toHaveBeenCalled();
+      expect(fetchWithAuth).toHaveBeenCalled();
       expect(result).toBeNull();
     });
   });

@@ -11,7 +11,7 @@ import type {
   GoogleServiceAccountsResponse,
   User,
 } from "@/srcApp/entities/user/model/types/user";
-import { updateGoogleServiceAccount } from "@/srcApp/entities/user/model/updateGoogleServiceAccounts";
+import { updateGoogleServiceAccount } from "@/srcApp/entities/user/model/updateGoogleServiceAccount";
 import { useImperativeDisableScroll } from "@/srcApp/shared/hooks/useImperativeDisableScroll";
 import { useKeyboardHandler } from "@/srcApp/shared/hooks/useKeyboardHandler";
 import { Button } from "@/srcApp/shared/ui/button";

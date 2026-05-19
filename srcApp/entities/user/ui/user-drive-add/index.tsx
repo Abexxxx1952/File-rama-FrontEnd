@@ -15,7 +15,7 @@ import { Icon } from "@/srcApp/shared/ui/icon";
 import { Input } from "@/srcApp/shared/ui/input";
 
 import { addGoogleServiceAccount } from "../../model/addGoogleServiceAccounts";
-import { deleteGoogleServiceAccount } from "../../model/deleteGoogleServiceAccounts copy";
+import { deleteGoogleServiceAccount } from "../../model/deleteGoogleServiceAccounts";
 import { googleServiceAccountsAddSchema } from "../../model/lib/schemas/googleServiceAccountsAddSchema";
 import {
   type GoogleServiceAccountsRequest,
@@ -25,15 +25,15 @@ import {
 import { GoogleServiceAccountUpdateModal } from "../googleServiceAccount-update-modal";
 import styles from "./styles.module.css";
 
-type UserDriveUpdateProps = {
+type UserDriveAddProps = {
   googleServiceAccounts: GoogleServiceAccountsResponse[];
   setUser: Dispatch<SetStateAction<User | null>>;
 };
 
-export function UserDriveUpdate({
+export function UserDriveAdd({
   googleServiceAccounts,
   setUser,
-}: UserDriveUpdateProps) {
+}: UserDriveAddProps) {
   const [loading, setLoading] = useState(false);
   const [updateGoogleServiceAccountItem, setUpdateGoogleServiceAccountItem] =
     useState<GoogleServiceAccountsResponse>();
@@ -64,7 +64,7 @@ export function UserDriveUpdate({
 
   return (
     <div className={styles.userDriveUpdate}>
-      <h2 className={styles.userDriveUpdate__title}>Drive update</h2>
+      <h2 className={styles.userDriveUpdate__title}>Drive add</h2>
       <form
         className={styles.userDriveUpdate__form}
         onSubmit={handleSubmit(async (data) => {

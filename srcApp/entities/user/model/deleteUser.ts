@@ -2,11 +2,7 @@ import { type Dispatch, type SetStateAction } from "react";
 
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
 import { fetchDeleteUser } from "../api/fetchDeleteUser";
 import { type User } from "./types/user";
@@ -15,43 +11,14 @@ export async function deleteUser(
   setLoading: Dispatch<SetStateAction<boolean>>,
   router: AppRouterInstance
 ): Promise<void> {
-  setLoading(true);
+  const result = await fetchWithAuth<User>(
+    fetchDeleteUser,
+    undefined,
+    "User deleted successfully",
+    setLoading
+  );
 
-  try {
-    const { access_token, refresh_token } = await getCookies();
-    if (access_token) {
-      const data: User | ErrorData | null = await fetchDeleteUser(access_token);
-
-      if (isErrorData(data)) {
-        notifyResponse({
-          isError: true,
-          responseResult: data,
-        });
-        return;
-      }
-
-      if (data === null) {
-        notifyResponse({
-          isError: true,
-          responseResult: null,
-        });
-        return;
-      }
-
-      notifyResponse({
-        isError: false,
-        successMessage: `User deleted successfully`,
-      });
-
-      router.replace("/");
-    }
-    if (!access_token && refresh_token) {
-      await refreshTokens(refresh_token);
-      return deleteUser(setLoading, router);
-    }
-  } catch (error) {
-    console.log("error", error);
-  } finally {
-    setLoading(false);
+  if (result) {
+    router.replace("/");
   }
 }

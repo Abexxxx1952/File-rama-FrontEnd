@@ -58,7 +58,7 @@ export async function loginUser(
 
     router.push("/dashboard/null");
   } catch (error) {
-    console.log("error", error);
+    console.warn("error", error);
     return null;
   } finally {
     setLoading(false);

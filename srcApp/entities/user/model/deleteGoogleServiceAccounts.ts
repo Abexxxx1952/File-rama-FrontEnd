@@ -3,30 +3,29 @@ import { type Dispatch, type SetStateAction } from "react";
 import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
 import { fetchUpdateGoogleServiceAccounts } from "../api/fetchUpdateGoogleServiceAccounts";
-import {
-  type GoogleServiceAccountsRequest,
-  UpdateMode,
-  type User,
-} from "./types/user";
+import { UpdateMode, type User } from "./types/user";
 
-export async function addGoogleServiceAccount(
-  googleServiceAccountsData: GoogleServiceAccountsRequest,
+export async function deleteGoogleServiceAccount(
+  clientEmail: string,
   setLoading: Dispatch<SetStateAction<boolean>>,
   setUser: Dispatch<SetStateAction<User | null>>
 ): Promise<User | null> {
   const updateData = {
-    googleServiceAccounts: [
-      { ...googleServiceAccountsData, updateMode: UpdateMode.CREATE },
-    ],
+    googleServiceAccounts: [{ clientEmail, updateMode: UpdateMode.DELETE }],
   };
 
   const result = await fetchWithAuth<
     User,
-    { googleServiceAccounts: { clientEmail: string; updateMode: UpdateMode }[] }
+    {
+      googleServiceAccounts: {
+        clientEmail: string;
+        updateMode: UpdateMode;
+      }[];
+    }
   >(
     fetchUpdateGoogleServiceAccounts,
     updateData,
-    `Google service account ${googleServiceAccountsData.clientEmail} added successfully`,
+    `Google service account ${clientEmail} deleted successfully`,
     setLoading
   );
 

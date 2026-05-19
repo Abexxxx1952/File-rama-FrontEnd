@@ -1,21 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
-import { fetchUpdateUser } from "../../api/fetchUpdateUser";
 import { updateTwoFactorAuthorization } from ".././updateTwoFactorAuthorization";
 
-vi.mock("@/srcApp/features/cookies/model/getCookies", () => ({
-  getCookies: vi.fn(),
-}));
-
-vi.mock("@/srcApp/shared/model/notifyResponse", () => ({
-  notifyResponse: vi.fn(),
-}));
-
-vi.mock("../../api/fetchUpdateUser", () => ({
-  fetchUpdateUser: vi.fn(),
+vi.mock("@/srcApp/shared/model/fetchWithAuth", () => ({
+  fetchWithAuth: vi.fn(),
 }));
 
 const user = {
@@ -36,39 +26,61 @@ describe("updateTwoFactorAuthorization", () => {
   });
 
   describe("when two factor auth is enabled", () => {
-    it("should update user and notify enabled state", async () => {
+    it("should call fetchWithAuth and update user", async () => {
       // Given
       const setUser = vi.fn();
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: undefined,
-      });
-      vi.mocked(fetchUpdateUser).mockResolvedValue(user);
+      vi.mocked(fetchWithAuth).mockResolvedValue(user);
 
       // When
       const result = await updateTwoFactorAuthorization(true, vi.fn(), setUser);
 
       // Then
-      expect(fetchUpdateUser).toHaveBeenCalledWith("access-token", {
-        isTwoFactorEnabled: true,
-      });
-      expect(notifyResponse).toHaveBeenCalledWith({
-        isError: false,
-        successMessage: "Two Factor Authorization is Enable",
-      });
+      expect(fetchWithAuth).toHaveBeenCalledWith(
+        expect.any(Function),
+        {
+          isTwoFactorEnabled: true,
+        },
+        "Two Factor Authorization is Enable",
+        expect.any(Function)
+      );
       expect(setUser).toHaveBeenCalledWith(user);
       expect(result).toEqual(user);
     });
   });
 
-  describe("when update response is null", () => {
-    it("should notify unexpected error and return null", async () => {
+  describe("when two factor auth is disabled", () => {
+    it("should call fetchWithAuth with disabled message", async () => {
       // Given
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: undefined,
+      const setUser = vi.fn();
+      vi.mocked(fetchWithAuth).mockResolvedValue({
+        ...user,
+        isTwoFactorEnabled: false,
       });
-      vi.mocked(fetchUpdateUser).mockResolvedValue(null);
+
+      // When
+      const result = await updateTwoFactorAuthorization(
+        false,
+        vi.fn(),
+        setUser
+      );
+
+      // Then
+      expect(fetchWithAuth).toHaveBeenCalledWith(
+        expect.any(Function),
+        {
+          isTwoFactorEnabled: false,
+        },
+        "Two Factor Authorization is Disable",
+        expect.any(Function)
+      );
+      expect(result).toEqual({ ...user, isTwoFactorEnabled: false });
+    });
+  });
+
+  describe("when update fails", () => {
+    it("should return null", async () => {
+      // Given
+      vi.mocked(fetchWithAuth).mockResolvedValue(null);
 
       // When
       const result = await updateTwoFactorAuthorization(
@@ -78,10 +90,7 @@ describe("updateTwoFactorAuthorization", () => {
       );
 
       // Then
-      expect(notifyResponse).toHaveBeenCalledWith({
-        isError: true,
-        responseResult: null,
-      });
+      expect(fetchWithAuth).toHaveBeenCalled();
       expect(result).toBeNull();
     });
   });

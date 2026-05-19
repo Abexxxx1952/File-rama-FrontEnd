@@ -41,7 +41,7 @@ export async function registerUser(
     });
     router.replace("/login");
   } catch (error) {
-    console.log("error", error);
+    console.warn("error", error);
   } finally {
     setLoading(false);
   }

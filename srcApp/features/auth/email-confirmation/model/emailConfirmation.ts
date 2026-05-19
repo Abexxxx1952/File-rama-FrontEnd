@@ -49,7 +49,7 @@ export async function emailConfirmation(
     }
     return null;
   } catch (error: unknown) {
-    console.log("error", error);
+    console.warn("error", error);
     return null;
   } finally {
     setLoading(false);

@@ -56,10 +56,23 @@
   color: var(--link-color);
 }
 
-.description__image {
+.description__image_large {
   position: relative;
   width: 100%;
-  max-width: 800px;
+  max-width: 1000px;
+  height: 500px;
+  max-height: 600px;
+  margin-top: 2rem;
+  padding: 0 1rem;
+  aspect-ratio: 1.5/1;
+}
+
+.description__image_small {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  max-height: 600px;
   margin-top: 2rem;
   padding: 0 1rem;
   aspect-ratio: 1.5/1;

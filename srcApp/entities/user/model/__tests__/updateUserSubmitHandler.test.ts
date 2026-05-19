@@ -1,26 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
-import { fetchUpdateUser } from "../../api/fetchUpdateUser";
 import { updateUserSubmitHandler } from ".././updateUserSubmitHandler";
 
-vi.mock("@/srcApp/features/cookies/model/getCookies", () => ({
-  getCookies: vi.fn(),
-}));
-
-vi.mock("@/srcApp/features/auth/refresh-tokens/model/refreshTokens", () => ({
-  refreshTokens: vi.fn(),
-}));
-
-vi.mock("@/srcApp/shared/model/notifyResponse", () => ({
-  notifyResponse: vi.fn(),
-}));
-
-vi.mock("../../api/fetchUpdateUser", () => ({
-  fetchUpdateUser: vi.fn(),
+vi.mock("@/srcApp/shared/model/fetchWithAuth", () => ({
+  fetchWithAuth: vi.fn(),
 }));
 
 const user = {
@@ -41,16 +26,12 @@ describe("updateUserSubmitHandler", () => {
     vi.restoreAllMocks();
   });
 
-  describe("when access token is available", () => {
-    it("should update user, notify success, and set user", async () => {
+  describe("when user is updated successfully", () => {
+    it("should call fetchWithAuth and update user", async () => {
       // Given
       const setLoading = vi.fn();
       const setUser = vi.fn();
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: undefined,
-      });
-      vi.mocked(fetchUpdateUser).mockResolvedValue(user);
+      vi.mocked(fetchWithAuth).mockResolvedValue(user);
 
       // When
       const result = await updateUserSubmitHandler(
@@ -60,34 +41,50 @@ describe("updateUserSubmitHandler", () => {
       );
 
       // Then
-      expect(fetchUpdateUser).toHaveBeenCalledWith("access-token", {
-        name: "Ada",
-        password: "secret",
-      });
-      expect(notifyResponse).toHaveBeenCalledWith({
-        isError: false,
-        successMessage: "User updated successfully",
-      });
+      expect(fetchWithAuth).toHaveBeenCalledWith(
+        expect.any(Function),
+        {
+          name: "Ada",
+          password: "secret",
+        },
+        "User updated successfully",
+        setLoading
+      );
       expect(setUser).toHaveBeenCalledWith(user);
-      expect(setLoading).toHaveBeenNthCalledWith(1, true);
-      expect(setLoading).toHaveBeenLastCalledWith(false);
       expect(result).toEqual(user);
     });
   });
 
-  describe("when update response contains error data", () => {
-    it("should notify error and return null", async () => {
+  describe("when only name is provided", () => {
+    it("should update only name field", async () => {
       // Given
-      const error = {
-        message: "Invalid password",
-        statusCode: 400,
-        error: "Bad Request",
-      };
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: undefined,
-      });
-      vi.mocked(fetchUpdateUser).mockResolvedValue(error);
+      const setUser = vi.fn();
+      vi.mocked(fetchWithAuth).mockResolvedValue(user);
+
+      // When
+      const result = await updateUserSubmitHandler(
+        { name: "Ada" },
+        vi.fn(),
+        setUser
+      );
+
+      // Then
+      expect(fetchWithAuth).toHaveBeenCalledWith(
+        expect.any(Function),
+        {
+          name: "Ada",
+        },
+        "User updated successfully",
+        expect.any(Function)
+      );
+      expect(result).toEqual(user);
+    });
+  });
+
+  describe("when update fails", () => {
+    it("should return null", async () => {
+      // Given
+      vi.mocked(fetchWithAuth).mockResolvedValue(null);
 
       // When
       const result = await updateUserSubmitHandler(
@@ -97,41 +94,8 @@ describe("updateUserSubmitHandler", () => {
       );
 
       // Then
-      expect(notifyResponse).toHaveBeenCalledWith({
-        isError: true,
-        responseResult: error,
-      });
+      expect(fetchWithAuth).toHaveBeenCalled();
       expect(result).toBeNull();
-    });
-  });
-
-  describe("when only refresh token is available", () => {
-    it("should refresh tokens and retry update", async () => {
-      // Given
-      vi.mocked(getCookies)
-        .mockResolvedValueOnce({
-          access_token: undefined,
-          refresh_token: "refresh-token",
-        })
-        .mockResolvedValueOnce({
-          access_token: "new-access-token",
-          refresh_token: "new-refresh-token",
-        });
-      vi.mocked(fetchUpdateUser).mockResolvedValue(user);
-
-      // When
-      const result = await updateUserSubmitHandler(
-        { name: "Ada" },
-        vi.fn(),
-        vi.fn()
-      );
-
-      // Then
-      expect(refreshTokens).toHaveBeenCalledWith("refresh-token");
-      expect(fetchUpdateUser).toHaveBeenCalledWith("new-access-token", {
-        name: "Ada",
-      });
-      expect(result).toEqual(user);
     });
   });
 });

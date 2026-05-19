@@ -195,7 +195,7 @@ describe("fetchWithAuth", () => {
       // Given
       const error = new Error("Network error");
       const request = vi.fn().mockRejectedValue(error);
-      vi.spyOn(console, "log").mockImplementation(() => {});
+      vi.spyOn(console, "warn").mockImplementation(() => {});
       vi.mocked(getCookies).mockResolvedValue({
         access_token: "access-token",
         refresh_token: undefined,
@@ -205,7 +205,7 @@ describe("fetchWithAuth", () => {
       const result = await fetchWithAuth(request, args);
 
       // Then
-      expect(console.log).toHaveBeenCalledWith("error", error);
+      expect(console.warn).toHaveBeenCalledWith("error", error);
       expect(result).toBeNull();
     });
   });

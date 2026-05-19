@@ -7,12 +7,33 @@ import { isErrorData } from "./isErrorData";
 import { notifyResponse } from "./notifyResponse";
 import { type ErrorData } from "./types/errorData";
 
+type FetchFnWithArgs<ReturnData, Args extends object> = (
+  access_token: string,
+  args: Args
+) => Promise<ReturnData | ErrorData | null>;
+
+type FetchFnWithoutArgs<ReturnData> = (
+  access_token: string
+) => Promise<ReturnData | ErrorData | null>;
+
+export async function fetchWithAuth<ReturnData>(
+  fn: FetchFnWithoutArgs<ReturnData>,
+  args?: undefined,
+  successMessage?: string | ((data: ReturnData) => string[] | string),
+  setLoading?: Dispatch<SetStateAction<boolean>>
+): Promise<ReturnData | null>;
+
 export async function fetchWithAuth<ReturnData, Args extends object>(
-  fn: (
-    access_token: string,
-    args: Args
-  ) => Promise<ReturnData | ErrorData | null>,
+  fn: FetchFnWithArgs<ReturnData, Args>,
   args: Args,
+  successMessage?: string | ((data: ReturnData) => string[] | string),
+  setLoading?: Dispatch<SetStateAction<boolean>>
+): Promise<ReturnData | null>;
+
+// implementation
+export async function fetchWithAuth<ReturnData, Args extends object>(
+  fn: FetchFnWithoutArgs<ReturnData> | FetchFnWithArgs<ReturnData, Args>,
+  args?: Args,
   successMessage?: string | ((data: ReturnData) => string[] | string),
   setLoading?: Dispatch<SetStateAction<boolean>>
 ): Promise<ReturnData | null> {
@@ -24,7 +45,10 @@ export async function fetchWithAuth<ReturnData, Args extends object>(
     const { access_token, refresh_token } = await getCookies();
 
     if (access_token) {
-      const data: ReturnData | ErrorData | null = await fn(access_token, args);
+      const data =
+        args !== undefined
+          ? await (fn as FetchFnWithArgs<ReturnData, Args>)(access_token, args)
+          : await (fn as FetchFnWithoutArgs<ReturnData>)(access_token);
 
       if (isErrorData(data)) {
         notifyResponse({
@@ -44,6 +68,7 @@ export async function fetchWithAuth<ReturnData, Args extends object>(
 
       if (typeof successMessage === "function") {
         const message = successMessage(data);
+
         if (Array.isArray(message)) {
           message.forEach((msg) =>
             notifyResponse({
@@ -66,28 +91,34 @@ export async function fetchWithAuth<ReturnData, Args extends object>(
         });
       }
 
-      if (setLoading) {
-        setLoading(false);
-      }
       return data;
     }
 
     if (!access_token && refresh_token) {
       await refreshTokens(refresh_token);
-      return fetchWithAuth<ReturnData, Args>(
-        fn,
-        args,
+
+      if (args !== undefined) {
+        return fetchWithAuth(
+          fn as FetchFnWithArgs<ReturnData, Args>,
+          args,
+          successMessage,
+          setLoading
+        );
+      }
+
+      return fetchWithAuth(
+        fn as FetchFnWithoutArgs<ReturnData>,
+        undefined,
         successMessage,
         setLoading
       );
     }
+
     return null;
-  } catch (error: unknown) {
-    console.log("error", error);
+  } catch (error) {
+    console.warn("error", error);
     return null;
   } finally {
-    if (setLoading) {
-      setLoading(false);
-    }
+    setLoading?.(false);
   }
 }

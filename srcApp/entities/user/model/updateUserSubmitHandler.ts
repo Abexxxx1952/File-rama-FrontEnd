@@ -1,10 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react";
 
-import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
 import { fetchUpdateUser } from "../api/fetchUpdateUser";
 import { type User } from "./types/user";
@@ -15,7 +11,6 @@ export async function updateUserSubmitHandler(
   setLoading: Dispatch<SetStateAction<boolean>>,
   setUser: Dispatch<SetStateAction<User | null>>
 ): Promise<User | null> {
-  setLoading(true);
   const updateData = {
     ...(data.name && {
       name: data.name,
@@ -25,47 +20,14 @@ export async function updateUserSubmitHandler(
     }),
   };
 
-  try {
-    const { access_token, refresh_token } = await getCookies();
-    if (access_token) {
-      const data: User | ErrorData | null = await fetchUpdateUser(
-        access_token,
-        updateData
-      );
-
-      if (isErrorData(data)) {
-        notifyResponse({
-          isError: true,
-          responseResult: data,
-        });
-
-        return null;
-      }
-
-      if (data === null) {
-        notifyResponse({
-          isError: true,
-          responseResult: null,
-        });
-        return null;
-      }
-
-      notifyResponse({
-        isError: false,
-        successMessage: "User updated successfully",
-      });
-      setUser(data);
-      return data;
+  const result = await fetchWithAuth<
+    User,
+    {
+      password?: string | undefined;
+      name?: string | undefined;
     }
-    if (!access_token && refresh_token) {
-      await refreshTokens(refresh_token);
-      return updateUserSubmitHandler(data, setLoading, setUser);
-    }
-    return null;
-  } catch (error) {
-    console.log("error", error);
-    return null;
-  } finally {
-    setLoading(false);
-  }
+  >(fetchUpdateUser, updateData, "User updated successfully", setLoading);
+
+  setUser(result);
+  return result;
 }

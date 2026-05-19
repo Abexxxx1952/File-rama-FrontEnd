@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import {
   type User,
   UserDelete,
-  UserDriveUpdate,
+  UserDriveAdd,
   UserInfo,
   UserUpdate,
 } from "@/srcApp/entities/user";
@@ -54,7 +54,7 @@ export function SettingsPage() {
             setUser={setUser}
           />
         </section>
-        <UserDriveUpdate
+        <UserDriveAdd
           googleServiceAccounts={user.googleServiceAccounts}
           setUser={setUser}
         />

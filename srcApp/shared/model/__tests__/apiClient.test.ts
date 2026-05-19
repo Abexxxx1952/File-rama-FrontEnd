@@ -33,6 +33,7 @@ describe("apiClient", () => {
           authorization: "Bearer token",
         },
         body: JSON.stringify({ name: "Report" }),
+        signal: expect.any(AbortSignal),
       });
     });
   });
@@ -74,6 +75,7 @@ describe("apiClient", () => {
           tags: ["files"],
           revalidate: 120,
         },
+        signal: expect.any(AbortSignal),
       });
     });
   });

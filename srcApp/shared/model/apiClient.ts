@@ -30,14 +30,20 @@ export async function apiClient({
   revalidateTime = 600,
   abortControllerRef,
 }: apiClientArgs): Promise<Response> {
-  let signal: AbortSignal | undefined;
-  if (abortControllerRef) {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    abortControllerRef.current = new AbortController();
-    signal = abortControllerRef.current.signal;
+  let signal: AbortSignal;
+  let abortController: AbortController;
+  if (abortControllerRef && abortControllerRef.current) {
+    abortControllerRef.current.abort();
+    abortController = new AbortController();
+    abortControllerRef.current = abortController;
+    signal = abortController.signal;
+  } else {
+    abortController = new AbortController();
+    signal = abortController.signal;
   }
+
+  const timeout = Number(process.env.FETCH_TIMEOUT) || 30000;
+  const timeoutId = setTimeout(() => abortController.abort(), timeout);
 
   let queryParam: string;
 
@@ -48,26 +54,34 @@ export async function apiClient({
     url.searchParams.append("condition", queryParam);
   }
 
-  const response = await fetch(url.toString(), {
-    method: method || "GET",
-    headers: {
-      ...(bodyData &&
-        !(bodyData instanceof FormData) && {
-          "Content-Type": "application/json",
-        }),
-      ...additionalHeaders,
-    },
-    ...(bodyData && {
-      body: bodyData instanceof FormData ? bodyData : JSON.stringify(bodyData),
-    }),
-    ...(cacheTags && {
-      next: {
-        tags: cacheTags,
-        revalidate: revalidateTime || 0,
+  try {
+    const response = await fetch(url.toString(), {
+      method: method || "GET",
+      headers: {
+        ...(bodyData &&
+          !(bodyData instanceof FormData) && {
+            "Content-Type": "application/json",
+          }),
+        ...additionalHeaders,
       },
-    }),
-    ...(signal && { signal }),
-  });
+      ...(bodyData && {
+        body:
+          bodyData instanceof FormData ? bodyData : JSON.stringify(bodyData),
+      }),
+      ...(cacheTags && {
+        next: {
+          tags: cacheTags,
+          revalidate: revalidateTime || 0,
+        },
+      }),
+      ...{ signal },
+    });
 
-  return response;
+    clearTimeout(timeoutId);
+
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    throw error;
+  }
 }

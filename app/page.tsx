@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { MainPage } from "@/srcApp/pages/main";
 
 export const metadata: Metadata = {
-  /*  metadataBase: new URL(`${process.env.SITE_URL}`), */
   title: { default: "File-rama - Files storage", template: "%s | File-rama" },
   description: "File storage service",
   icons: "/meta-icon.svg",
