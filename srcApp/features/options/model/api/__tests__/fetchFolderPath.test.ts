@@ -29,11 +29,10 @@ describe("fetchGetFolderPath", () => {
       } as unknown as Response);
 
       // When
-      const result = await fetchGetFolderPath(
-        "access-token",
-        "folder-1",
-        "folder-path-tag"
-      );
+      const result = await fetchGetFolderPath("access-token", {
+        folderID: "folder-1",
+        folderPathTag: "folder-path-tag",
+      });
 
       // Then
       expect(apiClient).toHaveBeenCalledWith({
@@ -62,11 +61,10 @@ describe("fetchGetFolderPath", () => {
       } as unknown as Response);
 
       // When
-      const result = await fetchGetFolderPath(
-        "access-token",
-        "folder-1",
-        "folder-path-tag"
-      );
+      const result = await fetchGetFolderPath("access-token", {
+        folderID: "folder-1",
+        folderPathTag: "folder-path-tag",
+      });
 
       // Then
       expect(result).toEqual(error);

@@ -1,26 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
-import { fetchEmailConfirmation } from "../../api/fetchEmailConfirmation";
 import { emailConfirmation } from ".././emailConfirmation";
 
-vi.mock("@/srcApp/features/cookies/model/getCookies", () => ({
-  getCookies: vi.fn(),
-}));
-
-vi.mock("@/srcApp/features/auth/refresh-tokens/model/refreshTokens", () => ({
-  refreshTokens: vi.fn(),
-}));
-
-vi.mock("@/srcApp/shared/model/notifyResponse", () => ({
-  notifyResponse: vi.fn(),
-}));
-
-vi.mock("../../api/fetchEmailConfirmation", () => ({
-  fetchEmailConfirmation: vi.fn(),
+vi.mock("@/srcApp/shared/model/fetchWithAuth", () => ({
+  fetchWithAuth: vi.fn(),
 }));
 
 describe("emailConfirmation", () => {
@@ -28,86 +13,56 @@ describe("emailConfirmation", () => {
     vi.restoreAllMocks();
   });
 
-  describe("when access token is available", () => {
-    it("should send confirmation and notify success message", async () => {
+  describe("when fetchWithAuth succeeds", () => {
+    it("should call fetchWithAuth with correct parameters and return result", async () => {
       // Given
       const setLoading = vi.fn();
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: undefined,
-      });
-      vi.mocked(fetchEmailConfirmation).mockResolvedValue({
-        message: "Confirmation email sent",
-      } as any);
+      const mockResult = { message: "Confirmation email sent" };
+      vi.mocked(fetchWithAuth).mockResolvedValue(mockResult);
 
       // When
-      await emailConfirmation(setLoading);
+      const result = await emailConfirmation(setLoading);
 
       // Then
-      expect(fetchEmailConfirmation).toHaveBeenCalledWith(
-        "access-token",
-        undefined
+      expect(fetchWithAuth).toHaveBeenCalledWith(
+        expect.any(Function),
+        { abortControllerRef: undefined },
+        expect.any(Function),
+        setLoading
       );
-      expect(notifyResponse).toHaveBeenCalledWith({
-        isError: false,
-        successMessage: "Confirmation email sent",
-      });
-      expect(setLoading).toHaveBeenNthCalledWith(1, true);
-      expect(setLoading).toHaveBeenLastCalledWith(false);
+      expect(result).toEqual(mockResult);
+    });
+
+    it("should pass abortControllerRef when provided", async () => {
+      // Given
+      const setLoading = vi.fn();
+      const abortControllerRef = { current: new AbortController() };
+      vi.mocked(fetchWithAuth).mockResolvedValue({ message: "Success" });
+
+      // When
+      await emailConfirmation(setLoading, abortControllerRef);
+
+      // Then
+      expect(fetchWithAuth).toHaveBeenCalledWith(
+        expect.any(Function),
+        { abortControllerRef },
+        expect.any(Function),
+        setLoading
+      );
     });
   });
 
-  describe("when confirmation response contains error data", () => {
-    it("should notify error and return null", async () => {
+  describe("when fetchWithAuth returns null", () => {
+    it("should return null", async () => {
       // Given
-      const error = {
-        message: "Already confirmed",
-        statusCode: 409,
-        error: "Conflict",
-      };
-      vi.mocked(getCookies).mockResolvedValue({
-        access_token: "access-token",
-        refresh_token: undefined,
-      });
-      vi.mocked(fetchEmailConfirmation).mockResolvedValue(error);
+      const setLoading = vi.fn();
+      vi.mocked(fetchWithAuth).mockResolvedValue(null);
 
       // When
-      const result = await emailConfirmation(vi.fn());
+      const result = await emailConfirmation(setLoading);
 
       // Then
-      expect(notifyResponse).toHaveBeenCalledWith({
-        isError: true,
-        responseResult: error,
-      });
       expect(result).toBeNull();
-    });
-  });
-
-  describe("when only refresh token is available", () => {
-    it("should refresh tokens and retry confirmation", async () => {
-      // Given
-      vi.mocked(getCookies)
-        .mockResolvedValueOnce({
-          access_token: undefined,
-          refresh_token: "refresh-token",
-        })
-        .mockResolvedValueOnce({
-          access_token: "new-access-token",
-          refresh_token: "new-refresh-token",
-        });
-      vi.mocked(fetchEmailConfirmation).mockResolvedValue({
-        message: "Confirmation email sent",
-      } as any);
-
-      // When
-      await emailConfirmation(vi.fn());
-
-      // Then
-      expect(refreshTokens).toHaveBeenCalledWith("refresh-token");
-      expect(fetchEmailConfirmation).toHaveBeenCalledWith(
-        "new-access-token",
-        undefined
-      );
     });
   });
 });

@@ -17,7 +17,7 @@ export interface apiClientArgs {
   bodyData?: Record<string, unknown> | FormData;
   cacheTags?: string[];
   revalidateTime?: number;
-  abortControllerRef?: React.RefObject<AbortController | null>;
+  abortControllerRef?: React.RefObject<AbortController | null | undefined>;
 }
 
 export async function apiClient({

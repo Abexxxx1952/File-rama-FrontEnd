@@ -2,11 +2,7 @@
 
 import { type Dispatch, type SetStateAction } from "react";
 
-import { refreshTokens } from "@/srcApp/features/auth/refresh-tokens/model/refreshTokens";
-import { getCookies } from "@/srcApp/features/cookies/model/getCookies";
-import { isErrorData } from "@/srcApp/shared/model/isErrorData";
-import { notifyResponse } from "@/srcApp/shared/model/notifyResponse";
-import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { fetchWithAuth } from "@/srcApp/shared/model/fetchWithAuth";
 
 import { fetchGetFolderPath } from "./api/fetchFolderPath";
 
@@ -18,45 +14,15 @@ export async function getFolderPath(
   if (folderID === "null") {
     return ":/";
   }
-  setLoading(true);
-
-  try {
-    const { access_token, refresh_token } = await getCookies();
-
-    if (access_token) {
-      const data: string | ErrorData | null = await fetchGetFolderPath(
-        access_token,
-        folderID,
-        folderPathTag
-      );
-      if (isErrorData(data)) {
-        notifyResponse({
-          isError: true,
-          responseResult: data,
-        });
-        return ":/";
-      }
-
-      if (data === null) {
-        notifyResponse({
-          isError: true,
-          responseResult: null,
-        });
-        return ":/";
-      }
-
-      setLoading(false);
-      return data;
+  const folderPath = await fetchWithAuth<
+    string,
+    {
+      folderID: string;
+      folderPathTag: string;
     }
-    if (!access_token && refresh_token) {
-      await refreshTokens(refresh_token);
-      return getFolderPath(folderID, folderPathTag, setLoading);
-    }
+  >(fetchGetFolderPath, { folderID, folderPathTag }, undefined, setLoading);
+  if (folderPath === null) {
     return ":/";
-  } catch (error: unknown) {
-    console.warn("error", error);
-    return ":/";
-  } finally {
-    setLoading(false);
   }
+  return folderPath;
 }

@@ -8,9 +8,15 @@ import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
 
 export async function fetchGetFolderPath(
   access_token: string,
-  folderID: string,
-  folderPathTag: string,
-  abortControllerRef?: React.RefObject<AbortController | null>
+  {
+    folderID,
+    folderPathTag,
+    abortControllerRef,
+  }: {
+    folderID: string;
+    folderPathTag: string;
+    abortControllerRef?: React.RefObject<AbortController | null>;
+  }
 ): Promise<string | ErrorData | null> {
   const url: string = `${process.env.GET_FOLDER_PATH_URL}/${folderID}`;
 

@@ -4,18 +4,20 @@ import { apiClient, type apiClientArgs } from "@/srcApp/shared/model/apiClient";
 import { isErrorData } from "@/srcApp/shared/model/isErrorData";
 import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
 
-import { type User } from "../../../../entities/user/model/types/user";
-
 export async function fetchEmailConfirmation(
   access_token: string,
-  abortControllerRef?: React.RefObject<AbortController | null>
-): Promise<User | ErrorData | null> {
+  args?: {
+    abortControllerRef?: React.RefObject<AbortController | null | undefined>;
+  }
+): Promise<{ message: string } | ErrorData | null> {
   const url: string = `${process.env.EMAIL_CONFIRMATION_URL}`;
 
   const apiClientParams: apiClientArgs = {
     baseUrl: url,
     method: "POST",
-    ...(abortControllerRef && { abortControllerRef }),
+    ...(args?.abortControllerRef && {
+      abortControllerRef: args.abortControllerRef,
+    }),
     additionalHeaders: {
       Authorization: `Bearer ${access_token}`,
     },
@@ -30,7 +32,7 @@ export async function fetchEmailConfirmation(
       throw errorData;
     }
 
-    const data: User = await response.json();
+    const data: { message: string } = await response.json();
 
     return data;
   } catch (error: unknown) {

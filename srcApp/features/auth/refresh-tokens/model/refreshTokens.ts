@@ -1,8 +1,8 @@
 "use server";
 
 import { setCookies } from "@/srcApp/features/cookies/model/setCookies";
-import { JwtAuthTokenType } from "@/srcApp/features/cookies/model/types/jwtToken";
-import { ErrorData } from "@/srcApp/shared/model/types/errorData";
+import { type JwtAuthTokenType } from "@/srcApp/features/cookies/model/types/jwtToken";
+import { type ErrorData } from "@/srcApp/shared/model/types/errorData";
 
 export async function refreshTokens(refresh_token: string): Promise<void> {
   try {

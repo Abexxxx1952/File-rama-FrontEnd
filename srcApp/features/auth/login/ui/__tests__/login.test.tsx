@@ -22,6 +22,16 @@ vi.mock("../../model/loginUser", () => ({
   loginUser: vi.fn(),
 }));
 
+vi.mock("react-google-recaptcha", () => ({
+  default: vi.fn(({ onChange }) => {
+    return (
+      <button type="button" onClick={() => onChange?.("mock-recaptcha-token")}>
+        Complete reCAPTCHA
+      </button>
+    );
+  }),
+}));
+
 describe("Login", () => {
   describe("when user fills credentials and submits form", () => {
     it("should call login action with form values", async () => {
@@ -37,6 +47,9 @@ describe("Login", () => {
         "user@example.com"
       );
       await user.type(screen.getByPlaceholderText(/password/i), "secret");
+      await user.click(
+        screen.getByRole("button", { name: /complete recaptcha/i })
+      );
       await user.click(screen.getByRole("button", { name: /login/i }));
 
       // Then

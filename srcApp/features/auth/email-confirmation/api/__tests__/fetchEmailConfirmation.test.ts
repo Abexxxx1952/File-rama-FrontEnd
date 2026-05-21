@@ -28,7 +28,7 @@ describe("fetchEmailConfirmation", () => {
       } as unknown as Response);
 
       // When
-      const result = await fetchEmailConfirmation("access-token");
+      const result = await fetchEmailConfirmation("access-token", {});
 
       // Then
       expect(apiClient).toHaveBeenCalledWith({
@@ -56,7 +56,7 @@ describe("fetchEmailConfirmation", () => {
       } as unknown as Response);
 
       // When
-      const result = await fetchEmailConfirmation("access-token");
+      const result = await fetchEmailConfirmation("access-token", {});
 
       // Then
       expect(result).toEqual(error);
